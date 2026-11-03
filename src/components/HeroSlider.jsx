@@ -254,10 +254,19 @@ export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const thumbRefs = useRef([]);
+  const stripRef = useRef(null);
 
-  // Keep the active thumbnail visible in the scrollable strip
+  // Keep the active thumbnail centred in the thumbnail strip. Scroll only the
+  // strip itself: scrollIntoView() would also scroll the page, yanking visitors
+  // back up to the hero every time the slide auto-advances.
   useEffect(() => {
-    thumbRefs.current[current]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    const strip = stripRef.current;
+    const thumb = thumbRefs.current[current];
+    if (!strip || !thumb) return;
+    const stripRect = strip.getBoundingClientRect();
+    const thumbRect = thumb.getBoundingClientRect();
+    const left = strip.scrollLeft + (thumbRect.left - stripRect.left) - (stripRect.width - thumbRect.width) / 2;
+    strip.scrollTo({ left: Math.max(0, left), behavior: 'smooth' });
   }, [current]);
 
   const DURATION = 6000;
@@ -443,6 +452,7 @@ export default function HeroSlider() {
 
           {/* Thumbnail strip */}
           <div
+            ref={stripRef}
             className="flex gap-2 items-center overflow-x-auto max-w-[62vw] sm:max-w-[58vw] lg:max-w-[68vw] pb-1 [&::-webkit-scrollbar]:hidden"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
