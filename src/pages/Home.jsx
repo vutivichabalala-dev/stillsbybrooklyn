@@ -320,9 +320,9 @@ function SelectedWork() {
 function Statement() {
   const words = 'Weddings, portraits, corporate, graduations and matric dance — photographed with a quiet, honest eye.'.split(' ');
   return (
-    <section className="bg-[#6A2230] text-white">
+    <section className="bg-[#9E4317] text-white">
       <div className="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-12 py-[112px] flex flex-col items-center text-center gap-[22px]">
-        <p className="m-0 font-lato text-[12px] tracking-[0.32em] uppercase text-[#F1D9DD]">Beautiful moments &nbsp;|&nbsp; Timeless memories</p>
+        <p className="m-0 font-lato text-[12px] tracking-[0.32em] uppercase text-[#F8D9C3]">Beautiful moments &nbsp;|&nbsp; Timeless memories</p>
         <motion.p
           className="m-0 font-cormorant text-[clamp(32px,4vw,56px)] leading-[1.15] max-w-[940px]"
           initial="hidden"
@@ -340,7 +340,7 @@ function Statement() {
             </motion.span>
           ))}
         </motion.p>
-        <Link to="/about" className="font-lato text-[12px] tracking-[0.26em] uppercase border-b border-white pb-1 hover:text-[#F1D9DD] hover:border-[#F1D9DD] transition-colors">
+        <Link to="/about" className="font-lato text-[12px] tracking-[0.26em] uppercase border-b border-white pb-1 hover:text-[#F8D9C3] hover:border-[#F8D9C3] transition-colors">
           About Brooklyn
         </Link>
       </div>

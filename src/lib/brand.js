@@ -6,7 +6,7 @@ export const BRAND = {
   wordmark: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/e9f68691d_sb-wordmark.png',
   favicon: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/7c11a7d3c_sb-favicon.png',
   ivory: '#F6F3EE',
-  burgundy: '#D99AA5',
+  burgundy: '#EB7F3B',
   ink: '#141210',
   alt: 'StillsbyBrooklyn Photography',
 };

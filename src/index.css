@@ -21,19 +21,19 @@
     --secondary-foreground: 37 33% 95%;
     --muted: 330 4% 14%;
     --muted-foreground: 33 8% 70%;    /* #B9B2AA */
-    --accent: 351 48% 73%;
+    --accent: 23 81% 58%;
     --accent-foreground: 330 5% 7.5%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 330 5% 19%;             /* #332E30 */
     --input: 330 5% 19%;
-    --ring: 351 48% 73%;
+    --ring: 23 81% 58%;
     --radius: 0.125rem;
-    --burgundy: 351 48% 73%;
+    --burgundy: 23 81% 58%;
     --ivory: 37 33% 95%;
     --ink: 330 5% 7.5%;
-    --gold: 351 48% 73%;              /* rose accent #D99AA5 */
-    --gold-light: 351 55% 82%;
+    --gold: 23 81% 58%;               /* orange accent #EB7F3B */
+    --gold-light: 24 85% 72%;
     --charcoal: 330 4% 12%;
   }
 
@@ -119,8 +119,8 @@
 
 /* Custom cursor states (unlayered on purpose so they win over utilities) */
 .cursor-hover {
-  border-color: rgba(217, 154, 165, 0.55);
-  background-color: rgba(217, 154, 165, 0.06);
+  border-color: rgba(235, 127, 59, 0.55);
+  background-color: rgba(235, 127, 59, 0.06);
 }
 
 .cursor-click {
@@ -128,8 +128,8 @@
 }
 
 @keyframes cursor-press {
-  0% { box-shadow: 0 0 0 0 rgba(217, 154, 165, 0.35); }
-  100% { box-shadow: 0 0 0 18px rgba(217, 154, 165, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(235, 127, 59, 0.35); }
+  100% { box-shadow: 0 0 0 18px rgba(235, 127, 59, 0); }
 }
 
 /* Slide progress bar — compositor only */

@@ -88,7 +88,7 @@ export default function CustomCursor() {
       />
       <div
         ref={dotRef}
-        className="fixed left-0 top-0 z-[99999] h-2 w-2 rounded-full bg-gold opacity-0 shadow-[0_0_8px_rgba(217,154,165,0.8)] will-change-transform"
+        className="fixed left-0 top-0 z-[99999] h-2 w-2 rounded-full bg-gold opacity-0 shadow-[0_0_8px_rgba(235,127,59,0.8)] will-change-transform"
         style={{ transition: 'opacity 0.2s ease', transform: 'translate3d(-200px, -200px, 0)' }}
       />
     </div>
