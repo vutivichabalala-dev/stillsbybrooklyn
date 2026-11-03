@@ -1,200 +1,312 @@
 import { escapeHtml } from './emailSafe.js';
 
+// Brand + links used in every email (images are served from the live site)
+const SITE = 'https://www.stillsbybrooklyn.co.za';
+const LOGO_GIF = `${SITE}/email/sb-logo.gif`;
+const HERO = `${SITE}/email/hero-strip.jpg`;
+const WHATSAPP_NUMBER = '27677860702';
+const PHONE_DISPLAY = '067 786 0702';
+const INSTAGRAM = 'https://www.instagram.com/stillsbybrooklyn/';
+
+const C = {
+  ink: '#141213', card: '#1C191A', line: '#332E30', ivory: '#F6F3EE',
+  muted: '#B9B2AA', soft: '#8E8780', orange: '#EB7F3B', burnt: '#9E4317',
+};
+const SERIF = "'Cormorant Garamond', Georgia, 'Times New Roman', serif";
+const SANS = "Lato, 'Helvetica Neue', Helvetica, Arial, sans-serif";
+
 function formatDate(dateStr) {
   if (!dateStr) return '';
   const d = new Date(dateStr);
   if (isNaN(d.getTime())) return '';
   return d.toLocaleDateString('en-ZA', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 }
-
+function shortDate(dateStr) {
+  const d = new Date(dateStr);
+  return isNaN(d.getTime()) ? '' : d.toLocaleDateString('en-ZA', { weekday: 'short', day: 'numeric', month: 'short' });
+}
 function formatTime(t) {
   if (!t || typeof t !== 'string' || !t.includes(':')) return '';
   const [h, m] = t.split(':');
-  const hour = parseInt(h);
+  const hour = parseInt(h, 10);
   if (isNaN(hour)) return '';
-  const ampm = hour >= 12 ? 'PM' : 'AM';
-  const h12 = hour % 12 || 12;
-  return `${h12}:${m} ${ampm}`;
+  return `${hour % 12 || 12}:${m} ${hour >= 12 ? 'PM' : 'AM'}`;
+}
+// South African numbers → international digits for wa.me / tel: links
+function intlPhone(raw) {
+  let digits = String(raw || '').replace(/\D/g, '');
+  if (digits.startsWith('00')) digits = digits.slice(2);
+  if (digits.startsWith('0')) digits = `27${digits.slice(1)}`;
+  return digits.length >= 9 ? digits : '';
+}
+const firstName = (name) => String(name || '').trim().split(/\s+/)[0] || 'there';
+
+/* ------------------------------------------------------------------ */
+/* Shared building blocks (table-based so they render in every inbox)  */
+/* ------------------------------------------------------------------ */
+
+function shell({ title, preheader, body }) {
+  return `<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark light">
+<meta name="supported-color-schemes" content="dark light">
+<title>${title}</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; padding:0; background:${C.ink}; }
+  a { color:${C.orange}; }
+  @media (max-width: 620px) {
+    .px { padding-left:24px !important; padding-right:24px !important; }
+    .h1 { font-size:36px !important; line-height:40px !important; }
+    .stack { display:block !important; width:100% !important; }
+    .btn a { display:block !important; }
+  }
+  /* Gentle fade-in where the inbox supports CSS animation (Apple Mail, iOS) */
+  @keyframes sbRise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+  .rise { animation: sbRise .9s ease-out both; }
+  .rise2 { animation: sbRise .9s .25s ease-out both; }
+  .rise3 { animation: sbRise .9s .5s ease-out both; }
+</style>
+</head>
+<body style="margin:0;padding:0;background:${C.ink};">
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:${C.ink};">${preheader}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.ink};">
+  <tr><td align="center" style="padding:28px 12px 40px;">
+    <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:${C.ink};">
+      ${body}
+    </table>
+  </td></tr>
+</table>
+</body>
+</html>`;
 }
 
-// ─── Email Templates ───────────────────────────────────────────────────────────
+function logoRow() {
+  return `<tr><td align="center" style="padding:8px 0 22px;">
+    <a href="${SITE}" style="text-decoration:none;"><img src="${LOGO_GIF}" width="240" height="99" alt="sb. Stills by Brooklyn" style="display:block;width:240px;height:auto;border:0;outline:none;color:${C.ivory};font-family:${SANS};font-size:22px;"></a>
+  </td></tr>`;
+}
+
+function button(href, label, primary = true) {
+  return `<table role="presentation" cellpadding="0" cellspacing="0" border="0" class="btn" style="display:inline-table;margin:6px 6px;">
+    <tr><td align="center" style="${primary ? `background:${C.orange};` : `border:1px solid ${C.muted};`}">
+      <a href="${href}" target="_blank" style="display:inline-block;padding:15px 26px;font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;text-decoration:none;color:${primary ? C.ink : C.ivory};">${label}</a>
+    </td></tr>
+  </table>`;
+}
+
+function rows(pairs) {
+  return pairs
+    .filter(([, v]) => v)
+    .map(([label, value], i, arr) => `
+      <tr>
+        <td style="padding:13px 0;${i < arr.length - 1 ? `border-bottom:1px solid ${C.line};` : ''}font-family:${SANS};font-size:11px;letter-spacing:2.5px;text-transform:uppercase;color:${C.soft};width:38%;vertical-align:top;">${label}</td>
+        <td style="padding:13px 0;${i < arr.length - 1 ? `border-bottom:1px solid ${C.line};` : ''}font-family:${SANS};font-size:15px;line-height:22px;color:${C.ivory};vertical-align:top;">${value}</td>
+      </tr>`)
+    .join('');
+}
+
+function footer() {
+  return `
+  <tr><td style="padding:34px 0 0;"><div style="height:1px;background:${C.line};line-height:1px;font-size:0;">&nbsp;</div></td></tr>
+  <tr><td align="center" style="padding:26px 24px 6px;font-family:${SANS};font-size:11px;letter-spacing:4px;text-transform:uppercase;color:${C.muted};">
+    People &nbsp;·&nbsp; Moments &nbsp;·&nbsp; Culture &nbsp;·&nbsp; Events
+  </td></tr>
+  <tr><td align="center" style="padding:10px 24px;font-family:${SANS};font-size:13px;line-height:22px;color:${C.soft};">
+    <a href="https://wa.me/${WHATSAPP_NUMBER}" style="color:${C.ivory};text-decoration:none;">WhatsApp ${PHONE_DISPLAY}</a>
+    &nbsp;<span style="color:${C.orange};">·</span>&nbsp;
+    <a href="${INSTAGRAM}" style="color:${C.ivory};text-decoration:none;">@stillsbybrooklyn</a>
+    &nbsp;<span style="color:${C.orange};">·</span>&nbsp;
+    <a href="${SITE}" style="color:${C.ivory};text-decoration:none;">stillsbybrooklyn.co.za</a>
+  </td></tr>
+  <tr><td align="center" style="padding:4px 24px 0;font-family:${SANS};font-size:11px;letter-spacing:1px;color:${C.soft};">Midrand, Gauteng &nbsp;·&nbsp; Available nationwide</td></tr>`;
+}
+
+/* ------------------------------------------------------------------ */
+/* Email to the client                                                 */
+/* ------------------------------------------------------------------ */
 
 export function clientConfirmationEmail({ name, type, data }) {
   const isBooking = type === 'booking';
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>${isBooking ? 'Booking Confirmation' : 'Message Received'} — Stills by Brooklyn</title>
-</head>
-<body style="margin:0;padding:0;background:#0a0a0d;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0d;padding:40px 20px;">
-    <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+  const fname = escapeHtml(firstName(name));
+  const service = escapeHtml(data.service || '');
+  const waText = encodeURIComponent(isBooking
+    ? `Hi Brooklyn, it's ${firstName(name)} — I've just requested a ${data.service || ''} session for ${formatDate(data.date)}.`
+    : `Hi Brooklyn, it's ${firstName(name)} — I sent you a message through your website.`);
 
-        <!-- Header -->
-        <tr><td style="padding-bottom:32px;text-align:center;">
-          <div style="display:inline-block;border-bottom:1px solid #c9a84c;padding-bottom:12px;margin-bottom:8px;">
-            <span style="color:#c9a84c;font-size:10px;letter-spacing:4px;text-transform:uppercase;">Stills by Brooklyn</span>
-          </div>
-          <h1 style="color:#ffffff;font-size:26px;font-weight:700;margin:12px 0 0;letter-spacing:1px;">
-            ${isBooking ? 'Your Booking Request' : 'Message Received'}
-          </h1>
-          <p style="color:#c9a84c;font-size:11px;letter-spacing:3px;text-transform:uppercase;margin:8px 0 0;">
-            ${isBooking ? 'Confirmation' : 'We\'ll be in touch shortly'}
-          </p>
-        </td></tr>
+  const summary = isBooking
+    ? rows([
+        ['Session', service],
+        ['Date', escapeHtml(formatDate(data.date))],
+        ['Time', escapeHtml(formatTime(data.time))],
+        ['Venue', escapeHtml(data.venue_name)],
+        ['Location', escapeHtml(data.location_address)],
+      ])
+    : rows([
+        ['Interested in', service],
+        ['Your message', escapeHtml(String(data.message || '').slice(0, 280)) + (String(data.message || '').length > 280 ? '…' : '')],
+      ]);
 
-        <!-- Body Card -->
-        <tr><td style="background:#141418;border:1px solid rgba(201,168,76,0.2);border-radius:4px;padding:40px;">
+  const steps = isBooking
+    ? [
+        ['01', 'I confirm your date', 'I personally check my calendar and confirm your date and time within 24–48 hours.'],
+        ['02', 'We plan it together', 'Location, outfits, light and the shots that matter most to you — so the day feels easy.'],
+        ['03', 'Your images arrive', 'Carefully edited, high-resolution photographs, delivered in your own private online gallery.'],
+      ]
+    : [
+        ['01', 'I read every message', 'Your note comes straight to me — not a team, not a bot.'],
+        ['02', 'I reply within 24–48 hours', 'With answers, ideas and available dates for your shoot.'],
+        ['03', 'We make something beautiful', 'Once we have a plan, you can book your session in a few clicks.'],
+      ];
 
-          <p style="color:#a0a0a0;font-size:13px;line-height:1.7;margin:0 0 24px;">
-            Dear <strong style="color:#ffffff;">${escapeHtml(name)}</strong>,
-          </p>
-          <p style="color:#a0a0a0;font-size:13px;line-height:1.7;margin:0 0 32px;">
-            ${isBooking
-              ? `Thank you for submitting your booking request. Brooklyn has received your details and will confirm your session within <strong style="color:#ffffff;">24–48 hours</strong>.`
-              : `Thank you for reaching out to Stills by Brooklyn. Your message has been received and Brooklyn will respond within <strong style="color:#ffffff;">24–48 hours</strong>.`
-            }
-          </p>
+  const body = `
+  ${logoRow()}
+  <tr><td style="padding:0;">
+    <a href="${SITE}/portfolio" style="text-decoration:none;"><img src="${HERO}" width="600" alt="Portraits by Stills by Brooklyn" style="display:block;width:100%;max-width:600px;height:auto;border:0;"></a>
+  </td></tr>
+  <tr><td class="px" style="padding:44px 48px 8px;">
+    <div class="rise" style="font-family:${SANS};font-size:12px;letter-spacing:4px;text-transform:uppercase;color:${C.orange};">${isBooking ? 'Booking request received' : 'Message received'}</div>
+    <div style="height:2px;width:48px;background:${C.orange};margin:16px 0 22px;line-height:2px;font-size:0;">&nbsp;</div>
+    <h1 class="h1 rise2" style="margin:0;font-family:${SERIF};font-weight:500;font-size:44px;line-height:48px;color:${C.ivory};">
+      ${isBooking ? `Thank you, ${fname}.<br><span style="font-style:italic;color:${C.orange};">Your moment is pencilled in.</span>` : `Thank you, ${fname}.<br><span style="font-style:italic;color:${C.orange};">Your message is with me.</span>`}
+    </h1>
+    <p class="rise3" style="margin:24px 0 0;font-family:${SANS};font-size:16px;line-height:27px;color:${C.muted};">
+      ${isBooking
+        ? `I'm so glad you chose Stills by Brooklyn for your ${service ? `<strong style="color:${C.ivory};font-weight:700;">${service.toLowerCase()}</strong> ` : ''}session. Your request has landed safely with me, and I'll personally confirm everything within <strong style="color:${C.ivory};">24–48 hours</strong>.`
+        : `Thank you for reaching out — it means a lot. I've received your message and I'll get back to you personally within <strong style="color:${C.ivory};">24–48 hours</strong>.`}
+    </p>
+  </td></tr>
 
-          <!-- Divider -->
-          <div style="border-top:1px solid rgba(255,255,255,0.08);margin:0 0 28px;"></div>
+  <tr><td class="px" style="padding:30px 48px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.card};border-left:3px solid ${C.orange};">
+      <tr><td style="padding:22px 26px 10px;font-family:${SANS};font-size:11px;letter-spacing:3px;text-transform:uppercase;color:${C.orange};">${isBooking ? 'Your booking' : 'Your enquiry'}</td></tr>
+      <tr><td style="padding:0 26px 14px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${summary}</table></td></tr>
+    </table>
+  </td></tr>
 
-          <!-- Summary -->
-          <p style="color:#c9a84c;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin:0 0 20px;">
-            ${isBooking ? 'Booking Summary' : 'Your Enquiry'}
-          </p>
+  <tr><td class="px" style="padding:40px 48px 0;">
+    <div style="font-family:${SERIF};font-size:28px;line-height:32px;color:${C.ivory};">What happens next</div>
+  </td></tr>
+  ${steps.map(([n, t, d]) => `
+  <tr><td class="px" style="padding:18px 48px 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td width="56" style="vertical-align:top;font-family:${SERIF};font-size:30px;line-height:30px;color:${C.orange};">${n}</td>
+      <td style="vertical-align:top;border-top:1px solid ${C.line};padding-top:12px;">
+        <div style="font-family:${SANS};font-size:12px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:${C.ivory};">${t}</div>
+        <div style="margin-top:6px;font-family:${SANS};font-size:14px;line-height:22px;color:${C.muted};">${d}</div>
+      </td>
+    </tr></table>
+  </td></tr>`).join('')}
 
-          <table width="100%" cellpadding="0" cellspacing="0">
-            ${isBooking ? `
-            <tr>
-              <td style="color:#666;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);width:40%;">Service</td>
-              <td style="color:#ffffff;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">${escapeHtml(data.service)}</td>
-            </tr>
-            <tr>
-              <td style="color:#666;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">Date</td>
-              <td style="color:#ffffff;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">${escapeHtml(formatDate(data.date))}</td>
-            </tr>
-            <tr>
-              <td style="color:#666;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">Time</td>
-              <td style="color:#ffffff;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">${escapeHtml(formatTime(data.time))}</td>
-            </tr>
-            ${data.location_address ? `
-            <tr>
-              <td style="color:#666;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">Location</td>
-              <td style="color:#ffffff;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">${escapeHtml(data.location_address)}</td>
-            </tr>` : ''}
-            ${data.venue_name ? `
-            <tr>
-              <td style="color:#666;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">Venue</td>
-              <td style="color:#ffffff;font-size:13px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);">${escapeHtml(data.venue_name)}</td>
-            </tr>` : ''}
-            ` : `
-            <tr>
-              <td colspan="2" style="color:#a0a0a0;font-size:13px;line-height:1.7;padding:10px 0;font-style:italic;">
-                Your enquiry has been logged and Brooklyn will reply to this email address.
-              </td>
-            </tr>
-            ${data.service ? `
-            <tr>
-              <td style="color:#666;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:10px 0;border-top:1px solid rgba(255,255,255,0.05);width:40%;">Service Interested In</td>
-              <td style="color:#ffffff;font-size:13px;padding:10px 0;border-top:1px solid rgba(255,255,255,0.05);text-transform:capitalize;">${escapeHtml(data.service)}</td>
-            </tr>` : ''}
-            `}
-          </table>
+  <tr><td align="center" class="px" style="padding:40px 40px 4px;">
+    ${button(`https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`, 'WhatsApp Brooklyn', true)}
+    ${button(`${SITE}/portfolio`, 'See the portfolio', false)}
+  </td></tr>
 
-          <!-- Divider -->
-          <div style="border-top:1px solid rgba(255,255,255,0.08);margin:32px 0 28px;"></div>
+  <tr><td class="px" style="padding:36px 48px 0;">
+    <p style="margin:0;font-family:${SANS};font-size:15px;line-height:25px;color:${C.muted};">Can't wait to create with you.</p>
+    <p style="margin:6px 0 0;font-family:${SERIF};font-style:italic;font-size:30px;line-height:34px;color:${C.ivory};">Brooklyn<span style="color:${C.orange};font-style:normal;">.</span></p>
+  </td></tr>
+  ${footer()}`;
 
-          <p style="color:#666;font-size:12px;line-height:1.7;margin:0;">
-            If you have any questions in the meantime, feel free to reply to this email or call <strong style="color:#a0a0a0;">067 786 0702</strong>.
-          </p>
-
-        </td></tr>
-
-        <!-- Footer -->
-        <tr><td style="padding:28px 0;text-align:center;">
-          <p style="color:#444;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin:0 0 8px;">Stills by Brooklyn</p>
-          <p style="color:#333;font-size:11px;margin:0;">Midrand, South Africa · Available Nationwide</p>
-          <p style="margin:16px 0 0;">
-            <a href="https://stillsbybrooklyn.co.za" style="color:#c9a84c;font-size:11px;text-decoration:none;letter-spacing:1px;">stillsbybrooklyn.co.za</a>
-          </p>
-        </td></tr>
-
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
+  return shell({
+    title: isBooking ? 'Your booking request — Stills by Brooklyn' : 'Message received — Stills by Brooklyn',
+    preheader: isBooking ? `Thank you, ${firstName(name)} — I'll confirm your ${data.service || ''} session within 24–48 hours.` : `Thank you, ${firstName(name)} — I'll reply personally within 24–48 hours.`,
+    body,
+  });
 }
+
+/* ------------------------------------------------------------------ */
+/* Notification to Brooklyn                                            */
+/* ------------------------------------------------------------------ */
 
 export function adminNotificationEmail({ type, data }) {
   const isBooking = type === 'booking';
-  const rows = isBooking ? [
-    ['Client Name', data.full_name],
-    ['Email', data.email],
-    ['Phone', data.phone],
-    ['Service', data.service],
-    ['Date', formatDate(data.date)],
-    ['Time', formatTime(data.time)],
-    ['Location', data.location_address || '—'],
-    ['Venue', data.venue_name || '—'],
-    ['Notes', data.notes || '—'],
-  ] : [
-    ['Name', data.name],
-    ['Email', data.email],
-    ['Phone', data.phone || '—'],
-    ['Service Interest', data.service || '—'],
-    ['Message', data.message],
-  ];
+  const name = isBooking ? data.full_name : data.name;
+  const safeName = escapeHtml(name);
+  const service = escapeHtml(data.service || '');
+  const email = String(data.email || '').trim();
+  const phone = intlPhone(data.phone);
+  const subjectLine = encodeURIComponent(isBooking ? `Your ${data.service || ''} session with Stills by Brooklyn` : 'Re: your enquiry — Stills by Brooklyn');
+  const waText = encodeURIComponent(`Hi ${firstName(name)}, it's Brooklyn from Stills by Brooklyn — thank you for your ${isBooking ? 'booking request' : 'message'}!`);
+  const received = new Date().toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg', weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
 
-  return `
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <title>New ${isBooking ? 'Booking' : 'Enquiry'} — Stills by Brooklyn</title>
-</head>
-<body style="margin:0;padding:0;background:#0a0a0d;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0d;padding:40px 20px;">
-    <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+  const details = isBooking
+    ? rows([
+        ['Client', safeName],
+        ['Email', `<a href="mailto:${escapeHtml(email)}" style="color:${C.ivory};">${escapeHtml(email)}</a>`],
+        ['Phone', escapeHtml(data.phone)],
+        ['Session', service],
+        ['Date', escapeHtml(formatDate(data.date))],
+        ['Time', escapeHtml(formatTime(data.time))],
+        ['Venue', escapeHtml(data.venue_name)],
+        ['Location', escapeHtml(data.location_address)],
+      ])
+    : rows([
+        ['Name', safeName],
+        ['Email', `<a href="mailto:${escapeHtml(email)}" style="color:${C.ivory};">${escapeHtml(email)}</a>`],
+        ['Phone', escapeHtml(data.phone)],
+        ['Interested in', service],
+      ]);
 
-        <!-- Alert Banner -->
-        <tr><td style="background:#c9a84c;padding:14px 24px;border-radius:4px 4px 0 0;text-align:center;">
-          <span style="color:#000;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;">
-            ● New ${isBooking ? 'Booking Request' : 'Contact Enquiry'}
-          </span>
-        </td></tr>
+  const note = isBooking ? data.notes : data.message;
 
-        <!-- Body Card -->
-        <tr><td style="background:#141418;border:1px solid rgba(201,168,76,0.2);border-top:0;border-radius:0 0 4px 4px;padding:40px;">
+  const body = `
+  <tr><td style="padding:0 0 18px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="vertical-align:middle;"><img src="${LOGO_GIF}" width="150" height="62" alt="sb." style="display:block;width:150px;height:auto;border:0;"></td>
+      <td align="right" style="vertical-align:middle;">
+        <span style="display:inline-block;background:${C.orange};color:${C.ink};font-family:${SANS};font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;padding:8px 14px;">${isBooking ? 'New booking' : 'New enquiry'}</span>
+      </td>
+    </tr></table>
+  </td></tr>
 
-          <p style="color:#c9a84c;font-size:10px;letter-spacing:3px;text-transform:uppercase;margin:0 0 24px;">Submission Details</p>
+  <tr><td style="background:${C.burnt};padding:36px 36px 34px;" class="px">
+    <div style="font-family:${SANS};font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#F8D9C3;">${escapeHtml(received)}</div>
+    <h1 class="h1" style="margin:12px 0 0;font-family:${SERIF};font-weight:500;font-size:40px;line-height:44px;color:${C.ivory};">
+      ${isBooking
+        ? `${safeName} would love a <span style="font-style:italic;">${service ? service.toLowerCase() : ''}</span> session.`
+        : `${safeName} sent you a message${service ? ` about <span style="font-style:italic;">${service.toLowerCase()}</span>` : ''}.`}
+    </h1>
+    ${isBooking ? `<div style="margin-top:18px;font-family:${SANS};font-size:16px;line-height:24px;color:${C.ivory};"><strong>${escapeHtml(formatDate(data.date))}</strong> &nbsp;·&nbsp; ${escapeHtml(formatTime(data.time))}</div>` : ''}
+  </td></tr>
 
-          <table width="100%" cellpadding="0" cellspacing="0">
-            ${rows.map(([label, value]) => `
-            <tr>
-              <td style="color:#666;font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:12px 16px 12px 0;border-bottom:1px solid rgba(255,255,255,0.06);vertical-align:top;width:35%;white-space:nowrap;">${label}</td>
-              <td style="color:#ffffff;font-size:13px;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.06);line-height:1.6;">${escapeHtml(value)}</td>
-            </tr>`).join('')}
-          </table>
+  <tr><td align="center" style="padding:26px 10px 6px;">
+    ${email ? button(`mailto:${encodeURIComponent(email)}?subject=${subjectLine}`, 'Reply by email', true) : ''}
+    ${phone ? button(`https://wa.me/${phone}?text=${waText}`, 'WhatsApp', false) : ''}
+    ${phone ? button(`tel:+${phone}`, 'Call', false) : ''}
+  </td></tr>
 
-          <div style="border-top:1px solid rgba(255,255,255,0.08);margin:28px 0;"></div>
-          <p style="color:#444;font-size:11px;margin:0;">Received: ${new Date().toLocaleString('en-ZA', { timeZone: 'Africa/Johannesburg' })} SAST</p>
+  <tr><td style="padding:22px 0 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.card};">
+      <tr><td style="padding:22px 26px 6px;font-family:${SANS};font-size:11px;letter-spacing:3px;text-transform:uppercase;color:${C.orange};">Details</td></tr>
+      <tr><td style="padding:0 26px 16px;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">${details}</table></td></tr>
+    </table>
+  </td></tr>
 
-        </td></tr>
+  ${note ? `
+  <tr><td style="padding:22px 0 0;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-left:3px solid ${C.orange};">
+      <tr><td style="padding:6px 0 6px 22px;">
+        <div style="font-family:${SANS};font-size:11px;letter-spacing:3px;text-transform:uppercase;color:${C.soft};">${isBooking ? 'Notes from the client' : 'Their message'}</div>
+        <div style="margin-top:10px;font-family:${SERIF};font-style:italic;font-size:21px;line-height:30px;color:${C.ivory};white-space:pre-line;">“${escapeHtml(note)}”</div>
+      </td></tr>
+    </table>
+  </td></tr>` : ''}
 
-        <tr><td style="padding:20px 0;text-align:center;">
-          <p style="color:#333;font-size:11px;letter-spacing:2px;text-transform:uppercase;margin:0;">Stills by Brooklyn — Admin Notification</p>
-        </td></tr>
+  <tr><td style="padding:30px 0 0;font-family:${SANS};font-size:12px;line-height:20px;color:${C.soft};">
+    Tip: replying within a few hours makes a big difference — the client has already received a branded confirmation from you.
+  </td></tr>
+  ${footer()}`;
 
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
+  return shell({
+    title: isBooking ? 'New booking — Stills by Brooklyn' : 'New enquiry — Stills by Brooklyn',
+    preheader: isBooking ? `${name} · ${data.service || ''} · ${shortDate(data.date)} ${formatTime(data.time)}` : `${name}: ${String(data.message || '').slice(0, 90)}`,
+    body,
+  });
 }
+
+export { shortDate, formatTime };

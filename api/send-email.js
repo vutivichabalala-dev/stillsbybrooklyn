@@ -8,7 +8,7 @@
 //   ADMIN_CC        (optional)  defaults to vutivichabalala@gmail.com
 
 import { sanitizeSubject, isValidEmail, clip } from './_lib/emailSafe.js';
-import { clientConfirmationEmail, adminNotificationEmail } from './_lib/templates.js';
+import { clientConfirmationEmail, adminNotificationEmail, shortDate, formatTime } from './_lib/templates.js';
 
 const FROM_EMAIL = process.env.RESEND_FROM || 'Stills by Brooklyn <info@stillsbybrooklyn.co.za>';
 // Resend's shared test sender. It only delivers to the Resend account owner's own
@@ -98,8 +98,8 @@ export default async function handler(req, res) {
     if (!data.full_name || !data.phone || !SERVICES.includes(data.service) || !data.date || !data.time) {
       return res.status(400).json({ error: 'Missing booking details' });
     }
-    adminSubject = `New Booking Request: ${data.service} — ${data.full_name}`;
-    clientSubject = 'Booking Request Received — Stills by Brooklyn';
+    adminSubject = `New booking · ${data.service} · ${shortDate(data.date)} ${formatTime(data.time)} — ${data.full_name}`;
+    clientSubject = 'Your booking request is in — Stills by Brooklyn';
     clientName = data.full_name;
   } else if (type === 'contact') {
     data = {
@@ -112,8 +112,8 @@ export default async function handler(req, res) {
     if (!data.name || !data.message) {
       return res.status(400).json({ error: 'Missing contact details' });
     }
-    adminSubject = `New Enquiry from ${data.name}`;
-    clientSubject = 'Message Received — Stills by Brooklyn';
+    adminSubject = `New enquiry from ${data.name}${data.service ? ` · ${data.service}` : ''}`;
+    clientSubject = 'Thank you for reaching out — Stills by Brooklyn';
     clientName = data.name;
   } else {
     return res.status(400).json({ error: 'Invalid type' });
