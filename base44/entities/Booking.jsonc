@@ -1,0 +1,94 @@
+{
+  "name": "Booking",
+  "type": "object",
+  "properties": {
+    "service": {
+      "type": "string",
+      "enum": [
+        "Corporate",
+        "Portraits",
+        "Weddings",
+        "Graduations"
+      ],
+      "description": "The photography service requested"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "The selected booking date"
+    },
+    "time": {
+      "type": "string",
+      "description": "The selected time slot"
+    },
+    "full_name": {
+      "type": "string",
+      "description": "Client full name"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "Client email address"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Client phone number"
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional notes from client"
+    },
+    "location_type": {
+      "type": "string",
+      "enum": [
+        "On Location"
+      ],
+      "description": "Session location type"
+    },
+    "location_address": {
+      "type": "string",
+      "description": "On-location address or venue address"
+    },
+    "venue_name": {
+      "type": "string",
+      "description": "Venue name for weddings"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "declined",
+        "completed"
+      ],
+      "default": "pending",
+      "description": "Booking status"
+    }
+  },
+  "required": [
+    "service",
+    "date",
+    "time",
+    "full_name",
+    "email",
+    "phone"
+  ],
+  "rls": {
+    "create": null,
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

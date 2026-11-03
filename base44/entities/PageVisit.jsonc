@@ -1,0 +1,82 @@
+{
+  "name": "PageVisit",
+  "type": "object",
+  "properties": {
+    "page": {
+      "type": "string",
+      "description": "Page path visited"
+    },
+    "referrer": {
+      "type": "string",
+      "description": "Referrer URL or 'direct'"
+    },
+    "device": {
+      "type": "string",
+      "enum": [
+        "desktop",
+        "mobile",
+        "tablet"
+      ],
+      "description": "Device type"
+    },
+    "browser": {
+      "type": "string",
+      "description": "Browser name"
+    },
+    "os": {
+      "type": "string",
+      "description": "Operating system"
+    },
+    "language": {
+      "type": "string",
+      "description": "Browser language"
+    },
+    "country": {
+      "type": "string",
+      "description": "Visitor country"
+    },
+    "city": {
+      "type": "string",
+      "description": "Visitor city"
+    },
+    "screen_width": {
+      "type": "number",
+      "description": "Screen width in px"
+    },
+    "visited_at": {
+      "type": "string",
+      "description": "ISO timestamp of visit"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description for this page visit",
+      "maxLength": 1000
+    }
+  },
+  "required": [
+    "page",
+    "visited_at"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

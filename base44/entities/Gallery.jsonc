@@ -1,0 +1,99 @@
+{
+  "name": "Gallery",
+  "type": "object",
+  "properties": {
+    "client_id": {
+      "type": "string",
+      "description": "ID of the assigned Client record (Client entity)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Gallery title"
+    },
+    "shoot_type": {
+      "type": "string",
+      "enum": [
+        "Weddings",
+        "Corporate",
+        "Portraits",
+        "Graduations",
+        "Other"
+      ],
+      "description": "Type of shoot"
+    },
+    "event_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Date of the shoot"
+    },
+    "cover_image": {
+      "type": "string",
+      "description": "URL of cover image"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description"
+    },
+    "gallery_status": {
+      "type": "string",
+      "enum": [
+        "Draft",
+        "Awaiting Selections",
+        "Selections Received",
+        "In Editing",
+        "Final Ready",
+        "Delivered"
+      ],
+      "default": "Draft",
+      "description": "Current gallery workflow status"
+    },
+    "expiry_date": {
+      "type": "string",
+      "format": "date",
+      "description": "Optional access expiry date"
+    },
+    "selections_submitted_at": {
+      "type": "string",
+      "description": "ISO timestamp when client submitted selections"
+    },
+    "selections_locked": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether selections are locked after submission"
+    }
+  },
+  "required": [
+    "client_id",
+    "title",
+    "shoot_type"
+  ],
+  "rls": {
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.client_id": "{{user.id}}"
+        }
+      ]
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "name": "ImageSelection",
+  "type": "object",
+  "properties": {
+    "image_id": {
+      "type": "string",
+      "description": "ID of the GalleryImage"
+    },
+    "client_id": {
+      "type": "string",
+      "description": "ID of the client user"
+    },
+    "gallery_id": {
+      "type": "string",
+      "description": "ID of the gallery"
+    },
+    "is_favorite": {
+      "type": "boolean",
+      "default": false
+    },
+    "requested_edit": {
+      "type": "boolean",
+      "default": false
+    },
+    "final_pick": {
+      "type": "boolean",
+      "default": false
+    },
+    "client_comment": {
+      "type": "string",
+      "description": "Client's note on this image"
+    },
+    "submitted": {
+      "type": "boolean",
+      "default": false
+    },
+    "submitted_at": {
+      "type": "string",
+      "description": "ISO timestamp of submission"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description for this selection",
+      "maxLength": 1000
+    }
+  },
+  "required": [
+    "image_id",
+    "client_id",
+    "gallery_id"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.client_id": "{{user.id}}"
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.client_id": "{{user.id}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.client_id": "{{user.id}}"
+        }
+      ]
+    },
+    "delete": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.client_id": "{{user.id}}"
+        }
+      ]
+    }
+  }
+}

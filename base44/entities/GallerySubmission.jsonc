@@ -1,0 +1,96 @@
+{
+  "name": "GallerySubmission",
+  "type": "object",
+  "properties": {
+    "gallery_id": {
+      "type": "string",
+      "description": "ID of the gallery"
+    },
+    "client_id": {
+      "type": "string",
+      "description": "ID of the submitting client"
+    },
+    "total_selected": {
+      "type": "number",
+      "default": 0
+    },
+    "total_favorites": {
+      "type": "number",
+      "default": 0
+    },
+    "total_requested_edits": {
+      "type": "number",
+      "default": 0
+    },
+    "total_final_picks": {
+      "type": "number",
+      "default": 0
+    },
+    "submission_status": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "in_review",
+        "editing_started",
+        "completed"
+      ],
+      "default": "submitted"
+    },
+    "submitted_at": {
+      "type": "string",
+      "description": "ISO timestamp"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional description for this submission",
+      "maxLength": 1000
+    }
+  },
+  "required": [
+    "gallery_id",
+    "client_id"
+  ],
+  "rls": {
+    "create": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.client_id": "{{user.id}}"
+        }
+      ]
+    },
+    "read": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.client_id": "{{user.id}}"
+        }
+      ]
+    },
+    "update": {
+      "$or": [
+        {
+          "user_condition": {
+            "role": "admin"
+          }
+        },
+        {
+          "data.client_id": "{{user.id}}"
+        }
+      ]
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
