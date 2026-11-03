@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /portal
 
-Sitemap: https://stillsbybrooklyn.co.za/sitemap.xml
+Sitemap: https://www.stillsbybrooklyn.co.za/sitemap.xml
