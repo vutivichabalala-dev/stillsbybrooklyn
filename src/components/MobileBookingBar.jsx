@@ -1,14 +1,15 @@
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function MobileBookingBar() {
+  const { pathname } = useLocation();
+  if (pathname === '/booking') return null;
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 md:hidden px-4 pb-4 pt-2 bg-gradient-to-t from-black/90 to-transparent pointer-events-none">
+    <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden px-4 pb-4 pt-6 bg-gradient-to-t from-background via-background/80 to-transparent pointer-events-none">
       <Link
         to="/booking"
-        className="pointer-events-auto flex items-center justify-center gap-2 w-full py-4 bg-gold text-black text-xs font-montserrat font-black tracking-[0.2em] uppercase rounded-sm shadow-[0_4px_24px_rgba(198,191,180,0.4)] hover:bg-gold/90 transition-colors duration-200"
+        className="pointer-events-auto flex items-center justify-center gap-3 w-full min-h-[52px] bg-white text-black font-lato text-[11px] font-bold tracking-[0.26em] uppercase"
       >
-        Book a Session <ArrowRight size={14} />
+        Book a session <span className="text-gold text-base leading-none">→</span>
       </Link>
     </div>
   );

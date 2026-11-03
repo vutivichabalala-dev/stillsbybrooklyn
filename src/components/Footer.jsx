@@ -1,104 +1,82 @@
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
-import GlassCard from './GlassCard';
+import { motion } from 'framer-motion';
 import { serviceNav, locationNav, seoPages } from '@/content/seoPages';
+import Logo from './Logo';
 
 const blogNav = seoPages.filter((p) => p.kind === 'blog').map((p) => ({ label: p.navLabel, path: p.path }));
 
 function FooterLinks({ heading, links }) {
   return (
     <div>
-      <h4 className="text-gold text-xs font-montserrat font-semibold tracking-[0.25em] uppercase mb-6">{heading}</h4>
-      <div className="flex flex-col gap-3">
+      <h4 className="font-lato text-[11px] tracking-[0.28em] uppercase text-white/45 mb-5">{heading}</h4>
+      <ul className="flex flex-col gap-2.5">
         {links.map((item) => (
-          <Link key={item.path} to={item.path} className="text-white/50 text-xs font-montserrat tracking-wider hover:text-gold transition-colors duration-200">
-            {item.label}
-          </Link>
+          <li key={item.path}>
+            <Link to={item.path} className="sb-link-draw font-lato text-[13px] text-white/70 hover:text-white transition-colors">
+              {item.label}
+            </Link>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
 }
 
 export default function Footer() {
   return (
-    <footer className="relative z-10 px-4 pb-28 md:pb-4 pt-0">
-      <GlassCard className="max-w-7xl mx-auto rounded-2xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none rounded-2xl" />
+    <footer className="relative z-10 border-t border-white/[0.07] bg-background">
+      <div className="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-12 pt-24 md:pt-32 pb-28 md:pb-12">
+        {/* Big call to action (Gallery edition) */}
+        <p className="font-lato text-[11px] tracking-[0.3em] uppercase text-white/50 mb-5">Have a date in mind?</p>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.9, ease: [0.22, 0.61, 0.36, 1] }}
+        >
+          <Link
+            to="/booking"
+            className="group inline-flex items-baseline gap-4 md:gap-6 font-cormorant italic text-white leading-[0.95] text-[clamp(46px,7.5vw,112px)] tracking-[0.01em]"
+          >
+            <span className="sb-underline">
+              Let's create together
+            </span>
+            <span className="text-gold not-italic transition-transform duration-500 group-hover:translate-x-3">→</span>
+          </Link>
+        </motion.div>
 
-        <div className="relative px-8 lg:px-12 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-12">
-            {/* Logo + tagline */}
-            <div className="flex flex-col gap-4 lg:col-span-2">
-              <div>
-                <span className="text-white font-montserrat text-sm font-light tracking-[0.3em] uppercase">
-                  STILLS BY <span className="font-bold">BROOKLYN</span>
-                </span>
-                <div className="h-[1.5px] w-full mt-1 bg-gold" />
-              </div>
-              <p className="text-white/50 text-xs font-montserrat font-light tracking-wider leading-relaxed">
-                Photographer &amp; cinematographer since 2018. Weddings, traditional ceremonies, graduations, headshots and events — based in Midrand, available nationwide.
-              </p>
-              <div className="flex gap-4 mt-2">
-                <a href="https://www.instagram.com/stillsbybrooklyn/" target="_blank" rel="noopener noreferrer" aria-label="Stills by Brooklyn on Instagram" className="text-white/40 hover:text-gold transition-colors duration-200"><Instagram size={15} /></a>
-                <a href="#" className="text-white/40 hover:text-gold transition-colors duration-200"><Twitter size={15} /></a>
-                <a href="#" className="text-white/40 hover:text-gold transition-colors duration-200"><Facebook size={15} /></a>
-                <a href="#" className="text-white/40 hover:text-gold transition-colors duration-200"><Linkedin size={15} /></a>
-              </div>
-            </div>
-
-            {/* Quick links */}
-            <div>
-              <h4 className="text-gold text-xs font-montserrat font-semibold tracking-[0.25em] uppercase mb-6">Navigation</h4>
-              <div className="flex flex-col gap-3">
-                {[
-                  { label: 'Home', path: '/' },
-                  { label: 'Portfolio', path: '/portfolio' },
-                  { label: 'Services', path: '/services' },
-                  { label: 'Reels', path: '/reels' },
-                  { label: 'About', path: '/about' },
-                  { label: 'Contact', path: '/contact' }
-                ].map((item) => (
-                  <Link
-                    key={item.path}
-                    to={item.path}
-                    className="text-white/50 text-xs font-montserrat tracking-wider hover:text-gold transition-colors duration-200"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Services */}
-            <FooterLinks heading="Services" links={serviceNav} />
-
-            {/* Areas + journal */}
-            <div className="flex flex-col gap-10">
-              <FooterLinks heading="Areas" links={locationNav.map((l) => ({ ...l, label: `Photographer in ${l.label}` }))} />
-              <FooterLinks heading="Journal" links={blogNav} />
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h4 className="text-gold text-xs font-montserrat font-semibold tracking-[0.25em] uppercase mb-6">Get In Touch</h4>
-              <div className="flex flex-col gap-3 text-white/50 text-xs font-montserrat tracking-wider">
-                <a href="mailto:info@stillsbybrooklyn.co.za" className="hover:text-gold transition-colors duration-200">info@stillsbybrooklyn.co.za</a>
-                <span>067 786 0702</span>
-                <span>Midrand, South Africa</span>
-                <span className="text-white/35">Available Nationwide</span>
-                <span className="text-white/30 mt-1">Crafted with passion in South Africa</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-10 pt-8 border-t border-white/8 flex flex-col md:flex-row items-center justify-between gap-4">
-            <p className="text-white/25 text-xs font-montserrat tracking-wider">
-              © 2026 Stills By Brooklyn. All rights reserved.
+        <div className="mt-20 md:mt-28 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-12">
+          <div className="col-span-2 flex flex-col gap-5">
+            <Link to="/" aria-label="Stills by Brooklyn — home" className="text-white w-fit"><Logo /></Link>
+            <p className="font-lato text-[13px] leading-relaxed text-white/55 max-w-xs">
+              People, moments, culture and events. Photographer &amp; videographer since 2018 — based in Midrand, working across Gauteng and South Africa.
             </p>
           </div>
+          <FooterLinks
+            heading="Explore"
+            links={[
+              { label: 'Portfolio', path: '/portfolio' },
+              { label: 'Services', path: '/services' },
+              { label: 'Reels', path: '/reels' },
+              { label: 'About', path: '/about' },
+              { label: 'Contact', path: '/contact' },
+              { label: 'Book a session', path: '/booking' },
+            ]}
+          />
+          <FooterLinks heading="Services" links={serviceNav} />
+          <FooterLinks heading="Areas" links={locationNav.map((l) => ({ ...l, label: l.label }))} />
+          {blogNav.length > 0 && <FooterLinks heading="Journal" links={blogNav} />}
         </div>
-      </GlassCard>
+
+        <div className="mt-16 border-t border-white/10 pt-7 flex flex-col md:flex-row md:items-center justify-between gap-4 font-lato text-[11px] tracking-[0.18em] uppercase text-white/50">
+          <span>© {new Date().getFullYear()} Stills by Brooklyn · Midrand</span>
+          <div className="flex flex-wrap gap-x-7 gap-y-3">
+            <a href="https://wa.me/27677860702" target="_blank" rel="noopener noreferrer" className="sb-link-draw hover:text-white transition-colors">WhatsApp 067 786 0702</a>
+            <a href="https://www.instagram.com/stillsbybrooklyn/" target="_blank" rel="noopener noreferrer" className="sb-link-draw hover:text-white transition-colors normal-case tracking-[0.12em]">Instagram @stillsbybrooklyn</a>
+            <a href="mailto:info@stillsbybrooklyn.co.za" className="sb-link-draw hover:text-white transition-colors normal-case tracking-[0.12em]">info@stillsbybrooklyn.co.za</a>
+          </div>
+        </div>
+      </div>
     </footer>
   );
 }

@@ -1,207 +1,206 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown } from 'lucide-react';
-import { BRAND } from '@/lib/brand';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import { serviceNav } from '@/content/seoPages';
+import Logo from './Logo';
 
-const serviceLinks = serviceNav;
+const mainLinks = [
+  { label: 'Portfolio', path: '/portfolio' },
+  { label: 'Services', path: '/services', dropdown: true },
+  { label: 'About', path: '/about' },
+  { label: 'Contact', path: '/contact' },
+];
+
+const ease = [0.22, 0.61, 0.36, 1];
 
 export default function Navbar() {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const dropdownRef = useRef(null);
-  const location = useLocation();
+  const lastY = useRef(0);
 
+  // Solid after a little scroll; slide away when scrolling down, back when scrolling up.
   useEffect(() => {
     let ticking = false;
-    const handleScroll = () => {
+    const onScroll = () => {
       if (ticking) return;
       ticking = true;
       requestAnimationFrame(() => {
-        setScrolled(window.scrollY > 24);
+        const y = window.scrollY;
+        setScrolled(y > 40);
+        setHidden(y > 320 && y > lastY.current + 4);
+        if (y < lastY.current - 4 || y <= 320) setHidden(false);
+        lastY.current = y;
         ticking = false;
       });
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Close the services dropdown on outside click
   useEffect(() => {
-    const handleClick = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setServicesOpen(false);
-      }
+    const onDown = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) setServicesOpen(false);
     };
-    document.addEventListener('mousedown', handleClick);
-    return () => document.removeEventListener('mousedown', handleClick);
+    const onKey = (e) => {
+      if (e.key === 'Escape') { setServicesOpen(false); setMenuOpen(false); }
+    };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => { document.removeEventListener('mousedown', onDown); document.removeEventListener('keydown', onKey); };
   }, []);
 
-  // Close menus on route change
+  useEffect(() => { setMenuOpen(false); setServicesOpen(false); }, [location.pathname]);
+
+  // Lock page scroll behind the mobile menu
   useEffect(() => {
-    setMenuOpen(false);
-    setServicesOpen(false);
-  }, [location.pathname]);
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
 
   const isActive = (path) => location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
-  const isServicesActive = isActive('/services') || serviceLinks.some((l) => isActive(l.path));
+  const servicesActive = isActive('/services') || serviceNav.some((l) => isActive(l.path));
+  const transparent = isHome && !scrolled && !menuOpen;
 
-  const linkClass = (active) =>
-    `text-[11px] font-montserrat font-medium uppercase tracking-[0.22em] transition-colors duration-200 ${
-      active ? 'text-burgundy' : 'text-ink/65 hover:text-ink'
-    }`;
+  const linkCls = 'sb-link-draw inline-flex items-center py-1 font-lato text-[11px] uppercase tracking-[0.24em] text-white/85 hover:text-white transition-colors';
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 bg-ivory">
-      <div
-        className={`border-b border-ink/10 transition-shadow duration-300 ${
-          scrolled ? 'shadow-[0_6px_24px_-18px_rgba(20,18,16,0.55)]' : ''
-        }`}
-      >
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
-          <div className="flex h-16 items-center justify-between md:h-[76px]">
-            {/* Logo — original artwork, tightly cropped, links home */}
-            <Link
-              to="/"
-              aria-label="StillsbyBrooklyn Photography, back to home"
-              className="flex shrink-0 items-center gap-2.5 sm:gap-3"
-            >
-              <img
-                src={BRAND.monogram}
-                alt=""
-                aria-hidden="true"
-                width="460"
-                height="296"
-                className="h-8 w-auto md:h-10"
-              />
-              <img
-                src={BRAND.wordmark}
-                alt={BRAND.alt}
-                width="700"
-                height="47"
-                className="h-auto w-[120px] md:w-[150px]"
-              />
-            </Link>
+    <>
+    <header
+      className={`fixed inset-x-0 top-0 z-50 transition-[transform,background-color,border-color] duration-500 ${
+        hidden && !menuOpen ? '-translate-y-full' : 'translate-y-0'
+      } ${transparent ? 'bg-transparent border-transparent' : 'bg-background/85 backdrop-blur-md border-white/[0.06]'} border-b`}
+      style={{ transitionTimingFunction: 'cubic-bezier(0.22,0.61,0.36,1)' }}
+    >
+      {transparent && (
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0 -bottom-16 bg-gradient-to-b from-black/55 to-transparent" />
+      )}
+      <div className="relative mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-12">
+        <div className={`flex items-center justify-between transition-[height] duration-500 ${scrolled ? 'h-[68px]' : 'h-[84px]'}`}>
+          <Link to="/" aria-label="Stills by Brooklyn — home" className="text-white">
+            <Logo compact={scrolled} />
+          </Link>
 
-            {/* Desktop navigation */}
-            <nav className="hidden items-center gap-6 lg:gap-8 md:flex" aria-label="Main">
-              <Link to="/" className={linkClass(location.pathname === '/')}>
-                Home
-              </Link>
-              <Link to="/portfolio" className={linkClass(isActive('/portfolio'))}>
-                Portfolio
-              </Link>
-
-              <div className="relative" ref={dropdownRef}>
-                <button
-                  onClick={() => setServicesOpen((v) => !v)}
-                  aria-expanded={servicesOpen}
-                  aria-haspopup="true"
-                  className={`flex items-center gap-1 ${linkClass(isServicesActive)}`}
-                >
-                  Services
-                  <ChevronDown
-                    size={11}
-                    className={`transition-transform duration-200 ${servicesOpen ? 'rotate-180' : ''}`}
-                  />
-                </button>
-                {servicesOpen && (
-                  <div className="absolute left-1/2 top-full mt-3 w-56 -translate-x-1/2 max-h-[70vh] overflow-y-auto rounded-sm border border-ink/10 bg-ivory shadow-[0_18px_40px_-24px_rgba(20,18,16,0.5)]">
-                    <Link
-                      to="/services"
-                      className="block border-b border-ink/10 px-5 py-3 text-[10px] uppercase tracking-[0.2em] text-ink/45 transition-colors hover:text-burgundy"
-                    >
-                      All Services
-                    </Link>
-                    {serviceLinks.map((link) => (
-                      <Link
-                        key={link.path}
-                        to={link.path}
-                        className={`block px-5 py-3 text-xs tracking-wider transition-colors hover:text-burgundy ${
-                          isActive(link.path) ? 'text-burgundy' : 'text-ink/70'
-                        }`}
+          <nav className="hidden md:flex items-center gap-8 lg:gap-10" aria-label="Main">
+            {mainLinks.map((link) =>
+              link.dropdown ? (
+                <div key={link.path} className="relative" ref={dropdownRef}>
+                  <button
+                    type="button"
+                    onClick={() => setServicesOpen((v) => !v)}
+                    aria-expanded={servicesOpen}
+                    aria-haspopup="true"
+                    aria-current={servicesActive ? 'page' : undefined}
+                    className={`${linkCls} gap-1.5`}
+                  >
+                    Services
+                    <ChevronDown size={11} className={`transition-transform duration-300 ${servicesOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  <AnimatePresence>
+                    {servicesOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.25, ease }}
+                        className="absolute left-1/2 top-full mt-5 w-64 -translate-x-1/2 max-h-[70vh] overflow-y-auto border border-white/10 bg-background/95 backdrop-blur-md py-2 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.9)]"
                       >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <Link to="/about" className={linkClass(isActive('/about'))}>
-                About
-              </Link>
-              <Link to="/contact" className={linkClass(isActive('/contact'))}>
-                Contact
-              </Link>
-
-              <span className="h-4 w-px bg-ink/15" aria-hidden="true" />
-
-              <Link
-                to="/portal"
-                className="text-[11px] font-montserrat uppercase tracking-[0.18em] text-ink/45 transition-colors hover:text-ink"
-              >
-                Portal
-              </Link>
-              <Link
-                to="/booking"
-                className="bg-burgundy px-5 py-2.5 text-[10px] font-montserrat font-semibold uppercase tracking-[0.2em] text-white transition-colors hover:bg-ink"
-              >
-                Book a Session
-              </Link>
-            </nav>
-
-            {/* Mobile toggle */}
-            <button
-              className="p-2 text-ink md:hidden"
-              onClick={() => setMenuOpen(!menuOpen)}
-              aria-label="Toggle menu"
-              aria-expanded={menuOpen}
-            >
-              {menuOpen ? <X size={22} /> : <Menu size={22} />}
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile menu */}
-      {menuOpen && (
-        <div className="border-b border-ink/10 bg-ivory md:hidden">
-          <div className="flex flex-col gap-1 px-6 py-5">
-            {[
-              { label: 'Home', path: '/' },
-              { label: 'Portfolio', path: '/portfolio' },
-              { label: 'Services', path: '/services' },
-              ...serviceLinks.map((l) => ({ ...l, indent: true })),
-              { label: 'About', path: '/about' },
-              { label: 'Contact', path: '/contact' },
-            ].map((link) => (
-              <Link
-                key={link.path}
-                to={link.path}
-                className={`py-2 font-montserrat uppercase tracking-[0.18em] transition-colors ${
-                  link.indent ? 'pl-4 text-[10px] text-ink/40' : 'text-xs'
-                } ${isActive(link.path) ? 'text-burgundy' : 'text-ink/75'}`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <Link
-              to="/portal"
-              className="mt-3 border border-ink/15 py-3 text-center text-[10px] font-montserrat uppercase tracking-[0.18em] text-ink/60"
-            >
-              Client Portal
+                        <Link to="/services" className="block px-6 py-3 font-lato text-[10px] uppercase tracking-[0.26em] text-gold hover:text-white transition-colors">
+                          All services
+                        </Link>
+                        <div className="mx-6 my-1 h-px bg-white/10" />
+                        {serviceNav.map((s) => (
+                          <Link
+                            key={s.path}
+                            to={s.path}
+                            className={`block px-6 py-2.5 font-lato text-[13px] transition-colors hover:text-white hover:pl-7 duration-300 ${isActive(s.path) ? 'text-white' : 'text-white/60'}`}
+                          >
+                            {s.label}
+                          </Link>
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              ) : (
+                <Link key={link.path} to={link.path} className={linkCls} aria-current={isActive(link.path) ? 'page' : undefined}>
+                  {link.label}
+                </Link>
+              )
+            )}
+            <span className="h-4 w-px bg-white/20" aria-hidden="true" />
+            <Link to="/portal" className="font-lato text-[11px] uppercase tracking-[0.22em] text-white/50 hover:text-white transition-colors">
+              Portal
             </Link>
             <Link
               to="/booking"
-              className="mt-2 bg-burgundy py-3 text-center text-[10px] font-montserrat font-semibold uppercase tracking-[0.18em] text-white"
+              className="group relative overflow-hidden border border-gold/70 px-6 py-3 font-lato text-[11px] uppercase tracking-[0.24em] text-white"
             >
-              Book a Session
+              <span className="absolute inset-0 -translate-x-full bg-gold transition-transform duration-500 group-hover:translate-x-0" style={{ transitionTimingFunction: 'cubic-bezier(0.22,0.61,0.36,1)' }} />
+              <span className="relative transition-colors duration-500 group-hover:text-black">Book a session</span>
             </Link>
-          </div>
+          </nav>
+
+          <button
+            type="button"
+            className="md:hidden relative h-11 w-11 -mr-2 flex items-center justify-center text-white"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={menuOpen}
+          >
+            <span className={`absolute h-px w-6 bg-current transition-transform duration-300 ${menuOpen ? 'rotate-45' : '-translate-y-[5px]'}`} />
+            <span className={`absolute h-px w-6 bg-current transition-transform duration-300 ${menuOpen ? '-rotate-45' : 'translate-y-[5px]'}`} />
+          </button>
         </div>
-      )}
+      </div>
+
     </header>
+      {/* Mobile: full-screen menu */}
+      <AnimatePresence>
+        {menuOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden fixed inset-x-0 top-[68px] z-[45] bottom-0 bg-background overflow-y-auto"
+          >
+            <motion.nav
+              aria-label="Mobile"
+              initial="hidden"
+              animate="show"
+              variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } } }}
+              className="flex flex-col px-6 pt-8 pb-32"
+            >
+              {[{ label: 'Home', path: '/' }, ...mainLinks].map((l) => (
+                <motion.div key={l.path} variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } } }}>
+                  <Link
+                    to={l.path}
+                    className={`block border-b border-white/10 py-4 font-cormorant text-[34px] leading-none tracking-[0.02em] ${isActive(l.path) && (l.path !== '/' || isHome) ? 'text-gold' : 'text-white'}`}
+                  >
+                    {l.label}
+                  </Link>
+                </motion.div>
+              ))}
+              <motion.div variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { duration: 0.5 } } }} className="mt-6 grid grid-cols-2 gap-x-4 gap-y-3">
+                {serviceNav.map((s) => (
+                  <Link key={s.path} to={s.path} className="font-lato text-[13px] text-white/60 py-1">{s.label}</Link>
+                ))}
+              </motion.div>
+              <motion.div variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } } }} className="mt-10 flex flex-col gap-3">
+                <Link to="/booking" className="bg-gold py-4 text-center font-lato text-[11px] font-bold uppercase tracking-[0.26em] text-black">Book a session</Link>
+                <Link to="/portal" className="border border-white/15 py-4 text-center font-lato text-[11px] uppercase tracking-[0.26em] text-white/70">Client portal</Link>
+              </motion.div>
+            </motion.nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

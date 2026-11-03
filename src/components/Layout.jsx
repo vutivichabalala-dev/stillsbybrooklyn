@@ -1,8 +1,8 @@
 import { Suspense, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import { MotionConfig } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import ParticleBackground from './ParticleBackground';
 import MobileBookingBar from './MobileBookingBar';
 
 const PageSpinner = () => (
@@ -20,16 +20,18 @@ export default function Layout() {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#121011' }}>
-      <ParticleBackground />
-      <Navbar />
-      <main className="flex-1 relative z-10">
-        <Suspense fallback={<PageSpinner />}>
-          <Outlet />
-        </Suspense>
-      </main>
-      <Footer />
-      <MobileBookingBar />
-    </div>
+    // reducedMotion="user": every framer animation respects the visitor's OS setting
+    <MotionConfig reducedMotion="user">
+      <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <Navbar />
+        <main className="flex-1 relative z-10">
+          <Suspense fallback={<PageSpinner />}>
+            <Outlet />
+          </Suspense>
+        </main>
+        <Footer />
+        <MobileBookingBar />
+      </div>
+    </MotionConfig>
   );
 }

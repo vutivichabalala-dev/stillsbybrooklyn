@@ -11,13 +11,14 @@ module.exports = {
   		},
       fontFamily: {
         montserrat: ['Montserrat', 'sans-serif'],
-        cormorant: ['Cormorant Garamond', 'serif'],
+        cormorant: ['Cormorant Garamond', 'Georgia', 'serif'],
+        lato: ['Lato', 'system-ui', 'sans-serif'],
       },
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
         white: '#F6F3EE',
-        black: '#121011',
+        black: '#141213',
         gold: 'hsl(var(--gold))',
         burgundy: 'hsl(var(--burgundy) / <alpha-value>)',
         ivory: 'hsl(var(--ivory))',
