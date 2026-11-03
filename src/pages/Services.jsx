@@ -1,3 +1,5 @@
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, Briefcase, User, Heart, GraduationCap, Sparkles, ChevronRight } from 'lucide-react';
@@ -20,7 +22,7 @@ const services = [
     description: 'Professional photography for businesses, brands, and organizations.',
     offerings: ['Executive & Team Headshots', 'Corporate Events & Conferences', 'Brand & Product Photography', 'Office Environment Shoots', 'Annual Report Imagery'],
     note: 'Half-day and full-day rates available',
-    href: '/services/corporate',
+    href: '/corporate-headshots-johannesburg',
     color: 'from-blue-900/30',
     images: [
       'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/47ae0dc0f_DSC_4110.jpg',
@@ -36,7 +38,7 @@ const services = [
     description: 'Intimate portrait sessions that reveal character and tell personal stories.',
     offerings: ['Individual Portraits', 'Family Portraits', 'Maternity Sessions', 'Lifestyle & Creative Shoots', 'Professional Headshots'],
     note: 'Studio & outdoor options available',
-    href: '/services/portraits',
+    href: '/photography-studio-johannesburg',
     color: 'from-purple-900/30',
     images: [
       'https://images.pixieset.com/224055201/7434a23374497b1b13cc0130da62472b-large.jpg',
@@ -52,7 +54,7 @@ const services = [
     description: 'Comprehensive wedding photography that preserves every precious moment.',
     offerings: ['Engagement Sessions', 'Full Wedding Day Coverage', 'Bridal Portraits', 'Rehearsal Dinner Coverage', 'High-Resolution Edited Gallery'],
     note: 'Packages customized to your needs',
-    href: '/services/weddings',
+    href: '/wedding-photographer-johannesburg',
     color: 'from-rose-900/30',
     images: [
       'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/6690fe0fb_DSC_5010.jpg',
@@ -138,11 +140,7 @@ const steps = [
 ];
 
 export default function Services() {
-  useEffect(() => {
-    document.title = 'Photography Services in Sandton | Corporate, Wedding & Portrait Photographer';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Photography services in Sandton — corporate headshots, wedding photography, portrait sessions, and graduation photography across Johannesburg and Gauteng by Stills by Brooklyn.');
-  }, []);
+  useSeo(corePages.services);
 
    const [activeIndex, setActiveIndex] = useState(0);
    const [slideIndex, setSlideIndex] = useState(0);
@@ -170,7 +168,8 @@ export default function Services() {
         <motion.div {...fadeUp(0)} className="mb-20 text-center flex flex-col items-center">
           <SectionHeading
             eyebrow="What's Offered"
-            title="Services"
+            as="h1"
+            title={corePages.services.h1}
             subtitle="Tailored photography services designed to meet your unique vision and requirements."
             center
           />

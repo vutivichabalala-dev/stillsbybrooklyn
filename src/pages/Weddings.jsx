@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Heart, Camera, Star } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
+import SeoContent from '../components/SeoContent';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
 import TestimonialsSection from '../components/TestimonialsSection';
@@ -21,11 +23,8 @@ const offerings = [
 ];
 
 export default function Weddings() {
-  useEffect(() => {
-    document.title = 'Wedding Photography';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Cinematic wedding & lobola photography across Gauteng. Candid, timeless coverage. Book your date with Stills by Brooklyn.');
-  }, []);
+  const page = corePages.weddings;
+  useSeo(page);
 
    return (
      <div className="min-h-screen">
@@ -38,11 +37,11 @@ export default function Weddings() {
           transition={{ duration: 0.8 }}
           className="relative z-10 max-w-3xl mx-auto"
         >
-          <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase mb-4 block">Service</span>
-          <h1 className="text-5xl md:text-6xl font-montserrat font-black text-white mb-4 tracking-tight">Weddings</h1>
+          <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase mb-4 block">{page.eyebrow}</span>
+          <h1 className="text-4xl md:text-6xl font-montserrat font-black text-white mb-4 tracking-tight leading-[1.05]">{page.h1}</h1>
           <div className="h-[2px] w-20 bg-gold mx-auto mb-6" />
           <p className="text-white/55 text-sm font-montserrat font-light leading-relaxed max-w-xl mx-auto">
-            Timeless storytelling for the most important day of your life. Every glance, every tear, every laugh — preserved with intention and artistry.
+            {page.intro}
           </p>
         </motion.div>
       </section>
@@ -54,7 +53,7 @@ export default function Weddings() {
             <motion.div key={o.title} {...fadeUp(i * 0.1)}>
               <GlassCard hover className="p-8 flex flex-col gap-3 h-full">
                 <div className="w-9 h-9 border border-gold/30 flex items-center justify-center">{o.icon}</div>
-                <h4 className="text-white font-montserrat font-semibold text-sm tracking-wider uppercase">{o.title}</h4>
+                <h3 className="text-white font-montserrat font-semibold text-sm tracking-wider uppercase">{o.title}</h3>
                 <p className="text-white/45 text-xs font-montserrat font-light leading-relaxed">{o.desc}</p>
               </GlassCard>
             </motion.div>
@@ -63,7 +62,7 @@ export default function Weddings() {
 
         {/* Gallery */}
         <motion.div {...fadeUp(0)} className="mb-14 flex flex-col items-start">
-          <SectionHeading eyebrow="Gallery" title="Wedding Work" subtitle="A glimpse into real wedding sessions — every detail captured with intention." />
+          <SectionHeading eyebrow="Gallery" title={page.galleryHeading} subtitle="A glimpse into real wedding sessions — every detail captured with intention." />
         </motion.div>
         <div className="columns-2 md:columns-3 gap-3 space-y-3">
           {[
@@ -78,11 +77,13 @@ export default function Weddings() {
             'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/af76b26dc_DSC_5081.jpg',
           ].map((url, i) => (
             <motion.div key={i} {...fadeUp(i * 0.05)} className="break-inside-avoid mb-3 overflow-hidden rounded-sm group">
-              <img src={url} alt={`Wedding ${i + 1}`} className="w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+              <img src={url} alt={`Wedding photography in Johannesburg by Stills by Brooklyn, photo ${i + 1}`} className="w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
             </motion.div>
           ))}
         </div>
       </section>
+
+      <SeoContent sections={page.sections} faqs={page.faqs} />
 
       <TestimonialsSection />
       <ServiceCTA title="Your day deserves to last forever" subtitle="Let's chat about your wedding vision and how I can capture it beautifully." />

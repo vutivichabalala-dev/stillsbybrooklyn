@@ -1,3 +1,5 @@
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
 import { useState, useEffect, useCallback } from 'react';
 import { Camera, X, ZoomIn, ChevronLeft, ChevronRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -88,11 +90,7 @@ const placeholderItems = [
 ];
 
 export default function Portfolio() {
-  useEffect(() => {
-    document.title = 'Corporate Photography Portfolio';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Browse the Stills by Brooklyn portfolio — corporate, wedding, portrait, and graduation photography from across Johannesburg and South Africa.');
-  }, []);
+  useSeo(corePages.portfolio);
 
    const urlParams = new URLSearchParams(window.location.search);
    const CATEGORIES = ['All', 'Corporate', 'Portraits', 'Weddings', 'Graduations', 'Matric Dance'];
@@ -138,7 +136,8 @@ export default function Portfolio() {
         >
           <SectionHeading
             eyebrow="My Work"
-            title="Portfolio"
+            as="h1"
+            title={corePages.portfolio.h1}
             subtitle="A curated collection of moments, emotions, and stories told through the lens."
             center
           />

@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, Briefcase, Users, Award } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
+import SeoContent from '../components/SeoContent';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
 import TestimonialsSection from '../components/TestimonialsSection';
@@ -42,11 +44,8 @@ const offerings = [
 ];
 
 export default function Corporate() {
-  useEffect(() => {
-    document.title = 'Corporate Photographer Johannesburg | Executive Headshots & Brand Imagery';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Corporate photography for teams, events and brand content in Johannesburg and Sandton. Executive headshots, team shoots, and brand imagery by Stills by Brooklyn.');
-  }, []);
+  const page = corePages.headshots;
+  useSeo(page);
 
    return (
      <div className="min-h-screen">
@@ -59,11 +58,11 @@ export default function Corporate() {
           transition={{ duration: 0.8 }}
           className="relative z-10 max-w-3xl mx-auto"
         >
-          <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase mb-4 block">Service</span>
-          <h1 className="text-5xl md:text-6xl font-montserrat font-black text-white mb-4 tracking-tight">Corporate</h1>
+          <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase mb-4 block">{page.eyebrow}</span>
+          <h1 className="text-4xl md:text-6xl font-montserrat font-black text-white mb-4 tracking-tight leading-[1.05]">{page.h1}</h1>
           <div className="h-[2px] w-20 bg-gold mx-auto mb-6" />
           <p className="text-white/55 text-sm font-montserrat font-light leading-relaxed max-w-xl mx-auto">
-            Professional imagery that elevates your brand identity, communicates excellence, and leaves a lasting impression on every audience.
+            {page.intro}
           </p>
         </motion.div>
       </section>
@@ -75,7 +74,7 @@ export default function Corporate() {
             <motion.div key={o.title} {...fadeUp(i * 0.1)}>
               <GlassCard hover className="p-8 flex flex-col gap-3 h-full">
                 <div className="w-9 h-9 border border-gold/30 flex items-center justify-center">{o.icon}</div>
-                <h4 className="text-white font-montserrat font-semibold text-sm tracking-wider uppercase">{o.title}</h4>
+                <h3 className="text-white font-montserrat font-semibold text-sm tracking-wider uppercase">{o.title}</h3>
                 <p className="text-white/45 text-xs font-montserrat font-light leading-relaxed">{o.desc}</p>
               </GlassCard>
             </motion.div>
@@ -84,7 +83,7 @@ export default function Corporate() {
 
         {/* Gallery */}
         <motion.div {...fadeUp(0)} className="mb-14 flex flex-col items-start">
-          <SectionHeading eyebrow="Gallery" title="Corporate Work" />
+          <SectionHeading eyebrow="Gallery" title={page.galleryHeading} />
         </motion.div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {corporateImages.map((img) => (
@@ -96,35 +95,7 @@ export default function Corporate() {
         </div>
       </section>
 
-      {/* SEO Content Block — Corporate Photographer Johannesburg */}
-      <section className="pb-16 px-6 lg:px-10 max-w-7xl mx-auto">
-        <div className="border-t border-white/6 pt-16">
-          <motion.div {...fadeUp(0)}>
-            <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase">Corporate Photographer Johannesburg</span>
-            <h2 className="text-2xl md:text-3xl font-montserrat font-bold text-white mt-4 mb-6 leading-tight">
-              Elevating Johannesburg's Business Community, One Frame at a Time
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-white/45 text-sm font-montserrat font-light leading-relaxed">
-              <div className="flex flex-col gap-4">
-                <p>
-                  In Johannesburg's fast-moving corporate landscape, first impressions are made online before any handshake takes place. Stills by Brooklyn provides corporate photography that ensures your executives, your team, and your brand are presented with authority and clarity — on LinkedIn, your company website, annual reports, and beyond.
-                </p>
-                <p>
-                  Specialising in executive headshots, team photography, and brand imagery, Stills by Brooklyn works with businesses in Sandton, Rosebank, Midrand, Braamfontein, and across the greater Johannesburg metro. Sessions are professionally directed to draw out the best in each individual — confident, approachable, and unmistakably polished.
-                </p>
-              </div>
-              <div className="flex flex-col gap-4">
-                <p>
-                  Corporate photography packages are flexible: whether you need a single executive headshot updated before a board presentation, or a full-day team shoot for a company rebrand, Stills by Brooklyn delivers consistent quality across every frame. Edited galleries are typically delivered within five to seven business days.
-                </p>
-                <p>
-                  Beyond headshots, Stills by Brooklyn also covers corporate events, conferences, award ceremonies, and office environment photography — giving your internal communications and social media a professional visual edge that reflects the standards your business upholds. Based in Midrand, on-site visits across Johannesburg and Pretoria are readily available.
-                </p>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <SeoContent sections={page.sections} faqs={page.faqs} />
 
       <TestimonialsSection />
       <ServiceCTA title="Ready to elevate your brand?" subtitle="Let's create professional imagery that sets you apart." />

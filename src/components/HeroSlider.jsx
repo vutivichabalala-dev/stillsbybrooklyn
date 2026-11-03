@@ -358,6 +358,9 @@ export default function HeroSlider() {
         <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-16 w-full">
           <div className="max-w-2xl">
 
+            <h1 className="text-white/70 text-[11px] sm:text-xs font-montserrat font-semibold tracking-[0.35em] uppercase mb-5">
+              Photographer &amp; Videographer in Johannesburg
+            </h1>
             <AnimatePresence mode="wait">
               <motion.div key={`text-${slide.id}`} variants={textVariants} initial="enter" animate="center" exit="exit">
 
@@ -375,15 +378,15 @@ export default function HeroSlider() {
                 </motion.div>
 
                 {/* Headline */}
-                <motion.h1
+                <motion.p
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.7 }}
                   className="text-[2.75rem] leading-[0.95] sm:text-6xl md:text-8xl font-montserrat font-black text-white tracking-tight mb-1"
                 >
                   {slide.headline}
-                </motion.h1>
-                <motion.h1
+                </motion.p>
+                <motion.p
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.7 }}
@@ -391,7 +394,7 @@ export default function HeroSlider() {
                   style={{ WebkitTextStroke: '1px rgba(201,168,76,0.6)', color: 'transparent' }}
                 >
                   {slide.subline}
-                </motion.h1>
+                </motion.p>
 
                 {/* Separator */}
                 <motion.div

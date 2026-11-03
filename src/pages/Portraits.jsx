@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight, User, Heart, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
+import SeoContent from '../components/SeoContent';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
 import TestimonialsSection from '../components/TestimonialsSection';
@@ -15,12 +17,12 @@ const fadeUp = (delay = 0) => ({
 });
 
 const portraitImages = [
-  { id: 1, url: 'https://images.pixieset.com/224055201/7434a23374497b1b13cc0130da62472b-large.jpg', alt: 'Portrait - natural light' },
-  { id: 2, url: 'https://images.pixieset.com/224055201/ba20179241b13dc570b3d7c663e22bf5-large.jpg', alt: 'Portrait - candid moment' },
-  { id: 3, url: 'https://images.pixieset.com/224055201/fa1a43cc250efd88003bc5da98382de8-large.jpg', alt: 'Portrait - expressive' },
-  { id: 4, url: 'https://images.pixieset.com/224055201/2cf20d4a9d00d86934d0adb64a70c03f-large.jpg', alt: 'Portrait - lifestyle' },
-  { id: 5, url: 'https://images.pixieset.com/224055201/8b064709835a34b21aba22f4a48f292b-large.jpg', alt: 'Portrait - dramatic light' },
-  { id: 6, url: 'https://images.pixieset.com/224055201/e8913758e3894e34b8d1a0b20f196fc4-large.jpg', alt: 'Portrait - intimate' },
+  { id: 1, url: 'https://images.pixieset.com/224055201/7434a23374497b1b13cc0130da62472b-large.jpg', alt: 'Portrait photoshoot in Johannesburg - natural light' },
+  { id: 2, url: 'https://images.pixieset.com/224055201/ba20179241b13dc570b3d7c663e22bf5-large.jpg', alt: 'Portrait photoshoot in Johannesburg - candid moment' },
+  { id: 3, url: 'https://images.pixieset.com/224055201/fa1a43cc250efd88003bc5da98382de8-large.jpg', alt: 'Portrait photoshoot in Johannesburg - expressive' },
+  { id: 4, url: 'https://images.pixieset.com/224055201/2cf20d4a9d00d86934d0adb64a70c03f-large.jpg', alt: 'Portrait photoshoot in Johannesburg - lifestyle' },
+  { id: 5, url: 'https://images.pixieset.com/224055201/8b064709835a34b21aba22f4a48f292b-large.jpg', alt: 'Portrait photoshoot in Johannesburg - dramatic light' },
+  { id: 6, url: 'https://images.pixieset.com/224055201/e8913758e3894e34b8d1a0b20f196fc4-large.jpg', alt: 'Portrait photoshoot in Johannesburg - intimate' },
 ];
 
 const offerings = [
@@ -30,11 +32,8 @@ const offerings = [
 ];
 
 export default function Portraits() {
-  useEffect(() => {
-    document.title = 'Portrait Photography Sessions';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Professional portrait & headshot photography in Johannesburg. Studio and on-location sessions for individuals, families, and professionals.');
-  }, []);
+  const page = corePages.studio;
+  useSeo(page);
 
    return (
      <div className="min-h-screen">
@@ -47,11 +46,11 @@ export default function Portraits() {
           transition={{ duration: 0.8 }}
           className="relative z-10 max-w-3xl mx-auto"
         >
-          <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase mb-4 block">Service</span>
-          <h1 className="text-5xl md:text-6xl font-montserrat font-black text-white mb-4 tracking-tight">Portraits</h1>
+          <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase mb-4 block">{page.eyebrow}</span>
+          <h1 className="text-4xl md:text-6xl font-montserrat font-black text-white mb-4 tracking-tight leading-[1.05]">{page.h1}</h1>
           <div className="h-[2px] w-20 bg-gold mx-auto mb-6" />
           <p className="text-white/55 text-sm font-montserrat font-light leading-relaxed max-w-xl mx-auto">
-            Intimate, expressive portraits that reveal the authentic spirit of every individual — crafted with natural light and genuine connection.
+            {page.intro}
           </p>
         </motion.div>
       </section>
@@ -63,7 +62,7 @@ export default function Portraits() {
             <motion.div key={o.title} {...fadeUp(i * 0.1)}>
               <GlassCard hover className="p-8 flex flex-col gap-3 h-full">
                 <div className="w-9 h-9 border border-gold/30 flex items-center justify-center">{o.icon}</div>
-                <h4 className="text-white font-montserrat font-semibold text-sm tracking-wider uppercase">{o.title}</h4>
+                <h3 className="text-white font-montserrat font-semibold text-sm tracking-wider uppercase">{o.title}</h3>
                 <p className="text-white/45 text-xs font-montserrat font-light leading-relaxed">{o.desc}</p>
               </GlassCard>
             </motion.div>
@@ -72,7 +71,7 @@ export default function Portraits() {
 
         {/* Gallery */}
         <motion.div {...fadeUp(0)} className="mb-14 flex flex-col items-start">
-          <SectionHeading eyebrow="Gallery" title="Portrait Work" />
+          <SectionHeading eyebrow="Gallery" title={page.galleryHeading} />
         </motion.div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
           {portraitImages.map((img) => (
@@ -83,6 +82,8 @@ export default function Portraits() {
           ))}
         </div>
       </section>
+
+      <SeoContent sections={page.sections} faqs={page.faqs} />
 
       <TestimonialsSection />
       <ServiceCTA title="Let's tell your story" subtitle="Book a portrait session and walk away with images you'll treasure for a lifetime." />

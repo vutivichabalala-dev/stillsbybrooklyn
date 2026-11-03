@@ -1,4 +1,4 @@
-export default function SectionHeading({ eyebrow, title, subtitle, center = false }) {
+export default function SectionHeading({ eyebrow, title, subtitle, center = false, as: Heading = 'h2' }) {
   return (
     <div className={`flex flex-col gap-4 ${center ? 'items-center text-center' : 'items-start'}`}>
       {eyebrow && (
@@ -6,9 +6,9 @@ export default function SectionHeading({ eyebrow, title, subtitle, center = fals
           {eyebrow}
         </span>
       )}
-      <h2 className={`relative text-3xl md:text-4xl font-montserrat font-bold text-foreground pb-4 gold-underline ${center ? 'gold-underline-center' : ''}`}>
+      <Heading className={`relative text-3xl md:text-4xl font-montserrat font-bold text-foreground pb-4 gold-underline ${center ? 'gold-underline-center' : ''}`}>
         {title}
-      </h2>
+      </Heading>
       {subtitle && (
         <p className="text-foreground/55 text-sm font-montserrat font-light leading-relaxed max-w-lg">
           {subtitle}

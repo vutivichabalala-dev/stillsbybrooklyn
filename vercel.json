@@ -4,6 +4,41 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
+    {
+      "source": "/((?!api/|sitemap\\.xml|robots\\.txt).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/services/weddings",
+      "destination": "/wedding-photographer-johannesburg",
+      "permanent": true
+    },
+    {
+      "source": "/services/corporate",
+      "destination": "/corporate-headshots-johannesburg",
+      "permanent": true
+    },
+    {
+      "source": "/services/portraits",
+      "destination": "/photography-studio-johannesburg",
+      "permanent": true
+    },
+    {
+      "source": "/photographersinjohannesburg",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/corporatephotographer",
+      "destination": "/corporate-headshots-johannesburg",
+      "permanent": true
+    },
+    {
+      "source": "/photographersinsandton",
+      "destination": "/photographer-sandton",
+      "permanent": true
+    }
   ]
 }

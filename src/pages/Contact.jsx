@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
+import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SectionHeading from '../components/SectionHeading';
@@ -14,11 +16,7 @@ const fadeUp = (delay = 0) => ({
 });
 
 export default function Contact() {
-  useEffect(() => {
-    document.title = 'Contact Brooklyn | Get a Quote for Photography Services';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Get in touch with Stills by Brooklyn. Request a quote, ask about availability, or discuss your next photography project. Based in Midrand, serving all of South Africa.');
-  }, []);
+  useSeo(corePages.contact);
 
    const [form, setForm] = useState({ name: '', email: '', phone: '', service: '', message: '' });
    const [submitted, setSubmitted] = useState(false);
@@ -48,7 +46,7 @@ export default function Contact() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10">
         {/* Header */}
         <motion.div {...fadeUp(0)} className="mb-20 text-center flex flex-col items-center">
-          <SectionHeading eyebrow="Let's Connect" title="Get In Touch" subtitle="Ready to create something beautiful together? Reach out and let's start the conversation." center />
+          <SectionHeading as="h1" eyebrow="Let's Connect" title={corePages.contact.h1} subtitle="To book a photographer in Johannesburg, Pretoria or anywhere in South Africa, send your date below — or call or WhatsApp 067 786 0702." center />
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">

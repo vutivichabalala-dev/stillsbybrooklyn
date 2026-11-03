@@ -1,7 +1,8 @@
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Camera, Award, MapPin } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { useEffect } from 'react';
 import GlassCard from '../components/GlassCard';
 
 const fadeUp = (delay = 0) => ({
@@ -12,11 +13,7 @@ const fadeUp = (delay = 0) => ({
 });
 
 export default function About() {
-  useEffect(() => {
-    document.title = 'About Brooklyn | Professional Photographer in South Africa';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Meet Brooklyn — Johannesburg-based photographer with a passion for storytelling through corporate, portrait, and wedding photography. Available across South Africa.');
-  }, []);
+  useSeo(corePages.about);
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,16 +47,16 @@ export default function About() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10 py-40 w-full">
           <div className="max-w-xl">
 
-            <motion.span
+            <motion.h1
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="text-gold text-xs font-montserrat font-semibold tracking-[0.35em] uppercase block mb-6"
+              className="text-gold text-xs font-montserrat font-semibold tracking-[0.35em] uppercase block mb-6 leading-relaxed"
             >
-              The Photographer
-            </motion.span>
+              {corePages.about.h1}
+            </motion.h1>
 
-            <motion.h1
+            <motion.p
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
@@ -68,7 +65,7 @@ export default function About() {
               We create images<br />
               <span className="text-gold">that tell your</span><br />
               story.
-            </motion.h1>
+            </motion.p>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
