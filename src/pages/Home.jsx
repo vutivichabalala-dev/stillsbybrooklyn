@@ -38,7 +38,7 @@ const heroSlides = [
   { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 43%' },
   { ...px('edc40b2fae11499f30bcac47d2d9a565'), alt: 'Backlit portrait in the park at golden hour', label: 'Portraits', pos: '50% 37%' },
   { src: `${F}422cb06bd_m5.jpg`, alt: 'Matric dance couple with sunset flare', label: 'Matric Dance', pos: '50% 21%' },
-  { ...local('matric-black-gown', [640, 1100, 1714]), alt: 'Matric dance portrait in a beaded black gown, seated', label: 'Matric Dance', pos: '50% 6%' },
+  { ...local('matric-black-gown', [640, 1100, 1714]), alt: 'Matric dance portrait in a beaded black gown, seated', label: 'Matric Dance', pos: '50% 21%' },
   { ...px('c8727e01154b5295ffb8f9af50582f54'), alt: 'Portrait leaning against a tree in the park', label: 'Portraits', pos: '50% 37%' },
   { ...px('7434a23374497b1b13cc0130da62472b'), alt: 'Natural light lifestyle portrait', label: 'Portraits', pos: '50% 47%' },
   { src: `${F}fb33a2eb4_m7.jpg`, alt: 'Matric dance couple holding hands with red roses', label: 'Matric Dance', pos: '50% 32%' },
