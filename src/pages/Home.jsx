@@ -150,7 +150,7 @@ export default function Home() {
           <motion.div {...fadeUp(0.1)} className="mt-10 text-center">
             <Link
               to="/booking"
-              className="inline-flex items-center gap-2 px-10 py-4 bg-gold text-black text-xs font-montserrat font-black tracking-[0.2em] uppercase rounded-sm hover:bg-gold/90 transition-colors duration-200 shadow-[0_4px_20px_rgba(186,106,119,0.3)]"
+              className="inline-flex items-center gap-2 px-10 py-4 bg-gold text-black text-xs font-montserrat font-black tracking-[0.2em] uppercase rounded-sm hover:bg-gold/90 transition-colors duration-200 shadow-[0_4px_20px_rgba(198,191,180,0.3)]"
             >
               Book a Session <ArrowRight size={13} />
             </Link>
@@ -222,7 +222,7 @@ export default function Home() {
             </p>
             <Link
               to="/booking"
-              className="inline-flex items-center justify-center gap-3 px-10 md:px-14 py-4 bg-gold text-black text-xs font-montserrat font-black tracking-[0.2em] uppercase rounded-sm hover:bg-gold/90 transition-all duration-200 shadow-[0_4px_20px_rgba(186,106,119,0.3)]"
+              className="inline-flex items-center justify-center gap-3 px-10 md:px-14 py-4 bg-gold text-black text-xs font-montserrat font-black tracking-[0.2em] uppercase rounded-sm hover:bg-gold/90 transition-all duration-200 shadow-[0_4px_20px_rgba(198,191,180,0.3)]"
             >
               Book a Session <ArrowRight size={13} />
             </Link>

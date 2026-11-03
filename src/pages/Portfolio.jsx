@@ -218,7 +218,7 @@ export default function Portfolio() {
             <p className="text-white/40 text-sm font-montserrat font-light mb-6">Like what you see? Let's work together.</p>
             <Link
               to="/booking"
-              className="inline-flex items-center gap-2 px-10 py-4 bg-gold text-black text-xs font-montserrat font-black tracking-[0.2em] uppercase rounded-sm hover:bg-gold/90 transition-colors duration-200 shadow-[0_4px_20px_rgba(186,106,119,0.3)]"
+              className="inline-flex items-center gap-2 px-10 py-4 bg-gold text-black text-xs font-montserrat font-black tracking-[0.2em] uppercase rounded-sm hover:bg-gold/90 transition-colors duration-200 shadow-[0_4px_20px_rgba(198,191,180,0.3)]"
             >
               Book a Session <ArrowRight size={13} />
             </Link>

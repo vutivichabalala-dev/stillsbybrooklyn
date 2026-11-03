@@ -13,7 +13,7 @@ const slides = [
     href: '/services/corporate',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/47ae0dc0f_DSC_4110.jpg',
     objectPosition: 'center 20%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 2,
@@ -24,7 +24,7 @@ const slides = [
     href: '/services/corporate',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/b6065684a_DSC_4113.jpg',
     objectPosition: 'center 25%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ const slides = [
     href: '/services/corporate',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/405f66474_DSC_4043.jpg',
     objectPosition: 'center 20%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 4,
@@ -46,7 +46,7 @@ const slides = [
     href: '/services/portraits',
     image: 'https://images.pixieset.com/224055201/7434a23374497b1b13cc0130da62472b-large.jpg',
     objectPosition: 'center 15%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 5,
@@ -57,7 +57,7 @@ const slides = [
     href: '/services/portraits',
     image: 'https://images.pixieset.com/224055201/8b064709835a34b21aba22f4a48f292b-large.jpg',
     objectPosition: 'center 10%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 6,
@@ -68,7 +68,7 @@ const slides = [
     href: '/services',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/a33532f67_DSC_4300.jpg',
     objectPosition: 'center 15%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 7,
@@ -79,7 +79,7 @@ const slides = [
     href: '/services',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/762c48de9_DSC_4345.jpg',
     objectPosition: 'center 15%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 8,
@@ -90,7 +90,7 @@ const slides = [
     href: '/services',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/3ec27dda8_DSC_4379.jpg',
     objectPosition: 'center 20%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 12,
@@ -101,7 +101,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/23c6f23d5_m1.jpg',
     objectPosition: 'center 22%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 13,
@@ -112,7 +112,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/77706b7f6_m2.jpg',
     objectPosition: 'center 25%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 14,
@@ -123,7 +123,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/cc7fc8131_m3.jpg',
     objectPosition: 'center 22%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 15,
@@ -134,7 +134,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/f17a7f633_m4.jpg',
     objectPosition: 'center 20%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 16,
@@ -145,7 +145,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/422cb06bd_m5.jpg',
     objectPosition: 'center 25%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 17,
@@ -156,7 +156,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/d7b28935b_m6.jpg',
     objectPosition: 'center 22%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 18,
@@ -167,7 +167,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/fb33a2eb4_m7.jpg',
     objectPosition: 'center 25%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 19,
@@ -178,7 +178,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/ea0215502_m8.jpg',
     objectPosition: 'center 30%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 20,
@@ -189,7 +189,7 @@ const slides = [
     href: '/portfolio?category=matric dance',
     image: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/115657473_m9.jpg',
     objectPosition: 'center 20%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 9,
@@ -200,7 +200,7 @@ const slides = [
     href: '/services/weddings',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/6690fe0fb_DSC_5010.jpg',
     objectPosition: 'center 20%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 10,
@@ -211,7 +211,7 @@ const slides = [
     href: '/services/weddings',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/1154b3740_DSC_5060.jpg',
     objectPosition: 'center 15%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
   {
     id: 11,
@@ -222,7 +222,7 @@ const slides = [
     href: '/services/weddings',
     image: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/55625f9db_DSC_5069.jpg',
     objectPosition: 'center 20%',
-    accent: '#BA6A77',
+    accent: '#C6BFB4',
   },
 ];
 
@@ -400,7 +400,7 @@ export default function HeroSlider() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.7 }}
                   className="text-[2.75rem] leading-[0.95] sm:text-6xl md:text-8xl font-montserrat font-black tracking-tight mb-6 sm:mb-8"
-                  style={{ WebkitTextStroke: '1px rgba(186,106,119,0.6)', color: 'transparent' }}
+                  style={{ WebkitTextStroke: '1px rgba(198,191,180,0.6)', color: 'transparent' }}
                 >
                   {slide.subline}
                 </motion.p>

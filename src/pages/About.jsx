@@ -23,7 +23,7 @@ export default function About() {
 
         {/* Subtle gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-[#1A1718] via-background to-[#141213]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_60%_50%,rgba(186,106,119,0.06),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_60%_50%,rgba(198,191,180,0.06),transparent)]" />
 
         {/* Portrait — right side, full height */}
         <motion.div

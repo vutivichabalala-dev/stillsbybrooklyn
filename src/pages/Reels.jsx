@@ -166,7 +166,7 @@ export default function Reels() {
                   borderWidth: 1,
                   borderStyle: 'solid',
                   borderColor: filter === cat ? 'hsla(46,70%,55%,0.5)' : 'rgba(255,255,255,0.08)',
-                  background: filter === cat ? 'rgba(186,106,119,0.08)' : 'transparent',
+                  background: filter === cat ? 'rgba(198,191,180,0.08)' : 'transparent',
                 }}
               >
                 {cat}
