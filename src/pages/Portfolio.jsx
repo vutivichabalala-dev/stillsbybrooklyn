@@ -53,6 +53,12 @@ const placeholderItems = [
   { id: 22, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/2cf20d4a9d00d86934d0adb64a70c03f-xlarge.jpg', alt: 'Jubilee portrait session - lifestyle portrait photography' },
   { id: 23, category: 'Portraits', size: 'large', url: 'https://images.pixieset.com/224055201/8b064709835a34b21aba22f4a48f292b-xlarge.jpg', alt: 'Jubilee portrait session - dramatic natural light portrait' },
   { id: 24, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/e8913758e3894e34b8d1a0b20f196fc4-xlarge.jpg', alt: 'Jubilee portrait session - intimate personal portrait' },
+  { id: 'j1', category: 'Portraits', size: 'large', url: 'https://images.pixieset.com/224055201/4c7e470f347219005082063e353df3c6-xlarge.jpg', alt: 'Jubilee portrait session - green dress with butterflies in her hair' },
+  { id: 'j2', category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/fde31b87e7a08b619d812341fa6ee77d-xlarge.jpg', alt: 'Jubilee portrait session - seated in a green dress' },
+  { id: 'j3', category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/fc208e0a9a611c89ddb44428f0816e80-xlarge.jpg', alt: 'Jubilee portrait session - full-length on the lawn' },
+  { id: 'j4', category: 'Portraits', size: 'large', url: 'https://images.pixieset.com/224055201/c9a5b988d05edf52676ed4195442e3f9-xlarge.jpg', alt: 'Jubilee portrait session - thoughtful close-up' },
+  { id: 'j5', category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/c8727e01154b5295ffb8f9af50582f54-xlarge.jpg', alt: 'Jubilee portrait session - leaning against a tree' },
+  { id: 'j6', category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/edc40b2fae11499f30bcac47d2d9a565-xlarge.jpg', alt: 'Jubilee portrait session - backlit at golden hour' },
   // Graduations
   { id: 25, category: 'Graduations', size: 'large', url: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/922435be1_DSC_4228.jpg', alt: 'Graduation portrait' },
   { id: 26, category: 'Graduations', size: 'small', url: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/c07e6f7ad_DSC_4229.jpg', alt: 'Graduation portrait' },
