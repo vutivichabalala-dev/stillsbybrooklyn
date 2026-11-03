@@ -23,16 +23,25 @@ const px = (id) => ({
   srcSet: `${P}${id}-large.jpg 640w, ${P}${id}-xlarge.jpg 1024w, ${P}${id}-xxlarge.jpg 1600w`,
 });
 
+// Photos stored with the site (public/images/home), in three sizes each
+const local = (name, widths) => ({
+  src: `/images/home/${name}-${widths[widths.length - 1]}.jpg`,
+  srcSet: widths.map((w) => `/images/home/${name}-${w}.jpg ${w}w`).join(', '),
+});
+
 // Hero uses only full-resolution originals (1600–1800px). The Base44-hosted
 // wedding/corporate/graduation copies are only 681px wide, too soft full-screen.
 const heroSlides = [
+  { ...local('portrait-sportscar', [800, 1400, 2400]), alt: 'Portrait of a young man in a suit seated in a blue sports car', label: 'Portraits', pos: '50% 40%' },
   { ...px('4c7e470f347219005082063e353df3c6'), alt: 'Portrait in a green dress with butterflies in her hair', label: 'Portraits', pos: '50% 48%' },
+  { ...local('matric-couple-black', [640, 1100, 1714]), alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown', label: 'Matric Dance', pos: '50% 10%' },
   { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 43%' },
+  { ...px('edc40b2fae11499f30bcac47d2d9a565'), alt: 'Backlit portrait in the park at golden hour', label: 'Portraits', pos: '50% 37%' },
   { src: `${F}422cb06bd_m5.jpg`, alt: 'Matric dance couple with sunset flare', label: 'Matric Dance', pos: '50% 21%' },
+  { ...local('matric-black-gown', [640, 1100, 1714]), alt: 'Matric dance portrait in a beaded black gown, seated', label: 'Matric Dance', pos: '50% 6%' },
   { ...px('c8727e01154b5295ffb8f9af50582f54'), alt: 'Portrait leaning against a tree in the park', label: 'Portraits', pos: '50% 37%' },
   { ...px('7434a23374497b1b13cc0130da62472b'), alt: 'Natural light lifestyle portrait', label: 'Portraits', pos: '50% 47%' },
   { src: `${F}fb33a2eb4_m7.jpg`, alt: 'Matric dance couple holding hands with red roses', label: 'Matric Dance', pos: '50% 32%' },
-  { ...px('2cf20d4a9d00d86934d0adb64a70c03f'), alt: 'Lifestyle portrait', label: 'Portraits', pos: '50% 43%' },
 ];
 
 const work = [
@@ -41,8 +50,11 @@ const work = [
   { src: `${M}d0c463f82_DSC_4127.jpg`, alt: 'Corporate portrait in a luxury interior', cat: 'Corporate' },
   { src: `${M}922435be1_DSC_4228.jpg`, alt: 'Graduation portrait', cat: 'Graduations' },
   { ...px('fa1a43cc250efd88003bc5da98382de8'), alt: 'Expressive individual portrait', cat: 'Portraits' },
+  { ...local('portrait-sportscar', [800, 1400, 2400]), alt: 'Portrait of a young man in a suit seated in a blue sports car', cat: 'Portraits', wide: true },
   { src: `${F}ea0215502_m8.jpg`, alt: 'Matric dance couple overlooking the lake at sunset', cat: 'Matric Dance', wide: true },
-  { ...px('ba20179241b13dc570b3d7c663e22bf5'), alt: 'Candid lifestyle portrait', cat: 'Portraits', wide: true },
+  { ...local('matric-couple-black', [640, 1100, 1714]), alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown', cat: 'Matric Dance' },
+  { ...local('matric-black-gown', [640, 1100, 1714]), alt: 'Matric dance portrait in a beaded black gown, seated', cat: 'Matric Dance' },
+  { ...px('ba20179241b13dc570b3d7c663e22bf5'), alt: 'Candid lifestyle portrait', cat: 'Portraits' },
   { ...px('fde31b87e7a08b619d812341fa6ee77d'), alt: 'Seated portrait in a green dress', cat: 'Portraits' },
   { ...px('fc208e0a9a611c89ddb44428f0816e80'), alt: 'Full-length portrait in a green dress on the lawn', cat: 'Portraits' },
   { ...px('c9a5b988d05edf52676ed4195442e3f9'), alt: 'Thoughtful portrait with butterflies in her hair', cat: 'Portraits' },

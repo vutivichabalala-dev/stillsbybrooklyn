@@ -93,6 +93,9 @@ const placeholderItems = [
   { id: 'm7', category: 'Matric Dance', size: 'large', url: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/fb33a2eb4_m7.jpg', alt: 'Matric dance couple holding hands with red roses' },
   { id: 'm8', category: 'Matric Dance', size: 'small', url: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/ea0215502_m8.jpg', alt: 'Matric dance couple photographed from behind overlooking the lake at sunset' },
   { id: 'm9', category: 'Matric Dance', size: 'small', url: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/115657473_m9.jpg', alt: 'Matric dance portrait — beaded gown with two bouquets of red roses' },
+  { id: 'h1', category: 'Matric Dance', size: 'large', url: '/images/home/matric-couple-black-1714.jpg', alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown' },
+  { id: 'h2', category: 'Matric Dance', size: 'small', url: '/images/home/matric-black-gown-1100.jpg', alt: 'Matric dance portrait in a beaded black gown, seated' },
+  { id: 'h3', category: 'Portraits', size: 'large', url: '/images/home/portrait-sportscar-1400.jpg', alt: 'Portrait of a young man in a suit seated in a blue sports car' },
 ];
 
 export default function Portfolio() {
