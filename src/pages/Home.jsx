@@ -27,12 +27,12 @@ const px = (id) => ({
 // wedding/corporate/graduation copies are only 681px wide, too soft full-screen.
 const heroSlides = [
   { ...px('4c7e470f347219005082063e353df3c6'), alt: 'Portrait in a green dress with butterflies in her hair', label: 'Portraits', pos: '50% 15%' },
-  { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 18%' },
-  { src: `${F}422cb06bd_m5.jpg`, alt: 'Matric dance couple with sunset flare', label: 'Matric Dance', pos: '50% 25%' },
-  { ...px('c8727e01154b5295ffb8f9af50582f54'), alt: 'Portrait leaning against a tree in the park', label: 'Portraits', pos: '50% 18%' },
-  { ...px('7434a23374497b1b13cc0130da62472b'), alt: 'Natural light lifestyle portrait', label: 'Portraits', pos: '50% 18%' },
+  { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 12%' },
+  { src: `${F}422cb06bd_m5.jpg`, alt: 'Matric dance couple with sunset flare', label: 'Matric Dance', pos: '50% 12%' },
+  { ...px('c8727e01154b5295ffb8f9af50582f54'), alt: 'Portrait leaning against a tree in the park', label: 'Portraits', pos: '50% 37%' },
+  { ...px('7434a23374497b1b13cc0130da62472b'), alt: 'Natural light lifestyle portrait', label: 'Portraits', pos: '50% 14%' },
   { src: `${F}fb33a2eb4_m7.jpg`, alt: 'Matric dance couple holding hands with red roses', label: 'Matric Dance', pos: '50% 25%' },
-  { ...px('2cf20d4a9d00d86934d0adb64a70c03f'), alt: 'Lifestyle portrait', label: 'Portraits', pos: '50% 18%' },
+  { ...px('2cf20d4a9d00d86934d0adb64a70c03f'), alt: 'Lifestyle portrait', label: 'Portraits', pos: '50% 12%' },
 ];
 
 const work = [
@@ -109,26 +109,14 @@ function Hero() {
             exit={{ opacity: 0 }}
             transition={{ duration: 1.6, ease }}
           >
-            {/* Soft, blurred copy of the same photo fills the frame (same file, no extra download) */}
-            <img
-              src={slide.src}
-              srcSet={slide.srcSet}
-              sizes="100vw"
-              alt=""
-              aria-hidden="true"
-              className="absolute inset-0 hidden md:block h-full w-full object-cover scale-110 blur-2xl brightness-[0.55] saturate-[0.9]"
-              decoding="async"
-              draggable="false"
-            />
-            {/* The photo itself: whole and uncropped on wide screens, filling the screen on phones */}
             <motion.img
               src={slide.src}
               srcSet={slide.srcSet}
-              sizes="(min-width: 768px) 66vh, 100vw"
+              sizes="100vw"
               alt={slide.alt}
-              className="absolute inset-0 h-full w-full object-cover md:object-contain md:!object-[82%_50%]"
-              style={{ objectPosition: slide.pos }}
-              initial={{ scale: 1.03 }}
+              className="h-full w-full object-cover"
+              style={{ objectPosition: slide.pos, transformOrigin: slide.pos }}
+              initial={{ scale: 1.04 }}
               animate={{ scale: 1 }}
               transition={{ duration: SLIDE_MS / 1000 + 2, ease: 'linear' }}
               fetchpriority={index === 0 ? 'high' : 'auto'}
