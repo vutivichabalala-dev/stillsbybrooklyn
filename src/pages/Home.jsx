@@ -42,7 +42,7 @@ const heroSlides = [
   { ...px('4c7e470f347219005082063e353df3c6'), alt: 'Portrait in a green dress with butterflies in her hair', label: 'Portraits', pos: '50% 48%' },
   { ...w1('dee9e86bd1d00cf1ab65492d079d2dc1'), alt: 'Bride in her gown and veil on the wedding morning', label: 'Weddings', pos: '50% 22%' },
   { ...local('matric-couple-black', [640, 1100, 1714]), alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown', label: 'Matric Dance', pos: '50% 10%' },
-  { ...w2('2f5d85a0b309ebc1cb0f87ff728c5c8d'), alt: 'Bride and groom posing together at the ceremony', label: 'Weddings', pos: '50% 8%' },
+  { ...w1('7595be4ca74f9ee38dd32ef7822ad8bd'), alt: 'Bride reading her letter on the wedding morning', label: 'Weddings', pos: '50% 38%' },
   { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 43%' },
   { ...w1('11bc9e3fd04edffa0e480016316e2456'), alt: 'Bride putting on her earrings', label: 'Weddings', pos: '50% 24%' },
   { ...local('matric-black-gown', [640, 1100, 1714]), alt: 'Matric dance portrait in a beaded black gown, seated', label: 'Matric Dance', pos: '50% 21%' },
