@@ -5,7 +5,7 @@ import { queryClientInstance } from '@/lib/query-client'
 import { BrowserRouter as Router, Route, Routes, useLocation, Navigate } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import Layout from './components/Layout';
-import BrandLoader from './components/BrandLoader';
+import BrandLoader, { MiniLoader } from './components/BrandLoader';
 import Home from './pages/Home';
 import { useTrackVisit } from './hooks/useTrackVisit';
 import { seoPages } from './content/seoPages';
@@ -40,9 +40,7 @@ const DashboardLayout = lazy(() => import('./components/dashboard/DashboardLayou
 const SiteAnalytics = lazy(() => import('./pages/portal/SiteAnalytics'));
 
 const RouteFallback = () => (
-  <div className="min-h-screen flex items-center justify-center bg-background">
-    <div className="h-9 w-9 rounded-full border border-gold/25 border-t-gold animate-spin" />
-  </div>
+  <div className="min-h-screen bg-background"><MiniLoader /></div>
 );
 
 // Redirect component for old URLs → new clean URLs
@@ -51,7 +49,15 @@ function RedirectTo({ to }) {
 }
 
 // Keep the branded loader on screen just long enough to read, never longer than needed
-const LOADER_MIN_MS = 450;
+// Full logo animation on the first visit of a session; a quick flash afterwards.
+const firstVisit = (() => {
+  try {
+    const seen = sessionStorage.getItem('sb-intro');
+    sessionStorage.setItem('sb-intro', '1');
+    return !seen;
+  } catch { return true; }
+})();
+const LOADER_MIN_MS = firstVisit ? 1700 : 350;
 
 const AuthenticatedApp = () => {
   useTrackVisit();

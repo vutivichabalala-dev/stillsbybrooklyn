@@ -5,12 +5,9 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import MobileBookingBar from './MobileBookingBar';
 import ScrollProgress from './ScrollProgress';
+import { MiniLoader } from './BrandLoader';
 
-const PageSpinner = () => (
-  <div className="min-h-[70vh] flex items-center justify-center">
-    <div className="h-9 w-9 rounded-full border border-gold/25 border-t-gold animate-spin" />
-  </div>
-);
+const PageSpinner = MiniLoader;
 
 export default function Layout() {
   const { pathname } = useLocation();

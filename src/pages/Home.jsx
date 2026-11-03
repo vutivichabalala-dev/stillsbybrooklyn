@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform, useMotionValue, useSpring } from 'framer-motion';
 import { useSeo } from '@/lib/seo';
 import { corePages } from '@/content/corePages';
 import { locationNav } from '@/content/seoPages';
@@ -55,18 +55,18 @@ const work = [
   { src: `${M}d0c463f82_DSC_4127.jpg`, alt: 'Corporate portrait in a luxury interior', cat: 'Corporate' },
   { src: `${M}922435be1_DSC_4228.jpg`, alt: 'Graduation portrait', cat: 'Graduations' },
   { ...px('fa1a43cc250efd88003bc5da98382de8'), alt: 'Expressive individual portrait', cat: 'Portraits' },
-  { ...local('portrait-sportscar', [800, 1400, 2400]), alt: 'Portrait of a young man in a suit seated in a blue sports car', cat: 'Portraits', wide: true },
-  { src: `${F}ea0215502_m8.jpg`, alt: 'Matric dance couple overlooking the lake at sunset', cat: 'Matric Dance', wide: true },
-  { ...local('matric-couple-black', [640, 1100, 1714]), alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown', cat: 'Matric Dance' },
-  { ...local('matric-black-gown', [640, 1100, 1714]), alt: 'Matric dance portrait in a beaded black gown, seated', cat: 'Matric Dance' },
+  { ...local('portrait-sportscar', [800, 1400, 2400]), alt: 'Portrait of a young man in a suit seated in a blue sports car', cat: 'Portraits', ratio: '2576 / 1714' },
+  { src: `${F}ea0215502_m8.jpg`, alt: 'Matric dance couple overlooking the lake at sunset', cat: 'Matric Dance' },
+  { ...local('matric-couple-black', [640, 1100, 1714]), alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown', cat: 'Matric Dance', ratio: '1714 / 2576' },
+  { ...local('matric-black-gown', [640, 1100, 1714]), alt: 'Matric dance portrait in a beaded black gown, seated', cat: 'Matric Dance', ratio: '1714 / 2576' },
   { ...px('ba20179241b13dc570b3d7c663e22bf5'), alt: 'Candid lifestyle portrait', cat: 'Portraits' },
   { ...px('fde31b87e7a08b619d812341fa6ee77d'), alt: 'Seated portrait in a green dress', cat: 'Portraits' },
   { ...px('fc208e0a9a611c89ddb44428f0816e80'), alt: 'Full-length portrait in a green dress on the lawn', cat: 'Portraits' },
   { ...px('c9a5b988d05edf52676ed4195442e3f9'), alt: 'Thoughtful portrait with butterflies in her hair', cat: 'Portraits' },
   { ...px('edc40b2fae11499f30bcac47d2d9a565'), alt: 'Backlit portrait in the park at golden hour', cat: 'Portraits' },
   { ...w2('5be27fdc4bf37b0e4e76c80714385d2b'), alt: 'Bride and groom walking together', cat: 'Weddings' },
-  { ...w1('d416537229004fc4ae8c488a62b7f93a'), alt: 'Bride under her veil', cat: 'Weddings' },
-  { ...w1('cb9e044827d97b4540114584471caf95'), alt: 'Groom adjusting his bow tie', cat: 'Weddings' },
+  { ...w1('d416537229004fc4ae8c488a62b7f93a'), alt: 'Bride under her veil', cat: 'Weddings', ratio: '1600 / 2450' },
+  { ...w1('cb9e044827d97b4540114584471caf95'), alt: 'Groom adjusting his bow tie', cat: 'Weddings', ratio: '1600 / 2820' },
   { ...w1('ac6e9df0f74c8dbc38e4dbc4b8bc8bd9'), alt: 'Bride in her robe on the wedding morning', cat: 'Weddings' },
   { ...w2('762b97c477d265fb8214dec56617e560'), alt: 'Bride and groom outdoors on their wedding day', cat: 'Weddings' },
   { src: `${M}b6065684a_DSC_4113.jpg`, alt: 'Corporate portrait of a man in a navy suit', cat: 'Corporate' },
@@ -239,60 +239,126 @@ function Hero() {
 /* Selected work — filterable grid with layout animation               */
 /* ------------------------------------------------------------------ */
 
-// Each tile reveals as it scrolls into view: a curtain lifts from the bottom
-// while the photo settles into place and the caption slides up after it.
-function Tile({ item, ratio, tall = false, caption = true, delay = 0 }) {
+// "All" mixes the categories so every column has variety
+function mixCategories(items, take = 12) {
+  const order = ['Weddings', 'Portraits', 'Matric Dance', 'Corporate', 'Weddings', 'Graduations', 'Portraits', 'Matric Dance', 'Weddings', 'Corporate', 'Portraits', 'Graduations', 'Weddings', 'Matric Dance', 'Portraits'];
+  const pools = {};
+  items.forEach((it) => { (pools[it.cat] = pools[it.cat] || []).push(it); });
+  const out = [];
+  for (const cat of order) {
+    const next = pools[cat]?.shift();
+    if (next) out.push(next);
+    if (out.length === take) break;
+  }
+  return out;
+}
+
+function useColumns() {
+  const get = () => (typeof window === 'undefined' || window.innerWidth >= 1024 ? 3 : 2);
+  const [cols, setCols] = useState(get);
+  useEffect(() => {
+    let t;
+    const onResize = () => { clearTimeout(t); t = setTimeout(() => setCols(get()), 120); };
+    window.addEventListener('resize', onResize);
+    return () => { window.removeEventListener('resize', onResize); clearTimeout(t); };
+  }, []);
+  return cols;
+}
+
+// One photo, shown whole at its natural shape. It reveals with a lifting curtain,
+// tilts gently towards the mouse, and shows its category on hover.
+function Tile({ item, delay = 0, sizes }) {
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const rotateX = useSpring(rx, { stiffness: 160, damping: 18 });
+  const rotateY = useSpring(ry, { stiffness: 160, damping: 18 });
+  const onMove = (e) => {
+    if (e.pointerType !== 'mouse') return;
+    const r = e.currentTarget.getBoundingClientRect();
+    ry.set(((e.clientX - r.left) / r.width - 0.5) * 7);
+    rx.set(-((e.clientY - r.top) / r.height - 0.5) * 7);
+  };
+  const reset = () => { rx.set(0); ry.set(0); };
+
   return (
     <motion.figure
-      layout
       initial="hidden"
       whileInView="show"
-      exit={{ opacity: 0, transition: { duration: 0.25 } }}
-      viewport={{ once: true, margin: '-60px' }}
-      className={`group m-0 ${tall ? 'sm:row-span-2' : ''}`}
+      viewport={{ once: true, margin: '-40px' }}
+      className="group m-0 [perspective:1000px]"
     >
-      <motion.div
-        variants={{ hidden: { clipPath: 'inset(100% 0% 0% 0%)' }, show: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.1, ease: [0.77, 0, 0.18, 1], delay } } }}
-        className={`relative overflow-hidden bg-white/[0.04] ${tall ? 'h-full min-h-[460px] sm:min-h-[560px]' : ''}`}
-      >
-        <motion.img
-          src={item.src}
-          srcSet={item.srcSet}
-          sizes={tall ? '(min-width: 640px) 33vw, 100vw' : ratio === 'aspect-[16/9]' ? '(min-width: 640px) 50vw, 100vw' : '(min-width: 640px) 33vw, 100vw'}
-          alt={item.alt}
-          loading="lazy"
-          decoding="async"
-          variants={{ hidden: { scale: 1.06 }, show: { scale: 1, transition: { duration: 1.4, ease, delay } } }}
-          className={`block w-full object-cover transition-[filter] duration-700 group-hover:brightness-110 ${tall ? 'absolute inset-0 h-full' : ratio}`}
-        />
-        <span aria-hidden="true" className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/0 transition-all duration-500 group-hover:ring-gold/60" />
-      </motion.div>
-      {caption && (
-        <motion.figcaption
-          variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: delay + 0.5 } } }}
-          className="mt-3 flex items-center gap-2 font-lato text-[11px] tracking-[0.24em] uppercase text-[#B9B2AA] transition-colors group-hover:text-white"
+      <motion.div onPointerMove={onMove} onPointerLeave={reset} style={{ rotateX, rotateY }} className="relative">
+        <motion.div
+          variants={{ hidden: { clipPath: 'inset(100% 0% 0% 0%)' }, show: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.1, ease: [0.77, 0, 0.18, 1], delay } } }}
+          className="relative overflow-hidden bg-white/[0.04]"
+          style={{ aspectRatio: item.ratio || '2 / 3' }}
         >
-          <span className="inline-block h-px w-0 bg-gold transition-all duration-500 group-hover:w-5" />
-          {item.cat}
-        </motion.figcaption>
-      )}
+          <motion.img
+            src={item.src}
+            srcSet={item.srcSet}
+            sizes={sizes}
+            alt={item.alt}
+            loading="lazy"
+            decoding="async"
+            variants={{ hidden: { scale: 1.08, opacity: 0.4 }, show: { scale: 1, opacity: 1, transition: { duration: 1.4, ease, delay } } }}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+          {/* Hover: soft shade, category label slides up, orange frame draws in */}
+          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/0 to-black/0 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+          <div aria-hidden="true" className="absolute inset-x-0 bottom-0 flex items-end justify-between p-4 md:p-5 translate-y-3 opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+            <span className="font-lato text-[11px] tracking-[0.26em] uppercase text-white">{item.cat}</span>
+            <span className="text-gold text-xl leading-none">→</span>
+          </div>
+          <span aria-hidden="true" className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-transparent transition-all duration-500 group-hover:ring-gold/70" />
+        </motion.div>
+      </motion.div>
+      <motion.figcaption
+        variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: delay + 0.5 } } }}
+        className="mt-3 font-lato text-[11px] tracking-[0.24em] uppercase text-[#B9B2AA]"
+      >
+        {item.cat}
+      </motion.figcaption>
     </motion.figure>
+  );
+}
+
+// Masonry: photos keep their real proportions, so nothing is cropped. On wide
+// screens the middle column drifts at a different speed while you scroll.
+function Masonry({ items, keyName }) {
+  const cols = useColumns();
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
+  const yMid = useTransform(scrollYProgress, [0, 1], [80, -80]);
+  const ySide = useTransform(scrollYProgress, [0, 1], [-16, 16]);
+  const columns = Array.from({ length: cols }, () => []);
+  items.forEach((it, i) => columns[i % cols].push({ it, i }));
+  const sizes = cols === 3 ? '(min-width: 1360px) 420px, 31vw' : '48vw';
+
+  return (
+    <div ref={ref} className="flex gap-3 md:gap-5 items-start">
+      {columns.map((col, c) => (
+        <motion.div
+          key={`${keyName}-${cols}-${c}`}
+          style={{ y: cols === 3 ? (c === 1 ? yMid : ySide) : 0 }}
+          className={`flex-1 min-w-0 flex flex-col gap-5 md:gap-7 ${cols === 3 && c === 1 ? 'pt-14' : ''}`}
+        >
+          {col.map(({ it, i }) => (
+            <Tile key={it.src} item={it} sizes={sizes} delay={(i % cols) * 0.09} />
+          ))}
+        </motion.div>
+      ))}
+    </div>
   );
 }
 
 function SelectedWork() {
   const [filter, setFilter] = useState('All');
-  const byCat = (c) => work.filter((w) => w.cat === c);
-  // "All" uses the template's arrangement: one tall photo, four 3:2 tiles, then two wide 16:9 tiles
-  const tall = byCat('Weddings')[0];
-  const four = [byCat('Matric Dance')[0], byCat('Corporate')[0], byCat('Graduations')[0], byCat('Portraits')[0]];
-  const wide = work.filter((w) => w.wide);
-  const filtered = filter === 'All' ? [] : byCat(filter);
+  const items = filter === 'All' ? mixCategories(work, 12) : work.filter((w) => w.cat === filter);
 
   return (
-    <section id="work" className="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-12 pt-[72px] pb-[120px] scroll-mt-20">
-      <div className="flex flex-wrap items-end justify-between gap-6 mb-11">
-<SplitReveal as="h2" text="Selected work" className="m-0 text-[40px] leading-none tracking-[0.06em] text-white uppercase" />
+    <section id="work" className="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-12 pt-[72px] pb-[140px] scroll-mt-20">
+      <div className="flex flex-wrap items-end justify-between gap-6 mb-12">
+        <SplitReveal as="h2" text="Selected work" className="m-0 text-[40px] leading-none tracking-[0.06em] text-white uppercase" />
         <div className="flex flex-wrap gap-x-7 gap-y-2.5" role="tablist" aria-label="Filter work by category">
           {filters.map((f) => (
             <button
@@ -313,38 +379,21 @@ function SelectedWork() {
       </div>
 
       <AnimatePresence mode="wait" initial={false}>
-        {filter === 'All' ? (
-          <motion.div key="all" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.35 }}>
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4"
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, margin: '-80px' }}
-            >
-              <Tile item={tall} tall caption={false} />
-              {four.map((w, i) => <Tile key={w.src} item={w} ratio="aspect-[3/2]" delay={0.08 * (i + 1)} />)}
-            </motion.div>
-            <div className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4 mt-4">
-              {wide.map((w, i) => <Tile key={w.src} item={w} ratio="aspect-[16/9]" delay={0.1 * i} />)}
-            </div>
-          </motion.div>
-        ) : (
-          <motion.div
-            key={filter}
-            className="grid grid-cols-1 sm:grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.35 }}
-          >
-            {filtered.map((w, i) => <Tile key={w.src} item={w} ratio="aspect-[3/2]" delay={0.07 * i} />)}
-          </motion.div>
-        )}
+        <motion.div
+          key={filter}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -16 }}
+          transition={{ duration: 0.45, ease }}
+        >
+          <Masonry items={items} keyName={filter} />
+        </motion.div>
       </AnimatePresence>
 
-      <div className="mt-12 flex justify-center">
-        <Link to="/portfolio" className="sb-link-draw pb-1 font-lato text-[12px] tracking-[0.26em] uppercase text-white hover:text-gold transition-colors">
-          View the full portfolio
+      <div className="mt-16 flex justify-center">
+        <Link to="/portfolio" className="group inline-flex items-center gap-3 font-lato text-[12px] tracking-[0.26em] uppercase text-white hover:text-gold transition-colors">
+          <span className="sb-link-draw pb-1">View the full portfolio</span>
+          <span className="text-gold transition-transform duration-500 group-hover:translate-x-2">→</span>
         </Link>
       </div>
     </section>
