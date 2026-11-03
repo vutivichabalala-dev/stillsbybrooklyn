@@ -68,7 +68,7 @@ export default function Navbar() {
   const servicesActive = isActive('/services') || serviceNav.some((l) => isActive(l.path));
   const transparent = isHome && !scrolled && !menuOpen;
 
-  const linkCls = 'sb-link-draw inline-flex items-center py-1 font-lato text-[11px] uppercase tracking-[0.24em] text-white/85 hover:text-white transition-colors';
+  const linkCls = 'sb-link-draw inline-flex items-center py-1 font-lato text-[12px] uppercase tracking-[0.24em] text-white/85 hover:text-white transition-colors';
 
   return (
     <>
@@ -82,12 +82,12 @@ export default function Navbar() {
         <div aria-hidden="true" className="pointer-events-none absolute inset-0 -bottom-16 bg-gradient-to-b from-black/55 to-transparent" />
       )}
       <div className="relative mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-12">
-        <div className={`flex items-center justify-between transition-[height] duration-500 ${scrolled ? 'h-[68px]' : 'h-[84px]'}`}>
+        <div className={`flex items-center justify-between transition-[height] duration-500 ${scrolled ? 'h-[72px]' : 'h-[112px]'}`}>
           <Link to="/" aria-label="Stills by Brooklyn — home" className="text-white">
             <Logo compact={scrolled} />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 lg:gap-10" aria-label="Main">
+          <nav className="hidden md:flex items-center gap-9" aria-label="Main">
             {mainLinks.map((link) =>
               link.dropdown ? (
                 <div key={link.path} className="relative" ref={dropdownRef}>
@@ -134,16 +134,8 @@ export default function Navbar() {
                 </Link>
               )
             )}
-            <span className="h-4 w-px bg-white/20" aria-hidden="true" />
-            <Link to="/portal" className="font-lato text-[11px] uppercase tracking-[0.22em] text-white/50 hover:text-white transition-colors">
-              Portal
-            </Link>
-            <Link
-              to="/booking"
-              className="group relative overflow-hidden border border-gold/70 px-6 py-3 font-lato text-[11px] uppercase tracking-[0.24em] text-white"
-            >
-              <span className="absolute inset-0 -translate-x-full bg-gold transition-transform duration-500 group-hover:translate-x-0" style={{ transitionTimingFunction: 'cubic-bezier(0.22,0.61,0.36,1)' }} />
-              <span className="relative transition-colors duration-500 group-hover:text-black">Book a session</span>
+            <Link to="/booking" className="sb-link-draw inline-flex items-center py-1 font-lato text-[12px] uppercase tracking-[0.24em] text-gold hover:text-white transition-colors">
+              Book
             </Link>
           </nav>
 
@@ -169,14 +161,14 @@ export default function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="md:hidden fixed inset-x-0 top-[68px] z-[45] bottom-0 bg-background overflow-y-auto"
+            className="md:hidden fixed inset-x-0 top-0 z-[45] bottom-0 bg-background overflow-y-auto"
           >
             <motion.nav
               aria-label="Mobile"
               initial="hidden"
               animate="show"
               variants={{ show: { transition: { staggerChildren: 0.06, delayChildren: 0.05 } } }}
-              className="flex flex-col px-6 pt-8 pb-32"
+              className="flex flex-col px-6 pt-[128px] pb-32"
             >
               {[{ label: 'Home', path: '/' }, ...mainLinks].map((l) => (
                 <motion.div key={l.path} variants={{ hidden: { opacity: 0, y: 18 }, show: { opacity: 1, y: 0, transition: { duration: 0.5, ease } } }}>
