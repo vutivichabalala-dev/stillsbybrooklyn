@@ -6,6 +6,7 @@ import { corePages } from '@/content/corePages';
 import { locationNav } from '@/content/seoPages';
 import BackToTop from '../components/BackToTop';
 import WhatsAppButton from '../components/WhatsAppButton';
+import SplitReveal from '../components/SplitReveal';
 
 const ease = [0.22, 0.61, 0.36, 1];
 const M = 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/';
@@ -18,10 +19,14 @@ const P = 'https://images.pixieset.com/224055201/';
 
 // Pixieset serves several sizes; give the browser the choice so phones get small
 // files and big/retina screens get the sharp 1600px version.
-const px = (id) => ({
-  src: `${P}${id}-xxlarge.jpg`,
-  srcSet: `${P}${id}-large.jpg 640w, ${P}${id}-xlarge.jpg 1024w, ${P}${id}-xxlarge.jpg 1600w`,
-});
+const pxc = (collection, id) => {
+  const b = `https://images.pixieset.com/${collection}/${id}`;
+  return { src: `${b}-xxlarge.jpg`, srcSet: `${b}-large.jpg 640w, ${b}-xlarge.jpg 1024w, ${b}-xxlarge.jpg 1600w` };
+};
+const px = (id) => pxc('224055201', id);
+// Musa weds Kuhlula — stillsbybrooklyn2.pixieset.com (part 1 and part 2)
+const w1 = (id) => pxc('308694411', id);
+const w2 = (id) => pxc('941414611', id);
 
 // Photos stored with the site (public/images/home), in three sizes each
 const local = (name, widths) => ({
@@ -33,19 +38,19 @@ const local = (name, widths) => ({
 // wedding/corporate/graduation copies are only 681px wide, too soft full-screen.
 const heroSlides = [
   { ...local('portrait-sportscar', [800, 1400, 2400]), alt: 'Portrait of a young man in a suit seated in a blue sports car', label: 'Portraits', pos: '50% 40%' },
+  { ...w2('22e3962a0016a59371959df425b02d38'), alt: 'Bride and groom sharing a kiss at their wedding', label: 'Weddings', pos: '50% 30%' },
   { ...px('4c7e470f347219005082063e353df3c6'), alt: 'Portrait in a green dress with butterflies in her hair', label: 'Portraits', pos: '50% 48%' },
+  { ...w1('dee9e86bd1d00cf1ab65492d079d2dc1'), alt: 'Bride in her gown and veil on the wedding morning', label: 'Weddings', pos: '50% 22%' },
   { ...local('matric-couple-black', [640, 1100, 1714]), alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown', label: 'Matric Dance', pos: '50% 10%' },
+  { ...w2('2f5d85a0b309ebc1cb0f87ff728c5c8d'), alt: 'Bride and groom posing together at the ceremony', label: 'Weddings', pos: '50% 22%' },
   { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 43%' },
-  { ...px('edc40b2fae11499f30bcac47d2d9a565'), alt: 'Backlit portrait in the park at golden hour', label: 'Portraits', pos: '50% 37%' },
-  { src: `${F}422cb06bd_m5.jpg`, alt: 'Matric dance couple with sunset flare', label: 'Matric Dance', pos: '50% 21%' },
+  { ...w1('11bc9e3fd04edffa0e480016316e2456'), alt: 'Bride putting on her earrings', label: 'Weddings', pos: '50% 30%' },
   { ...local('matric-black-gown', [640, 1100, 1714]), alt: 'Matric dance portrait in a beaded black gown, seated', label: 'Matric Dance', pos: '50% 21%' },
-  { ...px('c8727e01154b5295ffb8f9af50582f54'), alt: 'Portrait leaning against a tree in the park', label: 'Portraits', pos: '50% 37%' },
-  { ...px('7434a23374497b1b13cc0130da62472b'), alt: 'Natural light lifestyle portrait', label: 'Portraits', pos: '50% 47%' },
-  { src: `${F}fb33a2eb4_m7.jpg`, alt: 'Matric dance couple holding hands with red roses', label: 'Matric Dance', pos: '50% 32%' },
+  { ...px('edc40b2fae11499f30bcac47d2d9a565'), alt: 'Backlit portrait in the park at golden hour', label: 'Portraits', pos: '50% 37%' },
 ];
 
 const work = [
-  { src: `${M}1d785af91_DSC_5034.jpg`, alt: 'Bride laughing while writing her vows', cat: 'Weddings' },
+  { ...w2('ef10b35cf9800c88aa5d8356d84a570f'), alt: 'Bride in her full wedding gown', cat: 'Weddings' },
   { src: `${F}f17a7f633_m4.jpg`, alt: 'Matric dance portrait, beaded gown with corset back', cat: 'Matric Dance' },
   { src: `${M}d0c463f82_DSC_4127.jpg`, alt: 'Corporate portrait in a luxury interior', cat: 'Corporate' },
   { src: `${M}922435be1_DSC_4228.jpg`, alt: 'Graduation portrait', cat: 'Graduations' },
@@ -59,20 +64,25 @@ const work = [
   { ...px('fc208e0a9a611c89ddb44428f0816e80'), alt: 'Full-length portrait in a green dress on the lawn', cat: 'Portraits' },
   { ...px('c9a5b988d05edf52676ed4195442e3f9'), alt: 'Thoughtful portrait with butterflies in her hair', cat: 'Portraits' },
   { ...px('edc40b2fae11499f30bcac47d2d9a565'), alt: 'Backlit portrait in the park at golden hour', cat: 'Portraits' },
-  { src: `${M}a5a2523e3_DSC_5077.jpg`, alt: 'Bride with perfume bottle', cat: 'Weddings' },
+  { ...w2('5be27fdc4bf37b0e4e76c80714385d2b'), alt: 'Bride and groom walking together', cat: 'Weddings' },
+  { ...w1('d416537229004fc4ae8c488a62b7f93a'), alt: 'Bride under her veil', cat: 'Weddings' },
+  { ...w1('cb9e044827d97b4540114584471caf95'), alt: 'Groom adjusting his bow tie', cat: 'Weddings' },
+  { ...w1('ac6e9df0f74c8dbc38e4dbc4b8bc8bd9'), alt: 'Bride in her robe on the wedding morning', cat: 'Weddings' },
+  { ...w2('762b97c477d265fb8214dec56617e560'), alt: 'Bride and groom outdoors on their wedding day', cat: 'Weddings' },
   { src: `${M}b6065684a_DSC_4113.jpg`, alt: 'Corporate portrait of a man in a navy suit', cat: 'Corporate' },
   { src: `${M}7dbd77260_DSC_4354.jpg`, alt: 'Graduation portrait outdoors', cat: 'Graduations' },
-  { src: `${M}55625f9db_DSC_5069.jpg`, alt: 'Bride laughing freely', cat: 'Weddings' },
   { src: `${M}53fd1db74_DSC_4135.jpg`, alt: 'Corporate portrait with eagle sculpture', cat: 'Corporate' },
 ];
 const filters = ['All', 'Weddings', 'Portraits', 'Corporate', 'Graduations', 'Matric Dance'];
 
 
 /* ------------------------------------------------------------------ */
-/* Hero — crossfading slideshow with slow zoom and a masked headline   */
+/* Hero — full-screen slideshow with a wipe transition and masked headline */
 /* ------------------------------------------------------------------ */
 
 const SLIDE_MS = 6500;
+const WIPE_S = 1.25;
+const wipeEase = [0.77, 0, 0.18, 1];
 
 function Hero() {
   const [index, setIndex] = useState(0);
@@ -113,13 +123,15 @@ function Hero() {
     <section ref={ref} className="relative h-[100svh] min-h-[640px] max-h-[960px] overflow-hidden bg-background" aria-label="Featured photography">
       <motion.div className="absolute inset-0 will-change-transform" style={{ y: imgY }}>
         <AnimatePresence initial={false}>
+          {/* Each new photo wipes in from the right over the previous one, led by a thin
+              orange line; no zoom, so the photo always shows exactly as framed. */}
           <motion.div
             key={index}
             className="absolute inset-0"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 1.6, ease }}
+            initial={{ clipPath: 'inset(0 0 0 100%)' }}
+            animate={{ clipPath: 'inset(0 0 0 0%)' }}
+            exit={{ opacity: 0, transition: { delay: WIPE_S, duration: 0.25 } }}
+            transition={{ duration: WIPE_S, ease: wipeEase }}
           >
             <motion.img
               src={slide.src}
@@ -127,13 +139,20 @@ function Hero() {
               sizes="100vw"
               alt={slide.alt}
               className="h-full w-full object-cover"
-              style={{ objectPosition: slide.pos, transformOrigin: slide.pos }}
-              initial={{ scale: 1.04 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: SLIDE_MS / 1000 + 2, ease: 'linear' }}
+              style={{ objectPosition: slide.pos }}
+              initial={{ x: '6%' }}
+              animate={{ x: '0%' }}
+              transition={{ duration: WIPE_S, ease: wipeEase }}
               fetchpriority={index === 0 ? 'high' : 'auto'}
               decoding="async"
               draggable="false"
+            />
+            <motion.span
+              aria-hidden="true"
+              className="absolute inset-y-0 w-[3px] bg-gold"
+              initial={{ left: '100%', opacity: 1 }}
+              animate={{ left: '0%', opacity: 0 }}
+              transition={{ left: { duration: WIPE_S, ease: wipeEase }, opacity: { duration: 0.3, delay: WIPE_S - 0.15 } }}
             />
           </motion.div>
         </AnimatePresence>
@@ -220,32 +239,42 @@ function Hero() {
 /* Selected work — filterable grid with layout animation               */
 /* ------------------------------------------------------------------ */
 
+// Each tile reveals as it scrolls into view: a curtain lifts from the bottom
+// while the photo settles into place and the caption slides up after it.
 function Tile({ item, ratio, tall = false, caption = true, delay = 0 }) {
   return (
     <motion.figure
       layout
-      initial={{ opacity: 0, y: 28 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.8, ease, delay }}
+      initial="hidden"
+      whileInView="show"
+      exit={{ opacity: 0, transition: { duration: 0.25 } }}
+      viewport={{ once: true, margin: '-60px' }}
       className={`group m-0 ${tall ? 'sm:row-span-2' : ''}`}
     >
-      <div className={`relative overflow-hidden bg-white/[0.04] ${tall ? 'h-full min-h-[460px] sm:min-h-[560px]' : ''}`}>
-        <img
+      <motion.div
+        variants={{ hidden: { clipPath: 'inset(100% 0% 0% 0%)' }, show: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.1, ease: [0.77, 0, 0.18, 1], delay } } }}
+        className={`relative overflow-hidden bg-white/[0.04] ${tall ? 'h-full min-h-[460px] sm:min-h-[560px]' : ''}`}
+      >
+        <motion.img
           src={item.src}
           srcSet={item.srcSet}
           sizes={tall ? '(min-width: 640px) 33vw, 100vw' : ratio === 'aspect-[16/9]' ? '(min-width: 640px) 50vw, 100vw' : '(min-width: 640px) 33vw, 100vw'}
           alt={item.alt}
           loading="lazy"
           decoding="async"
-          className={`block w-full object-cover transition-transform duration-[1.4s] group-hover:scale-[1.05] ${tall ? 'absolute inset-0 h-full' : ratio}`}
-          style={{ transitionTimingFunction: 'cubic-bezier(0.22,0.61,0.36,1)' }}
+          variants={{ hidden: { scale: 1.06 }, show: { scale: 1, transition: { duration: 1.4, ease, delay } } }}
+          className={`block w-full object-cover transition-[filter] duration-700 group-hover:brightness-110 ${tall ? 'absolute inset-0 h-full' : ratio}`}
         />
-      </div>
+        <span aria-hidden="true" className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/0 transition-all duration-500 group-hover:ring-gold/60" />
+      </motion.div>
       {caption && (
-        <figcaption className="mt-3 font-lato text-[11px] tracking-[0.24em] uppercase text-[#B9B2AA] transition-colors group-hover:text-white">
+        <motion.figcaption
+          variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: delay + 0.5 } } }}
+          className="mt-3 flex items-center gap-2 font-lato text-[11px] tracking-[0.24em] uppercase text-[#B9B2AA] transition-colors group-hover:text-white"
+        >
+          <span className="inline-block h-px w-0 bg-gold transition-all duration-500 group-hover:w-5" />
           {item.cat}
-        </figcaption>
+        </motion.figcaption>
       )}
     </motion.figure>
   );
@@ -263,15 +292,7 @@ function SelectedWork() {
   return (
     <section id="work" className="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-12 pt-[72px] pb-[120px] scroll-mt-20">
       <div className="flex flex-wrap items-end justify-between gap-6 mb-11">
-        <motion.h2
-          className="m-0 text-[40px] leading-none tracking-[0.06em] text-white uppercase"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.8, ease }}
-        >
-          Selected work
-        </motion.h2>
+<SplitReveal as="h2" text="Selected work" className="m-0 text-[40px] leading-none tracking-[0.06em] text-white uppercase" />
         <div className="flex flex-wrap gap-x-7 gap-y-2.5" role="tablist" aria-label="Filter work by category">
           {filters.map((f) => (
             <button
@@ -337,7 +358,13 @@ function SelectedWork() {
 function Statement() {
   const words = 'Weddings, portraits, corporate, graduations and matric dance — photographed with a quiet, honest eye.'.split(' ');
   return (
-    <section className="bg-[#9E4317] text-white">
+    <motion.section
+      className="bg-[#9E4317] text-white"
+      initial={{ clipPath: 'inset(6% 5% 6% 5%)' }}
+      whileInView={{ clipPath: 'inset(0% 0% 0% 0%)' }}
+      viewport={{ once: true, margin: '-15% 0px' }}
+      transition={{ duration: 1.2, ease: [0.77, 0, 0.18, 1] }}
+    >
       <div className="mx-auto max-w-[1360px] px-5 sm:px-8 lg:px-12 py-[112px] flex flex-col items-center text-center gap-[22px]">
         <p className="m-0 font-lato text-[12px] tracking-[0.32em] uppercase text-[#F8D9C3]">Beautiful moments &nbsp;|&nbsp; Timeless memories</p>
         <motion.p
@@ -361,7 +388,7 @@ function Statement() {
           About Brooklyn
         </Link>
       </div>
-    </section>
+    </motion.section>
   );
 }
 
@@ -375,9 +402,9 @@ function LocalSeo() {
       <div className="grid lg:grid-cols-[1fr_1.4fr] gap-12 lg:gap-20">
         <div>
           <p className="font-lato text-[11px] tracking-[0.3em] uppercase text-gold mb-5">Photographer in Johannesburg</p>
-          <h2 className="text-[34px] md:text-[44px] leading-[1.05] text-white">Professional photography across Johannesburg &amp; Gauteng</h2>
+          <SplitReveal as="h2" by="word" stagger={0.06} text="Professional photography across Johannesburg & Gauteng" className="text-[34px] md:text-[44px] leading-[1.05] text-white" />
         </div>
-        <div className="grid sm:grid-cols-2 gap-8 font-lato text-[15px] leading-[1.8] text-white/65">
+        <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.9, ease }} className="grid sm:grid-cols-2 gap-8 font-lato text-[15px] leading-[1.8] text-white/65">
           <p>
             Stills by Brooklyn is a professional photographer based in Midrand, Johannesburg, offering photography to individuals, families and businesses across Gauteng — from sharp corporate headshots to intimate portraits and full wedding coverage.
           </p>
@@ -394,7 +421,7 @@ function LocalSeo() {
               ))}
             </div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

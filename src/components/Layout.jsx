@@ -4,6 +4,7 @@ import { MotionConfig } from 'framer-motion';
 import Navbar from './Navbar';
 import Footer from './Footer';
 import MobileBookingBar from './MobileBookingBar';
+import ScrollProgress from './ScrollProgress';
 
 const PageSpinner = () => (
   <div className="min-h-[70vh] flex items-center justify-center">
@@ -23,6 +24,7 @@ export default function Layout() {
     // reducedMotion="user": every framer animation respects the visitor's OS setting
     <MotionConfig reducedMotion="user">
       <div className="min-h-screen flex flex-col bg-background text-foreground">
+        <ScrollProgress />
         <Navbar />
         <main className="flex-1 relative z-10">
           <Suspense fallback={<PageSpinner />}>
