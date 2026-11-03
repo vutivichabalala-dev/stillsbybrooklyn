@@ -105,7 +105,6 @@ const AuthenticatedApp = () => {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/reels" element={<Reels />} />
-                {/* <Route path="/pricing" element={<Pricing />} /> */}
               </Route>
               {/* Client Portal */}
               <Route path="/portal" element={<ClientLogin />} />

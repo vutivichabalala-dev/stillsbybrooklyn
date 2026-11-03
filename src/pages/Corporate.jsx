@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
-import ServicePricing from '../components/ServicePricing';
 import TestimonialsSection from '../components/TestimonialsSection';
 import ServiceCTA from '../components/ServiceCTA';
 
@@ -66,7 +65,6 @@ export default function Corporate() {
           <p className="text-white/55 text-sm font-montserrat font-light leading-relaxed max-w-xl mx-auto">
             Professional imagery that elevates your brand identity, communicates excellence, and leaves a lasting impression on every audience.
           </p>
-          <ServicePricing service="corporate" />
         </motion.div>
       </section>
 

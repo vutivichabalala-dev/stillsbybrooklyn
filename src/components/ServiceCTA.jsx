@@ -27,12 +27,6 @@ export default function ServiceCTA({ title, subtitle }) {
             >
               Book a Session <ArrowRight size={13} />
             </Link>
-            <Link
-              to="/pricing"
-              className="inline-flex items-center justify-center gap-2 px-10 py-4 border border-white/20 text-white/60 text-xs font-montserrat font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:border-gold/50 hover:text-gold rounded-sm"
-            >
-              View Pricing
-            </Link>
           </div>
         </GlassCard>
       </div>

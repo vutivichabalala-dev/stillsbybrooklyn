@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
-import ServicePricing from '../components/ServicePricing';
 import TestimonialsSection from '../components/TestimonialsSection';
 import ServiceCTA from '../components/ServiceCTA';
 
@@ -54,7 +53,6 @@ export default function Portraits() {
           <p className="text-white/55 text-sm font-montserrat font-light leading-relaxed max-w-xl mx-auto">
             Intimate, expressive portraits that reveal the authentic spirit of every individual — crafted with natural light and genuine connection.
           </p>
-          <ServicePricing service="portraits" />
         </motion.div>
       </section>
 

@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { useEffect } from 'react';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
-import ServicePricing from '../components/ServicePricing';
 import TestimonialsSection from '../components/TestimonialsSection';
 import ServiceCTA from '../components/ServiceCTA';
 
@@ -25,7 +24,7 @@ export default function Weddings() {
   useEffect(() => {
     document.title = 'Wedding Photography';
     const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Cinematic wedding & lobola photography across Gauteng. Candid, timeless coverage with packages from R8,500. Book your date with Stills by Brooklyn.');
+    if (meta) meta.setAttribute('content', 'Cinematic wedding & lobola photography across Gauteng. Candid, timeless coverage. Book your date with Stills by Brooklyn.');
   }, []);
 
    return (
@@ -45,7 +44,6 @@ export default function Weddings() {
           <p className="text-white/55 text-sm font-montserrat font-light leading-relaxed max-w-xl mx-auto">
             Timeless storytelling for the most important day of your life. Every glance, every tear, every laugh — preserved with intention and artistry.
           </p>
-          <ServicePricing service="weddings" />
         </motion.div>
       </section>
 
