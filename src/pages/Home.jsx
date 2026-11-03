@@ -16,25 +16,34 @@ const P = 'https://images.pixieset.com/224055201/';
 /* Content                                                             */
 /* ------------------------------------------------------------------ */
 
+// Pixieset serves several sizes; give the browser the choice so phones get small
+// files and big/retina screens get the sharp 1600px version.
+const px = (id) => ({
+  src: `${P}${id}-xxlarge.jpg`,
+  srcSet: `${P}${id}-large.jpg 640w, ${P}${id}-xlarge.jpg 1024w, ${P}${id}-xxlarge.jpg 1600w`,
+});
+
+// Hero uses only full-resolution originals (1600–1800px). The Base44-hosted
+// wedding/corporate/graduation copies are only 681px wide, too soft full-screen.
 const heroSlides = [
-  { src: `${M}6690fe0fb_DSC_5010.jpg`, alt: 'Bride smiling during her wedding morning', label: 'Weddings', pos: '50% 30%' },
-  { src: `${F}23c6f23d5_m1.jpg`, alt: 'Matric dance couple by the lake at golden hour', label: 'Matric Dance', pos: '50% 45%' },
-  { src: `${M}47ae0dc0f_DSC_4110.jpg`, alt: 'Corporate executive portrait in a lounge', label: 'Corporate', pos: '50% 35%' },
-  { src: `${M}a33532f67_DSC_4300.jpg`, alt: 'Graduation portrait in cap and gown', label: 'Graduations', pos: '50% 30%' },
-  { src: `${P}8b064709835a34b21aba22f4a48f292b-large.jpg`, alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 35%' },
-  { src: `${M}4ce78177c_DSC_5068.jpg`, alt: 'Bridal portrait, bride smiling sideways', label: 'Weddings', pos: '50% 30%' },
+  { src: `${F}23c6f23d5_m1.jpg`, alt: 'Matric dance couple by the lake at golden hour', label: 'Matric Dance', pos: '50% 40%' },
+  { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 30%' },
+  { src: `${F}422cb06bd_m5.jpg`, alt: 'Matric dance couple with sunset flare', label: 'Matric Dance', pos: '50% 40%' },
+  { ...px('7434a23374497b1b13cc0130da62472b'), alt: 'Natural light lifestyle portrait', label: 'Portraits', pos: '50% 30%' },
+  { src: `${F}fb33a2eb4_m7.jpg`, alt: 'Matric dance couple holding hands with red roses', label: 'Matric Dance', pos: '50% 45%' },
+  { ...px('2cf20d4a9d00d86934d0adb64a70c03f'), alt: 'Lifestyle portrait', label: 'Portraits', pos: '50% 30%' },
 ];
 
 const work = [
   { src: `${M}1d785af91_DSC_5034.jpg`, alt: 'Bride laughing while writing her vows', cat: 'Weddings' },
   { src: `${F}f17a7f633_m4.jpg`, alt: 'Matric dance portrait, beaded gown with corset back', cat: 'Matric Dance' },
   { src: `${M}d0c463f82_DSC_4127.jpg`, alt: 'Corporate portrait in a luxury interior', cat: 'Corporate' },
-  { src: `${P}7434a23374497b1b13cc0130da62472b-large.jpg`, alt: 'Natural light lifestyle portrait', cat: 'Portraits' },
   { src: `${M}922435be1_DSC_4228.jpg`, alt: 'Graduation portrait', cat: 'Graduations' },
+  { ...px('fa1a43cc250efd88003bc5da98382de8'), alt: 'Expressive individual portrait', cat: 'Portraits' },
+  { src: `${F}ea0215502_m8.jpg`, alt: 'Matric dance couple overlooking the lake at sunset', cat: 'Matric Dance', wide: true },
+  { ...px('ba20179241b13dc570b3d7c663e22bf5'), alt: 'Candid lifestyle portrait', cat: 'Portraits', wide: true },
   { src: `${M}a5a2523e3_DSC_5077.jpg`, alt: 'Bride with perfume bottle', cat: 'Weddings' },
   { src: `${M}b6065684a_DSC_4113.jpg`, alt: 'Corporate portrait of a man in a navy suit', cat: 'Corporate' },
-  { src: `${F}fb33a2eb4_m7.jpg`, alt: 'Matric dance couple holding hands with red roses', cat: 'Matric Dance' },
-  { src: `${P}fa1a43cc250efd88003bc5da98382de8-large.jpg`, alt: 'Expressive individual portrait', cat: 'Portraits' },
   { src: `${M}7dbd77260_DSC_4354.jpg`, alt: 'Graduation portrait outdoors', cat: 'Graduations' },
   { src: `${M}55625f9db_DSC_5069.jpg`, alt: 'Bride laughing freely', cat: 'Weddings' },
   { src: `${M}53fd1db74_DSC_4135.jpg`, alt: 'Corporate portrait with eagle sculpture', cat: 'Corporate' },
@@ -97,11 +106,13 @@ function Hero() {
           >
             <motion.img
               src={slide.src}
+              srcSet={slide.srcSet}
+              sizes="100vw"
               alt={slide.alt}
               className="h-full w-full object-cover"
               style={{ objectPosition: slide.pos }}
-              initial={{ scale: 1.14 }}
-              animate={{ scale: 1.02 }}
+              initial={{ scale: 1.07 }}
+              animate={{ scale: 1 }}
               transition={{ duration: SLIDE_MS / 1000 + 2, ease: 'linear' }}
               fetchpriority={index === 0 ? 'high' : 'auto'}
               decoding="async"
@@ -205,6 +216,8 @@ function Tile({ item, ratio, tall = false, caption = true, delay = 0 }) {
       <div className={`relative overflow-hidden bg-white/[0.04] ${tall ? 'h-full min-h-[460px] sm:min-h-[560px]' : ''}`}>
         <img
           src={item.src}
+          srcSet={item.srcSet}
+          sizes={tall ? '(min-width: 640px) 33vw, 100vw' : ratio === 'aspect-[16/9]' ? '(min-width: 640px) 50vw, 100vw' : '(min-width: 640px) 33vw, 100vw'}
           alt={item.alt}
           loading="lazy"
           decoding="async"
@@ -227,7 +240,7 @@ function SelectedWork() {
   // "All" uses the template's arrangement: one tall photo, four 3:2 tiles, then two wide 16:9 tiles
   const tall = byCat('Weddings')[0];
   const four = [byCat('Matric Dance')[0], byCat('Corporate')[0], byCat('Graduations')[0], byCat('Portraits')[0]];
-  const wide = [byCat('Weddings')[1], byCat('Portraits')[1]];
+  const wide = work.filter((w) => w.wide);
   const filtered = filter === 'All' ? [] : byCat(filter);
 
   return (

@@ -47,12 +47,12 @@ const placeholderItems = [
   { id: 'w16', category: 'Weddings', size: 'small', url: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/beeb988be_DSC_5120.jpg', alt: 'Bridal portrait — bride holding shoes' },
   { id: 'w17', category: 'Weddings', size: 'large', url: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/cccedc2d2_DSC_5125.jpg', alt: 'Bridal portrait — bride holding hair' },
   // Portraits - Jubilee session
-  { id: 19, category: 'Portraits', size: 'large', url: 'https://images.pixieset.com/224055201/7434a23374497b1b13cc0130da62472b-large.jpg', alt: 'Jubilee portrait session - natural light lifestyle photography' },
-  { id: 20, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/ba20179241b13dc570b3d7c663e22bf5-large.jpg', alt: 'Jubilee portrait session - candid lifestyle moment' },
-  { id: 21, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/fa1a43cc250efd88003bc5da98382de8-large.jpg', alt: 'Jubilee portrait session - expressive individual portrait' },
-  { id: 22, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/2cf20d4a9d00d86934d0adb64a70c03f-large.jpg', alt: 'Jubilee portrait session - lifestyle portrait photography' },
-  { id: 23, category: 'Portraits', size: 'large', url: 'https://images.pixieset.com/224055201/8b064709835a34b21aba22f4a48f292b-large.jpg', alt: 'Jubilee portrait session - dramatic natural light portrait' },
-  { id: 24, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/e8913758e3894e34b8d1a0b20f196fc4-large.jpg', alt: 'Jubilee portrait session - intimate personal portrait' },
+  { id: 19, category: 'Portraits', size: 'large', url: 'https://images.pixieset.com/224055201/7434a23374497b1b13cc0130da62472b-xlarge.jpg', alt: 'Jubilee portrait session - natural light lifestyle photography' },
+  { id: 20, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/ba20179241b13dc570b3d7c663e22bf5-xlarge.jpg', alt: 'Jubilee portrait session - candid lifestyle moment' },
+  { id: 21, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/fa1a43cc250efd88003bc5da98382de8-xlarge.jpg', alt: 'Jubilee portrait session - expressive individual portrait' },
+  { id: 22, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/2cf20d4a9d00d86934d0adb64a70c03f-xlarge.jpg', alt: 'Jubilee portrait session - lifestyle portrait photography' },
+  { id: 23, category: 'Portraits', size: 'large', url: 'https://images.pixieset.com/224055201/8b064709835a34b21aba22f4a48f292b-xlarge.jpg', alt: 'Jubilee portrait session - dramatic natural light portrait' },
+  { id: 24, category: 'Portraits', size: 'small', url: 'https://images.pixieset.com/224055201/e8913758e3894e34b8d1a0b20f196fc4-xlarge.jpg', alt: 'Jubilee portrait session - intimate personal portrait' },
   // Graduations
   { id: 25, category: 'Graduations', size: 'large', url: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/922435be1_DSC_4228.jpg', alt: 'Graduation portrait' },
   { id: 26, category: 'Graduations', size: 'small', url: 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/c07e6f7ad_DSC_4229.jpg', alt: 'Graduation portrait' },

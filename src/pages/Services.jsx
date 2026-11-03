@@ -41,11 +41,11 @@ const services = [
     href: '/photography-studio-johannesburg',
     color: 'from-purple-900/30',
     images: [
-      'https://images.pixieset.com/224055201/7434a23374497b1b13cc0130da62472b-large.jpg',
-      'https://images.pixieset.com/224055201/8b064709835a34b21aba22f4a48f292b-large.jpg',
-      'https://images.pixieset.com/224055201/ba20179241b13dc570b3d7c663e22bf5-large.jpg',
-      'https://images.pixieset.com/224055201/fa1a43cc250efd88003bc5da98382de8-large.jpg',
-      'https://images.pixieset.com/224055201/e8913758e3894e34b8d1a0b20f196fc4-large.jpg',
+      'https://images.pixieset.com/224055201/7434a23374497b1b13cc0130da62472b-xlarge.jpg',
+      'https://images.pixieset.com/224055201/8b064709835a34b21aba22f4a48f292b-xlarge.jpg',
+      'https://images.pixieset.com/224055201/ba20179241b13dc570b3d7c663e22bf5-xlarge.jpg',
+      'https://images.pixieset.com/224055201/fa1a43cc250efd88003bc5da98382de8-xlarge.jpg',
+      'https://images.pixieset.com/224055201/e8913758e3894e34b8d1a0b20f196fc4-xlarge.jpg',
     ],
   },
   {
