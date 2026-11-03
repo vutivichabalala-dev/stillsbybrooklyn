@@ -48,6 +48,7 @@ export default function HomeContactForm() {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [sendError, setSendError] = useState('');
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -59,9 +60,16 @@ export default function HomeContactForm() {
     const errs = validate(form);
     if (Object.keys(errs).length) { setErrors(errs); return; }
     setSubmitting(true);
-    await base44.functions.invoke('sendEmails', { type: 'contact', data: form });
-    setSubmitting(false);
-    setSubmitted(true);
+    setSendError('');
+    try {
+      await base44.functions.invoke('sendEmails', { type: 'contact', data: form });
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Contact form failed:', err);
+      setSendError("Sorry, your message couldn't be sent. Please try again, or WhatsApp/call 067 786 0702.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -243,6 +251,7 @@ export default function HomeContactForm() {
                     )}
                   </button>
                 </div>
+                {sendError && <p role="alert" className="text-red-400 text-xs font-montserrat mt-2">{sendError}</p>}
               </motion.form>
             )}
           </AnimatePresence>

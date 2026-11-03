@@ -204,7 +204,7 @@ function adminNotificationEmail({ type, data }) {
 </html>`;
 }
 
-async function sendViaResend(payload) {
+async function sendViaResend(payload: Record<string, unknown>) {
   const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
   if (!RESEND_API_KEY) throw new Error('RESEND_API_KEY is not set');
   const res = await fetch('https://api.resend.com/emails', {
@@ -213,8 +213,42 @@ async function sendViaResend(payload) {
     body: JSON.stringify({ from: FROM_EMAIL, ...payload }),
     signal: AbortSignal.timeout(15000),
   });
-  if (!res.ok) throw new Error(`Resend responded ${res.status}`);
+  if (!res.ok) {
+    const detail = await res.text().catch(() => '');
+    throw new Error(`Resend responded ${res.status}: ${detail.slice(0, 300)}`);
+  }
   return res.json();
+}
+
+// Try Resend first; if it fails (e.g. domain not yet verified), fall back to
+// Base44's built-in mailer so the email still goes out. Never throws.
+async function sendMail(
+  base44: any,
+  { to, cc = [], subject, html }: { to: string[]; cc?: string[]; subject: string; html: string },
+) {
+  try {
+    await sendViaResend({ to, ...(cc.length ? { cc } : {}), subject, html });
+    return { ok: true, via: 'resend' };
+  } catch (resendErr) {
+    const resendMsg = resendErr instanceof Error ? resendErr.message : String(resendErr);
+    console.error('Resend failed, falling back to Base44 mail:', resendMsg);
+    const recipients = [...to, ...cc];
+    let delivered = 0;
+    for (const addr of recipients) {
+      try {
+        await base44.asServiceRole.integrations.Core.SendEmail({
+          to: addr,
+          subject,
+          body: html,
+          from_name: 'Stills by Brooklyn',
+        });
+        delivered++;
+      } catch (fallbackErr) {
+        console.error(`Base44 mail fallback failed for ${addr}:`, fallbackErr instanceof Error ? fallbackErr.message : fallbackErr);
+      }
+    }
+    return { ok: delivered > 0, via: 'base44', error: resendMsg };
+  }
 }
 
 // ─── Handler ──────────────────────────────────────────────────────────────────
@@ -254,20 +288,21 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'Booking has no valid email' }, { status: 400 });
     }
 
-    await sendViaResend({
-      to: [booking.email],
-      subject: sanitizeSubject('Booking Request Received — Stills by Brooklyn'),
-      html: clientConfirmationEmail({ name: booking.full_name, type, data: booking }),
-    });
-
-    await sendViaResend({
+    // Admin first, so a bad client address can never cost Brooklyn the lead.
+    const admin = await sendMail(base44, {
       to: [ADMIN_EMAIL],
       cc: [ADMIN_CC],
       subject: sanitizeSubject(`New Booking Request: ${booking.service} — ${booking.full_name}`),
       html: adminNotificationEmail({ type, data: booking }),
     });
 
-    return Response.json({ success: true });
+    const client = await sendMail(base44, {
+      to: [booking.email],
+      subject: sanitizeSubject('Booking Request Received — Stills by Brooklyn'),
+      html: clientConfirmationEmail({ name: booking.full_name, type, data: booking }),
+    });
+
+    return Response.json({ success: admin.ok || client.ok, admin, client }, { status: admin.ok || client.ok ? 200 : 502 });
   }
 
   // Contact enquiry: no stored record, so the visitor-supplied details are validated,
@@ -285,18 +320,20 @@ Deno.serve(async (req) => {
     return Response.json({ error: 'Invalid contact details' }, { status: 400 });
   }
 
-  await sendViaResend({
-    to: [contact.email],
-    subject: sanitizeSubject('Message Received — Stills by Brooklyn'),
-    html: clientConfirmationEmail({ name: contact.name, type, data: contact }),
-  });
-
-  await sendViaResend({
+  // Admin first, so a bad visitor address can never cost Brooklyn the enquiry.
+  const admin = await sendMail(base44, {
     to: [ADMIN_EMAIL],
     cc: [ADMIN_CC],
     subject: sanitizeSubject(`New Enquiry from ${contact.name}`),
     html: adminNotificationEmail({ type, data: contact }),
   });
 
-  return Response.json({ success: true });
+  const client = await sendMail(base44, {
+    to: [contact.email],
+    subject: sanitizeSubject('Message Received — Stills by Brooklyn'),
+    html: clientConfirmationEmail({ name: contact.name, type, data: contact }),
+  });
+
+  // Only report failure if Brooklyn's copy didn't arrive.
+  return Response.json({ success: admin.ok, admin, client }, { status: admin.ok ? 200 : 502 });
 });

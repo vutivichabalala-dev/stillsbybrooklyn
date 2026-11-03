@@ -47,6 +47,7 @@ export default function Booking() {
    const [errors, setErrors] = useState({});
    const [submitted, setSubmitted] = useState(false);
    const [submitting, setSubmitting] = useState(false);
+   const [submitError, setSubmitError] = useState('');
 
   const updateField = (field, value) => {
     setBooking(prev => ({ ...prev, [field]: value }));
@@ -72,8 +73,26 @@ export default function Booking() {
 
   const handleSubmit = async () => {
     setSubmitting(true);
-    const created = await base44.entities.Booking.create(booking);
-    await base44.functions.invoke('sendEmails', { type: 'booking', id: created.id });
+    setSubmitError('');
+    // Drop empty optional fields (e.g. location_type '' is not an allowed value).
+    const payload = Object.fromEntries(
+      Object.entries(booking).filter(([, v]) => typeof v !== 'string' || v.trim() !== '')
+    );
+    let created;
+    try {
+      created = await base44.entities.Booking.create(payload);
+    } catch (err) {
+      console.error('Booking save failed:', err);
+      setSubmitError("Sorry, your booking couldn't be submitted. Please try again, or WhatsApp/call 067 786 0702.");
+      setSubmitting(false);
+      return;
+    }
+    // The booking is saved; a failed notification email shouldn't block the client.
+    try {
+      await base44.functions.invoke('sendEmails', { type: 'booking', id: created.id });
+    } catch (err) {
+      console.error('Booking email failed:', err);
+    }
     setSubmitting(false);
     setSubmitted(true);
   };
@@ -149,6 +168,7 @@ export default function Booking() {
                 {submitting ? 'Submitting...' : step === 3 ? 'Confirm Booking' : 'Continue →'}
               </button>
             </div>
+            {submitError && <p role="alert" className="text-red-400 text-xs font-montserrat text-right mt-4">{submitError}</p>}
           </motion.div>
         ) : (
           <BookingSuccess booking={booking} />

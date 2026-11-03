@@ -1,4 +1,5 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
+import { escapeHtml, sanitizeSubject } from '../../shared/emailSafe.ts';
 
 const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 const ADMIN_EMAIL = 'info@stillsbybrooklyn.co.za';
@@ -22,9 +23,11 @@ Deno.serve(async (req) => {
       return Response.json({ error: 'No booking submissions found' }, { status: 404 });
     }
 
-    const data = bookings[0];
-    const clientName = data.full_name;
-    const clientEmail = data.email;
+    const raw = bookings[0];
+    const data = Object.fromEntries(Object.entries(raw).map(([k, v]) => [k, typeof v === 'string' && !['date', 'time'].includes(k) ? escapeHtml(v) : v]));
+    const clientName = raw.full_name;
+    const clientEmail = raw.email;
+    if (!RESEND_API_KEY) throw new Error('RESEND_API_KEY is not set');
 
     // Format functions
     function formatDate(dateStr) {
@@ -109,17 +112,22 @@ Deno.serve(async (req) => {
 </html>`;
 
     // Send to admin
-    await fetch('https://api.resend.com/emails', {
+    const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${RESEND_API_KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: FROM_EMAIL,
         to: [ADMIN_EMAIL],
         cc: [ADMIN_CC],
-        subject: `Booking Request (Resent): ${data.service} — ${clientName}`,
+        subject: sanitizeSubject(`Booking Request (Resent): ${raw.service} — ${clientName}`),
         html: adminHtml,
       }),
+      signal: AbortSignal.timeout(15000),
     });
+    if (!res.ok) {
+      const detail = await res.text().catch(() => '');
+      return Response.json({ error: `Resend responded ${res.status}: ${detail.slice(0, 300)}` }, { status: 502 });
+    }
 
     return Response.json({ 
       success: true,

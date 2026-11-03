@@ -23,15 +23,23 @@ export default function Contact() {
    const [form, setForm] = useState({ name: '', email: '', phone: '', service: '', message: '' });
    const [submitted, setSubmitted] = useState(false);
    const [submitting, setSubmitting] = useState(false);
+   const [sendError, setSendError] = useState('');
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    await base44.functions.invoke('sendEmails', { type: 'contact', data: form });
-    setSubmitting(false);
-    setSubmitted(true);
+    setSendError('');
+    try {
+      await base44.functions.invoke('sendEmails', { type: 'contact', data: form });
+      setSubmitted(true);
+    } catch (err) {
+      console.error('Contact form failed:', err);
+      setSendError("Sorry, your message couldn't be sent. Please try again, or WhatsApp/call 067 786 0702.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -153,6 +161,7 @@ export default function Contact() {
                     className="mt-2 px-10 py-4 border border-gold/60 bg-gold/10 text-gold text-xs font-montserrat font-bold tracking-[0.2em] uppercase transition-all duration-300 hover:bg-gold hover:text-black flex items-center justify-center gap-2 self-start rounded-sm disabled:opacity-50 disabled:cursor-not-allowed">
                     {submitting ? 'Sending...' : <><span>Send Message</span><Send size={13} /></>}
                   </button>
+                  {sendError && <p role="alert" className="text-red-400 text-xs font-montserrat mt-2">{sendError}</p>}
                 </form>
               )}
             </GlassCard>
