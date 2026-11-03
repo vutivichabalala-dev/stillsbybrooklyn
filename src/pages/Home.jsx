@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import React, { useEffect } from 'react';
+import React from 'react';
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
+import { locationNav } from '@/content/seoPages';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
 import HeroSlider from '../components/HeroSlider';
@@ -24,25 +27,25 @@ const categories = [
     title: 'Corporate',
     description: 'Professional imagery that elevates your brand identity and communicates excellence.',
     slug: 'corporate',
-    href: '/services/corporate',
+    href: '/corporate-headshots-johannesburg',
   },
   {
     title: 'Portraits',
     description: 'Intimate, expressive portraits that reveal the authentic spirit of every individual.',
     slug: 'portraits',
-    href: '/services/portraits',
+    href: '/photography-studio-johannesburg',
   },
   {
     title: 'Weddings',
     description: 'Timeless storytelling for the most important day of your life.',
     slug: 'weddings',
-    href: '/services/weddings',
+    href: '/wedding-photographer-johannesburg',
   },
   {
     title: 'Graduations',
     description: 'Celebrate your milestone with beautiful, lasting graduation photography.',
     slug: 'graduations',
-    href: '/services',
+    href: '/graduation-photoshoot-johannesburg',
   },
 ];
 
@@ -65,11 +68,7 @@ const recentShots = [
 ];
 
 export default function Home() {
-  useEffect(() => {
-    document.title = 'Corporate Photography Johannesburg';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Stills by Brooklyn — professional photographer in Johannesburg specialising in corporate headshots, portrait sessions, and wedding photography. Based in Midrand, serving Johannesburg, Sandton, Pretoria and beyond. Book your session today.');
-  }, []);
+  useSeo(corePages.home);
 
   return (
     <div className="bg-background relative">
@@ -81,7 +80,7 @@ export default function Home() {
       <section className="py-24 px-6 lg:px-10 max-w-7xl mx-auto relative z-10">
         <motion.div {...fadeUp(0)}>
           <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase">What I Do</span>
-          <h2 className="text-3xl md:text-4xl font-montserrat font-bold text-white mb-10 mt-4">Specialities</h2>
+          <h2 className="text-3xl md:text-4xl font-montserrat font-bold text-white mb-10 mt-4">Photography and Video for Every Milestone</h2>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-8">
@@ -190,6 +189,19 @@ export default function Home() {
               <p>
                 From fast-turnaround executive headshots for Sandton corporate teams to full-day wedding photography across the Highveld, every project receives the same meticulous attention to light, composition, and post-processing.
               </p>
+            </div>
+          </motion.div>
+          <motion.div {...fadeUp(0.1)} className="mt-14">
+            <h2 className="text-xl md:text-2xl font-montserrat font-bold text-white mb-5">Areas We Cover</h2>
+            <p className="text-white/45 text-sm font-montserrat font-light leading-relaxed mb-5">
+              Based in Midrand and shooting regularly across Johannesburg and Pretoria. For weddings and traditional ceremonies, we travel nationwide.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {locationNav.map((l) => (
+                <Link key={l.path} to={l.path} className="px-4 py-2 border border-white/15 text-white/60 text-xs font-montserrat tracking-wider uppercase hover:border-gold/50 hover:text-gold transition-all duration-300 rounded-sm">
+                  Photographer in {l.label}
+                </Link>
+              ))}
             </div>
           </motion.div>
         </div>

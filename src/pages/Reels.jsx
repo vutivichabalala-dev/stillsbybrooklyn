@@ -1,3 +1,5 @@
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Film, Plus, SlidersHorizontal, Clock } from 'lucide-react';
@@ -53,10 +55,9 @@ export default function Reels() {
   const [showUpload, setShowUpload] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
 
+  useSeo(corePages.reels);
+
   useEffect(() => {
-    document.title = 'Video Reels';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Watch cinematic video reels and behind-the-scenes footage from Stills by Brooklyn photography sessions across Johannesburg.');
     loadReels();
     checkAdmin();
   }, []);

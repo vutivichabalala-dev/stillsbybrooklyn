@@ -1,6 +1,24 @@
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin, Instagram, Facebook, Twitter, Linkedin } from 'lucide-react';
 import GlassCard from './GlassCard';
+import { serviceNav, locationNav, seoPages } from '@/content/seoPages';
+
+const blogNav = seoPages.filter((p) => p.kind === 'blog').map((p) => ({ label: p.navLabel, path: p.path }));
+
+function FooterLinks({ heading, links }) {
+  return (
+    <div>
+      <h4 className="text-gold text-xs font-montserrat font-semibold tracking-[0.25em] uppercase mb-6">{heading}</h4>
+      <div className="flex flex-col gap-3">
+        {links.map((item) => (
+          <Link key={item.path} to={item.path} className="text-white/50 text-xs font-montserrat tracking-wider hover:text-gold transition-colors duration-200">
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function Footer() {
   return (
@@ -9,9 +27,9 @@ export default function Footer() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none rounded-2xl" />
 
         <div className="relative px-8 lg:px-12 py-14">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-12">
             {/* Logo + tagline */}
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 lg:col-span-2">
               <div>
                 <span className="text-white font-montserrat text-sm font-light tracking-[0.3em] uppercase">
                   STILLS BY <span className="font-bold">BROOKLYN</span>
@@ -19,10 +37,10 @@ export default function Footer() {
                 <div className="h-[1.5px] w-full mt-1 bg-gold" />
               </div>
               <p className="text-white/50 text-xs font-montserrat font-light tracking-wider leading-relaxed">
-                Capturing moments that last forever. Corporate, portrait &amp; wedding photography across South Africa.
+                Photographer &amp; cinematographer since 2018. Weddings, traditional ceremonies, graduations, headshots and events — based in Midrand, available nationwide.
               </p>
               <div className="flex gap-4 mt-2">
-                <a href="https://www.instagram.com/stillsbybrooklyn/" target="_blank" rel="noopener noreferrer" className="text-white/40 hover:text-gold transition-colors duration-200"><Instagram size={15} /></a>
+                <a href="https://www.instagram.com/stillsbybrooklyn/" target="_blank" rel="noopener noreferrer" aria-label="Stills by Brooklyn on Instagram" className="text-white/40 hover:text-gold transition-colors duration-200"><Instagram size={15} /></a>
                 <a href="#" className="text-white/40 hover:text-gold transition-colors duration-200"><Twitter size={15} /></a>
                 <a href="#" className="text-white/40 hover:text-gold transition-colors duration-200"><Facebook size={15} /></a>
                 <a href="#" className="text-white/40 hover:text-gold transition-colors duration-200"><Linkedin size={15} /></a>
@@ -36,6 +54,8 @@ export default function Footer() {
                 {[
                   { label: 'Home', path: '/' },
                   { label: 'Portfolio', path: '/portfolio' },
+                  { label: 'Services', path: '/services' },
+                  { label: 'Reels', path: '/reels' },
                   { label: 'About', path: '/about' },
                   { label: 'Contact', path: '/contact' }
                 ].map((item) => (
@@ -48,6 +68,15 @@ export default function Footer() {
                   </Link>
                 ))}
               </div>
+            </div>
+
+            {/* Services */}
+            <FooterLinks heading="Services" links={serviceNav} />
+
+            {/* Areas + journal */}
+            <div className="flex flex-col gap-10">
+              <FooterLinks heading="Areas" links={locationNav.map((l) => ({ ...l, label: `Photographer in ${l.label}` }))} />
+              <FooterLinks heading="Journal" links={blogNav} />
             </div>
 
             {/* Contact */}

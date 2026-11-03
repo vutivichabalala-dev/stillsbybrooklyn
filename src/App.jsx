@@ -20,6 +20,9 @@ import Portraits from './pages/Portraits';
 import Weddings from './pages/Weddings';
 import Booking from './pages/Booking';
 import { useTrackVisit } from './hooks/useTrackVisit';
+import SeoPage from './pages/SeoPage';
+import { seoPages } from './content/seoPages';
+import { redirects } from './content/corePages';
 
 // Heavier routes load in their own chunks so the public site stays instant
 const Reels = lazy(() => import('./pages/Reels'));
@@ -91,16 +94,20 @@ const AuthenticatedApp = () => {
             <Routes>
               <Route element={<Layout />}>
                 <Route path="/" element={<Home />} />
-                <Route path="/photographersinjohannesburg" element={<Home />} />
-                {/* Clean URL routes */}
                 <Route path="/portfolio" element={<Portfolio />} />
                 <Route path="/services" element={<Services />} />
-                {/* 301-style redirects for old URLs */}
-                <Route path="/corporatephotographer" element={<RedirectTo to="/portfolio" />} />
-                <Route path="/photographersinsandton" element={<RedirectTo to="/services" />} />
-                <Route path="/services/corporate" element={<Corporate />} />
-                <Route path="/services/portraits" element={<Portraits />} />
-                <Route path="/services/weddings" element={<Weddings />} />
+                {/* Keyword service pages */}
+                <Route path="/wedding-photographer-johannesburg" element={<Weddings />} />
+                <Route path="/corporate-headshots-johannesburg" element={<Corporate />} />
+                <Route path="/photography-studio-johannesburg" element={<Portraits />} />
+                {/* Content-driven service, location and blog pages */}
+                {seoPages.map((page) => (
+                  <Route key={page.path} path={page.path} element={<SeoPage page={page} />} />
+                ))}
+                {/* Old URLs → new keyword URLs (real 301s also live in vercel.json) */}
+                {redirects.map((r) => (
+                  <Route key={r.from} path={r.from} element={<RedirectTo to={r.to} />} />
+                ))}
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/booking" element={<Booking />} />

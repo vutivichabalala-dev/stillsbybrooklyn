@@ -2,12 +2,9 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import { BRAND } from '@/lib/brand';
+import { serviceNav } from '@/content/seoPages';
 
-const serviceLinks = [
-  { label: 'Weddings', path: '/services/weddings' },
-  { label: 'Portraits', path: '/services/portraits' },
-  { label: 'Corporate', path: '/services/corporate' },
-];
+const serviceLinks = serviceNav;
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -110,7 +107,7 @@ export default function Navbar() {
                   />
                 </button>
                 {servicesOpen && (
-                  <div className="absolute left-1/2 top-full mt-3 w-48 -translate-x-1/2 overflow-hidden rounded-sm border border-ink/10 bg-ivory shadow-[0_18px_40px_-24px_rgba(20,18,16,0.5)]">
+                  <div className="absolute left-1/2 top-full mt-3 w-56 -translate-x-1/2 max-h-[70vh] overflow-y-auto rounded-sm border border-ink/10 bg-ivory shadow-[0_18px_40px_-24px_rgba(20,18,16,0.5)]">
                     <Link
                       to="/services"
                       className="block border-b border-ink/10 px-5 py-3 text-[10px] uppercase tracking-[0.2em] text-ink/45 transition-colors hover:text-burgundy"
@@ -176,9 +173,7 @@ export default function Navbar() {
               { label: 'Home', path: '/' },
               { label: 'Portfolio', path: '/portfolio' },
               { label: 'Services', path: '/services' },
-              { label: 'Weddings', path: '/services/weddings', indent: true },
-              { label: 'Portraits', path: '/services/portraits', indent: true },
-              { label: 'Corporate', path: '/services/corporate', indent: true },
+              ...serviceLinks.map((l) => ({ ...l, indent: true })),
               { label: 'About', path: '/about' },
               { label: 'Contact', path: '/contact' },
             ].map((link) => (

@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useSeo } from '@/lib/seo';
+import { corePages } from '@/content/corePages';
+import { useState } from 'react';
 import { sendEmail } from '@/lib/sendEmail';
 
 import { motion } from 'framer-motion';
@@ -36,11 +38,7 @@ function validateStep4(booking) {
 }
 
 export default function Booking() {
-  useEffect(() => {
-    document.title = 'Book a Photography Session';
-    const meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', 'Book a photography session with Stills by Brooklyn. Choose from corporate, portrait, wedding, and graduation packages. Available across Johannesburg and South Africa.');
-  }, []);
+  useSeo(corePages.booking);
 
    const [step, setStep] = useState(0);
    const [booking, setBooking] = useState(emptyBooking);
@@ -103,7 +101,7 @@ export default function Booking() {
           className="text-center mb-12"
         >
           <span className="text-gold text-xs font-montserrat font-semibold tracking-[0.3em] uppercase">Stills by Brooklyn</span>
-          <h1 className="text-4xl font-montserrat font-bold text-white mt-3 mb-2">Book a Session</h1>
+          <h1 className="text-4xl font-montserrat font-bold text-white mt-3 mb-2">{corePages.booking.h1}</h1>
           <p className="text-white/40 font-montserrat text-sm">Midrand, South Africa — Available Nationwide</p>
         </motion.div>
 
