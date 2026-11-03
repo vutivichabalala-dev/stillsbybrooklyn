@@ -26,13 +26,13 @@ const px = (id) => ({
 // Hero uses only full-resolution originals (1600–1800px). The Base44-hosted
 // wedding/corporate/graduation copies are only 681px wide, too soft full-screen.
 const heroSlides = [
-  { ...px('4c7e470f347219005082063e353df3c6'), alt: 'Portrait in a green dress with butterflies in her hair', label: 'Portraits', pos: '50% 15%' },
-  { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 12%' },
-  { src: `${F}422cb06bd_m5.jpg`, alt: 'Matric dance couple with sunset flare', label: 'Matric Dance', pos: '50% 12%' },
+  { ...px('4c7e470f347219005082063e353df3c6'), alt: 'Portrait in a green dress with butterflies in her hair', label: 'Portraits', pos: '50% 48%' },
+  { ...px('8b064709835a34b21aba22f4a48f292b'), alt: 'Portrait in dramatic natural light', label: 'Portraits', pos: '50% 43%' },
+  { src: `${F}422cb06bd_m5.jpg`, alt: 'Matric dance couple with sunset flare', label: 'Matric Dance', pos: '50% 21%' },
   { ...px('c8727e01154b5295ffb8f9af50582f54'), alt: 'Portrait leaning against a tree in the park', label: 'Portraits', pos: '50% 37%' },
-  { ...px('7434a23374497b1b13cc0130da62472b'), alt: 'Natural light lifestyle portrait', label: 'Portraits', pos: '50% 14%' },
-  { src: `${F}fb33a2eb4_m7.jpg`, alt: 'Matric dance couple holding hands with red roses', label: 'Matric Dance', pos: '50% 25%' },
-  { ...px('2cf20d4a9d00d86934d0adb64a70c03f'), alt: 'Lifestyle portrait', label: 'Portraits', pos: '50% 12%' },
+  { ...px('7434a23374497b1b13cc0130da62472b'), alt: 'Natural light lifestyle portrait', label: 'Portraits', pos: '50% 47%' },
+  { src: `${F}fb33a2eb4_m7.jpg`, alt: 'Matric dance couple holding hands with red roses', label: 'Matric Dance', pos: '50% 32%' },
+  { ...px('2cf20d4a9d00d86934d0adb64a70c03f'), alt: 'Lifestyle portrait', label: 'Portraits', pos: '50% 43%' },
 ];
 
 const work = [
