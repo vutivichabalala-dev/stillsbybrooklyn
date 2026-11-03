@@ -42,14 +42,14 @@ export default function BrandLoader() {
 
         <div
           className="sb-loader-track mt-8 h-[2px] w-40 overflow-hidden sm:w-48"
-          style={{ backgroundColor: 'rgba(140,101,101,0.18)' }}
+          style={{ backgroundColor: 'rgba(106,34,48,0.18)' }}
         >
           <div className="sb-loader-fill h-full w-full" style={{ backgroundColor: BRAND.burgundy }} />
         </div>
 
         <p
           className="sb-loader-caption mt-5 font-montserrat text-[9px] font-medium uppercase tracking-[0.42em]"
-          style={{ color: 'rgba(140,101,101,0.85)' }}
+          style={{ color: 'rgba(106,34,48,0.85)' }}
         >
           Preparing your experience
         </p>

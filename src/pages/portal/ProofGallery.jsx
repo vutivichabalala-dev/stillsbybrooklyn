@@ -159,7 +159,7 @@ export default function ProofGallery() {
 
       {images.some(i => i.favorite || i.finalPick || i.editRequest) && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-30">
-          <div className="bg-[#0d0d10]/95 backdrop-blur-xl border border-gold/30 rounded-sm px-8 py-4 flex items-center gap-6 shadow-2xl">
+          <div className="bg-[#171415]/95 backdrop-blur-xl border border-gold/30 rounded-sm px-8 py-4 flex items-center gap-6 shadow-2xl">
             <div className="flex items-center gap-4 text-xs font-montserrat">
               <span className="text-white/50">{images.filter(i => i.favorite).length} <span className="text-rose-400">Fav</span></span>
               <span className="text-white/50">{images.filter(i => i.finalPick).length} <span className="text-gold">Final</span></span>

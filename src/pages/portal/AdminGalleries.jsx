@@ -88,7 +88,7 @@ function NewGalleryModal({ clients, onClose, onCreated, onClientCreated }) {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6 overflow-y-auto">
       <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="w-full max-w-lg bg-[#0d0d10] border border-white/10 rounded-sm p-8 my-auto">
+        className="w-full max-w-lg bg-[#171415] border border-white/10 rounded-sm p-8 my-auto">
         <div className="flex items-center justify-between mb-6">
           <h3 className="text-white font-montserrat font-bold text-base">New Gallery</h3>
           <button onClick={onClose} className="text-white/30 hover:text-white transition-colors"><X size={16} /></button>

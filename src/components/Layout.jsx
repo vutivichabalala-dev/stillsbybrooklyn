@@ -20,7 +20,7 @@ export default function Layout() {
   }, [pathname]);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#060608' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#121011' }}>
       <ParticleBackground />
       <Navbar />
       <main className="flex-1 relative z-10">

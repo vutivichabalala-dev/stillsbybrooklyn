@@ -36,10 +36,10 @@ export default function DashboardLayout({ isAdmin = false }) {
   const initials = displayName.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 
   return (
-    <div className="min-h-screen bg-[#080809] flex">
+    <div className="min-h-screen bg-[#131112] flex">
       {/* Sidebar */}
       <aside className={`
-        fixed inset-y-0 left-0 z-40 w-64 bg-[#0d0d10] border-r border-white/6
+        fixed inset-y-0 left-0 z-40 w-64 bg-[#171415] border-r border-white/6
         transform transition-transform duration-300 ease-in-out
         ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         lg:translate-x-0 lg:static lg:flex lg:flex-col
@@ -108,7 +108,7 @@ export default function DashboardLayout({ isAdmin = false }) {
       {/* Main */}
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top bar */}
-        <header className="sticky top-0 z-20 bg-[#080809]/90 backdrop-blur-xl border-b border-white/6 px-6 lg:px-10 py-4 flex items-center justify-between">
+        <header className="sticky top-0 z-20 bg-[#131112]/90 backdrop-blur-xl border-b border-white/6 px-6 lg:px-10 py-4 flex items-center justify-between">
           <button className="lg:hidden text-white/60 hover:text-white transition-colors" onClick={() => setSidebarOpen(true)}>
             <Menu size={20} />
           </button>

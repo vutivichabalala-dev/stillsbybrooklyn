@@ -20,7 +20,7 @@ function SubmitModal({ count, onClose, onConfirm, submitting }) {
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-6">
       <motion.div initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="w-full max-w-md bg-[#0d0d10] border border-white/10 rounded-sm p-10 text-center">
+        className="w-full max-w-md bg-[#171415] border border-white/10 rounded-sm p-10 text-center">
         <div className="w-12 h-12 rounded-full border border-gold/40 bg-gold/10 flex items-center justify-center mx-auto mb-6">
           <Send size={18} className="text-gold" />
         </div>

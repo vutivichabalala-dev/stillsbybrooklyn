@@ -156,7 +156,7 @@ export default function ReelCard({ reel, isAdmin, onDelete, index = 0 }) {
       </div>
 
       {/* Info bar */}
-      <div className="px-3 py-2.5 bg-[#0a0a0c] border-t border-white/6">
+      <div className="px-3 py-2.5 bg-[#141213] border-t border-white/6">
         <p className="text-white text-xs font-montserrat font-semibold truncate">{reel.title}</p>
         {reel.description && (
           <p className="text-white/35 text-[10px] font-montserrat font-light mt-0.5 line-clamp-1">{reel.description}</p>

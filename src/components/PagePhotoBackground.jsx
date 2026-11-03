@@ -11,7 +11,7 @@ export default function PagePhotoBackground({ src }) {
       {/* Dark overlay — keeps site dark, image barely visible */}
       <div className="absolute inset-0 bg-background/95" />
       {/* Subtle vignette */}
-      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 30%, rgba(6,6,8,0.7) 100%)' }} />
+      <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center, transparent 30%, rgba(18,16,17,0.7) 100%)' }} />
     </div>
   );
 }

@@ -25,14 +25,14 @@ export default function AdminLogin() {
 
   if (checking) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#080809]">
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-[#131112]">
         <div className="w-5 h-5 border-2 border-t-transparent rounded-full animate-spin" style={{ borderColor: 'hsl(46 70% 55%)', borderTopColor: 'transparent' }} />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex bg-white dark:bg-[#080809] transition-colors duration-300">
+    <div className="min-h-screen flex bg-white dark:bg-[#131112] transition-colors duration-300">
       <PortalNoIndex />
 
       {/* Left visual panel */}
@@ -101,7 +101,7 @@ export default function AdminLogin() {
       </div>
 
       {/* Right form panel — light/dark adaptive */}
-      <div className="flex-1 flex items-center justify-center px-6 py-14 bg-white dark:bg-[#0a0a0c] relative overflow-hidden transition-colors duration-300">
+      <div className="flex-1 flex items-center justify-center px-6 py-14 bg-white dark:bg-[#141213] relative overflow-hidden transition-colors duration-300">
 
         {/* Background blobs */}
         <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-gold/8 dark:bg-gold/5 blur-3xl pointer-events-none -translate-y-1/2 translate-x-1/2" />

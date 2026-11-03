@@ -67,7 +67,7 @@ export default function ReelUploadModal({ onClose, onSaved }) {
         animate={{ scale: 1, y: 0, opacity: 1 }}
         exit={{ scale: 0.9, y: 40, opacity: 0 }}
         transition={{ type: 'spring', damping: 22, stiffness: 260 }}
-        className="relative w-full max-w-lg bg-[#0a0a0c] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+        className="relative w-full max-w-lg bg-[#141213] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
       >
         {/* Glow accent */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-80" />
