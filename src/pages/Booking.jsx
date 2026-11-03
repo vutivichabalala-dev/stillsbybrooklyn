@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { base44 } from '@/api/base44Client';
+import { sendEmail } from '@/lib/sendEmail';
 
 import { motion } from 'framer-motion';
 import GlassCard from '../components/GlassCard';
@@ -74,24 +74,13 @@ export default function Booking() {
   const handleSubmit = async () => {
     setSubmitting(true);
     setSubmitError('');
-    // Drop empty optional fields (e.g. location_type '' is not an allowed value).
-    const payload = Object.fromEntries(
-      Object.entries(booking).filter(([, v]) => typeof v !== 'string' || v.trim() !== '')
-    );
-    let created;
     try {
-      created = await base44.entities.Booking.create(payload);
+      await sendEmail('booking', booking);
     } catch (err) {
-      console.error('Booking save failed:', err);
+      console.error('Booking failed:', err);
       setSubmitError("Sorry, your booking couldn't be submitted. Please try again, or WhatsApp/call 067 786 0702.");
       setSubmitting(false);
       return;
-    }
-    // The booking is saved; a failed notification email shouldn't block the client.
-    try {
-      await base44.functions.invoke('sendEmails', { type: 'booking', id: created.id });
-    } catch (err) {
-      console.error('Booking email failed:', err);
     }
     setSubmitting(false);
     setSubmitted(true);

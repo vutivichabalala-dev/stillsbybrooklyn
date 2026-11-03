@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Send, CheckCircle, User, Mail, Phone, ChevronDown } from 'lucide-react';
-import { base44 } from '@/api/base44Client';
+import { sendEmail } from '@/lib/sendEmail';
 
 const SERVICES = ['Corporate', 'Portraits', 'Weddings', 'Graduations'];
 
@@ -62,7 +62,7 @@ export default function HomeContactForm() {
     setSubmitting(true);
     setSendError('');
     try {
-      await base44.functions.invoke('sendEmails', { type: 'contact', data: form });
+      await sendEmail('contact', form);
       setSubmitted(true);
     } catch (err) {
       console.error('Contact form failed:', err);

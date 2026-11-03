@@ -3,7 +3,7 @@ import { Mail, Phone, MapPin, Send, MessageCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import SectionHeading from '../components/SectionHeading';
 import GlassCard from '../components/GlassCard';
-import { base44 } from '@/api/base44Client';
+import { sendEmail } from '@/lib/sendEmail';
 import PagePhotoBackground from '../components/PagePhotoBackground';
 
 const fadeUp = (delay = 0) => ({
@@ -32,7 +32,7 @@ export default function Contact() {
     setSubmitting(true);
     setSendError('');
     try {
-      await base44.functions.invoke('sendEmails', { type: 'contact', data: form });
+      await sendEmail('contact', form);
       setSubmitted(true);
     } catch (err) {
       console.error('Contact form failed:', err);
