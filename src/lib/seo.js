@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const SITE_URL = 'https://stillsbybrooklyn.co.za';
+export const SITE_URL = 'https://www.stillsbybrooklyn.co.za';
 
 function setMeta(attr, key, content) {
   if (!content) return;
