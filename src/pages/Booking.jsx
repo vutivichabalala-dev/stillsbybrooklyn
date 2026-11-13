@@ -76,7 +76,7 @@ export default function Booking() {
       await sendEmail('booking', booking);
     } catch (err) {
       console.error('Booking failed:', err);
-      setSubmitError("Sorry, your booking couldn't be submitted. Please try again, or WhatsApp/call 067 786 0702.");
+      setSubmitError("Sorry, your booking couldn't be submitted. Please try again, or call 067 786 0702 or WhatsApp 066 349 2811.");
       setSubmitting(false);
       return;
     }

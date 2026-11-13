@@ -5,7 +5,11 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/((?!api/|sitemap\\.xml|robots\\.txt).*)",
+      "source": "/portal",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/portal/:path*",
       "destination": "/index.html"
     }
   ],

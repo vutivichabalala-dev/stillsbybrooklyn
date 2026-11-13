@@ -11,8 +11,10 @@
 // copy (H1, intro, H2 sections, FAQs) rendered as plain HTML inside #root.
 // React then mounts on top of it in the browser exactly as before.
 //
-// Vercel serves a matching static file before applying the SPA rewrite, so
-// /about is answered by dist/about/index.html with no change to routing.
+// Vercel serves a matching static file before any rewrite, so /about is
+// answered by dist/about/index.html. Only /portal/* is rewritten to the SPA;
+// every other unknown URL gets dist/404.html with a real 404 status. A new
+// public route must therefore be listed in corePages.js or seoPages.js.
 
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
@@ -207,6 +209,16 @@ for (const page of pages) {
   mkdirSync(outDir, { recursive: true });
   writeFileSync(resolve(outDir, 'index.html'), html);
   written.push(page.path);
+}
+
+// 404.html: Vercel serves this with a real 404 status for any URL that has no
+// file. It boots the app, which renders the branded not-found page in the layout.
+{
+  let html = template;
+  html = setTag(html, /<title>[^<]*<\/title>/, '<title>Page not found | Stills by Brooklyn</title>', '<title>');
+  html = setTag(html, /<meta name="robots" content="[^"]*" \/>/, '<meta name="robots" content="noindex" />', 'robots');
+  html = html.replace(/\s*<link rel="canonical" href="[^"]*" \/>/, '');
+  writeFileSync(resolve(dist, '404.html'), html);
 }
 
 // Keep the sitemap honest: every URL in it must have a pre-rendered page.

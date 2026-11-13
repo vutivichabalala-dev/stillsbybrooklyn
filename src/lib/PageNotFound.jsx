@@ -1,75 +1,54 @@
-import { useLocation } from 'react-router-dom';
-import { base44 } from '@/api/base44Client';
-import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { serviceNav } from '@/content/seoPages';
 
+/** Branded 404, rendered inside the site layout (navbar + footer). */
+export default function PageNotFound() {
+  // Keep this page out of search results
+  useEffect(() => {
+    document.title = 'Page not found | Stills by Brooklyn';
+    const tag = document.createElement('meta');
+    tag.name = 'robots';
+    tag.content = 'noindex';
+    tag.setAttribute('data-404', '');
+    document.head.appendChild(tag);
+    return () => tag.remove();
+  }, []);
 
-export default function PageNotFound({}) {
-    const location = useLocation();
-    const pageName = location.pathname.substring(1);
-
-    const { data: authData, isFetched } = useQuery({
-        queryKey: ['user'],
-        queryFn: async () => {
-            try {
-                const user = await base44.auth.me();
-                return { user, isAuthenticated: true };
-            } catch (error) {
-                return { user: null, isAuthenticated: false };
-            }
-        }
-    });
-    
-    return (
-        <div className="min-h-screen flex items-center justify-center p-6 bg-slate-50">
-            <div className="max-w-md w-full">
-                <div className="text-center space-y-6">
-                    {/* 404 Error Code */}
-                    <div className="space-y-2">
-                        <h1 className="text-7xl font-light text-slate-300">404</h1>
-                        <div className="h-0.5 w-16 bg-slate-200 mx-auto"></div>
-                    </div>
-                    
-                    {/* Main Message */}
-                    <div className="space-y-3">
-                        <h2 className="text-2xl font-medium text-slate-800">
-                            Page Not Found
-                        </h2>
-                        <p className="text-slate-600 leading-relaxed">
-                            The page <span className="font-medium text-slate-700">"{pageName}"</span> could not be found in this application.
-                        </p>
-                    </div>
-                    
-                    {/* Admin Note */}
-                    {isFetched && authData.isAuthenticated && authData.user?.role === 'admin' && (
-                        <div className="mt-8 p-4 bg-slate-100 rounded-lg border border-slate-200">
-                            <div className="flex items-start space-x-3">
-                                <div className="flex-shrink-0 w-5 h-5 rounded-full bg-orange-100 flex items-center justify-center mt-0.5">
-                                    <div className="w-2 h-2 rounded-full bg-orange-400"></div>
-                                </div>
-                                <div className="text-left space-y-1">
-                                    <p className="text-sm font-medium text-slate-700">Admin Note</p>
-                                    <p className="text-sm text-slate-600 leading-relaxed">
-                                        This could mean that the AI hasn't implemented this page yet. Ask it to implement it in the chat.
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-                    
-                    {/* Action Button */}
-                    <div className="pt-6">
-                        <button 
-                            onClick={() => window.location.href = '/'} 
-                            className="inline-flex items-center px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 hover:border-slate-300 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-500"
-                        >
-                            <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                            </svg>
-                            Go Home
-                        </button>
-                    </div>
-                </div>
-            </div>
+  return (
+    <section className="min-h-[80vh] flex items-center px-5 sm:px-8 lg:px-12 pt-36 pb-24">
+      <div className="mx-auto w-full max-w-[1360px] grid gap-14 lg:grid-cols-[1.1fr_1fr] items-end">
+        <div>
+          <p className="font-lato text-[11px] tracking-[0.3em] uppercase text-gold mb-6">Error 404</p>
+          <h1 className="m-0 font-cormorant font-medium text-white leading-[0.95] text-[clamp(48px,7vw,104px)]">
+            This frame <span className="italic text-gold">didn&rsquo;t make the edit.</span>
+          </h1>
+          <p className="mt-8 max-w-md font-lato text-[15px] leading-[1.8] text-white/60">
+            The page you were looking for has moved or no longer exists. Here are a few places to pick up from.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-4">
+            <Link to="/" className="bg-gold px-7 py-4 font-lato text-[12px] font-bold tracking-[0.24em] uppercase text-[#141213] hover:bg-white transition-colors">
+              Back to home
+            </Link>
+            <Link to="/portfolio" className="border border-white/25 px-7 py-4 font-lato text-[12px] tracking-[0.24em] uppercase text-white hover:border-gold hover:text-gold transition-colors">
+              See the portfolio
+            </Link>
+          </div>
         </div>
-    )
+        <nav aria-label="Services">
+          <p className="font-lato text-[11px] tracking-[0.3em] uppercase text-white/40 mb-4">Services</p>
+          <ul className="m-0 list-none p-0 border-t border-white/10">
+            {serviceNav.map((s) => (
+              <li key={s.path} className="border-b border-white/10">
+                <Link to={s.path} className="group flex items-center justify-between py-4 font-cormorant text-[24px] text-white hover:text-gold transition-colors">
+                  {s.label}
+                  <span className="text-gold text-lg transition-transform duration-500 group-hover:translate-x-2">→</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+    </section>
+  );
 }

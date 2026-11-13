@@ -71,18 +71,29 @@ export default function Reels() {
 
   const loadReels = async () => {
     setLoading(true);
-    const data = await base44.entities.Reel.list('-created_date', 100);
-    const sorted = [...data].sort((a, b) => {
-      if (a.is_featured && !b.is_featured) return -1;
-      if (!a.is_featured && b.is_featured) return 1;
-      return 0;
-    });
-    setReels(sorted);
-    setLoading(false);
+    try {
+      const data = await base44.entities.Reel.list('-created_date', 100);
+      const sorted = [...(Array.isArray(data) ? data : [])].sort((a, b) => {
+        if (a.is_featured && !b.is_featured) return -1;
+        if (!a.is_featured && b.is_featured) return 1;
+        return 0;
+      });
+      setReels(sorted);
+    } catch (err) {
+      // API down or blocked: show the "coming soon" state instead of an endless spinner
+      console.warn('Could not load reels:', err?.message || err);
+      setReels([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleDelete = async (id) => {
-    await base44.entities.Reel.delete(id);
+    try {
+      await base44.entities.Reel.delete(id);
+    } catch (err) {
+      console.warn('Could not delete reel:', err?.message || err);
+    }
     loadReels();
   };
 

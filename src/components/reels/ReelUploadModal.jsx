@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { X, Upload, Film, Loader2, CheckCircle2 } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 
@@ -12,6 +12,7 @@ export default function ReelUploadModal({ onClose, onSaved }) {
   const [thumbFile, setThumbFile] = useState(null);
   const [thumbPreview, setThumbPreview] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [uploadError, setUploadError] = useState('');
   const [form, setForm] = useState({ title: '', description: '', category: 'Corporate', is_featured: false });
   const videoInputRef = useRef(null);
   const thumbInputRef = useRef(null);
@@ -33,9 +34,12 @@ export default function ReelUploadModal({ onClose, onSaved }) {
   const handleSubmit = async () => {
     if (!videoFile || !form.title) return;
     setStep('uploading');
+    setUploadError('');
 
     // Simulate progress ticks while uploading
     const tick = setInterval(() => setUploadProgress(p => Math.min(p + 8, 90)), 400);
+
+    try {
 
     const { file_url: video_url } = await base44.integrations.Core.UploadFile({ file: videoFile });
 
@@ -52,6 +56,13 @@ export default function ReelUploadModal({ onClose, onSaved }) {
 
     setStep('done');
     setTimeout(() => { onSaved(); onClose(); }, 1400);
+    } catch (err) {
+      // Don't leave the modal stuck on "uploading": go back to the form with the reason
+      clearInterval(tick);
+      setUploadProgress(0);
+      setUploadError(`Upload failed${err?.message ? `: ${err.message}` : ''}. Please try again.`);
+      setStep('form');
+    }
   };
 
   return (
@@ -86,6 +97,9 @@ export default function ReelUploadModal({ onClose, onSaved }) {
         </div>
 
         <div className="px-6 py-6 space-y-5">
+          {step === 'form' && uploadError && (
+            <p role="alert" className="mb-4 rounded-sm border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">{uploadError}</p>
+          )}
           {step === 'form' && (
             <>
               {/* Video drop zone */}

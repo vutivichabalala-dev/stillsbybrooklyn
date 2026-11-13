@@ -4,8 +4,8 @@ import { escapeHtml } from './emailSafe.js';
 const SITE = 'https://www.stillsbybrooklyn.co.za';
 const LOGO_GIF = `${SITE}/email/sb-logo.gif`;
 const HERO = `${SITE}/email/hero-strip.jpg`;
-const WHATSAPP_NUMBER = '27677860702';
-const PHONE_DISPLAY = '067 786 0702';
+const WHATSAPP_NUMBER = '27663492811';
+const WHATSAPP_DISPLAY = '066 349 2811';
 const INSTAGRAM = 'https://www.instagram.com/stillsbybrooklyn/';
 
 const C = {
@@ -117,7 +117,7 @@ function footer() {
     People &nbsp;·&nbsp; Moments &nbsp;·&nbsp; Culture &nbsp;·&nbsp; Events
   </td></tr>
   <tr><td align="center" style="padding:10px 24px;font-family:${SANS};font-size:13px;line-height:22px;color:${C.soft};">
-    <a href="https://wa.me/${WHATSAPP_NUMBER}" style="color:${C.ivory};text-decoration:none;">WhatsApp ${PHONE_DISPLAY}</a>
+    <a href="https://wa.me/${WHATSAPP_NUMBER}" style="color:${C.ivory};text-decoration:none;">WhatsApp ${WHATSAPP_DISPLAY}</a>
     &nbsp;<span style="color:${C.orange};">·</span>&nbsp;
     <a href="${INSTAGRAM}" style="color:${C.ivory};text-decoration:none;">@stillsbybrooklyn</a>
     &nbsp;<span style="color:${C.orange};">·</span>&nbsp;
@@ -338,7 +338,7 @@ export function clientConfirmationText({ name, type, data }) {
       ? ['1. I confirm your date and time.', '2. We plan the shoot together: location, outfits, light and the shots that matter most.', '3. Your edited, high-resolution images arrive in your own private online gallery.']
       : ['1. I read every message myself.', '2. I reply within 24-48 hours with answers, ideas and available dates.', '3. Once we have a plan, you can book your session in a few clicks.']),
     '',
-    `WhatsApp: ${PHONE_DISPLAY} (https://wa.me/${WHATSAPP_NUMBER})`,
+    `WhatsApp: ${WHATSAPP_DISPLAY} (https://wa.me/${WHATSAPP_NUMBER})`,
     `Portfolio: ${SITE}/portfolio`,
     `Instagram: ${INSTAGRAM}`,
     '',

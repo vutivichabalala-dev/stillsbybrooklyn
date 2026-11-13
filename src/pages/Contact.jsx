@@ -34,7 +34,7 @@ export default function Contact() {
       setSubmitted(true);
     } catch (err) {
       console.error('Contact form failed:', err);
-      setSendError("Sorry, your message couldn't be sent. Please try again, or WhatsApp/call 067 786 0702.");
+      setSendError("Sorry, your message couldn't be sent. Please try again, or call 067 786 0702 or WhatsApp 066 349 2811.");
     } finally {
       setSubmitting(false);
     }
@@ -46,7 +46,7 @@ export default function Contact() {
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-10">
         {/* Header */}
         <motion.div {...fadeUp(0)} className="mb-20 text-center flex flex-col items-center">
-          <SectionHeading as="h1" eyebrow="Let's Connect" title={corePages.contact.h1} subtitle="To book a photographer in Johannesburg, Pretoria or anywhere in South Africa, send your date below — or call or WhatsApp 067 786 0702." center />
+          <SectionHeading as="h1" eyebrow="Let's Connect" title={corePages.contact.h1} subtitle="To book a photographer in Johannesburg, Pretoria or anywhere in South Africa, send your date below, call 067 786 0702 or WhatsApp 066 349 2811." center />
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-4">
@@ -80,7 +80,7 @@ export default function Contact() {
                     </div>
                     <div>
                       <p className="text-white/30 text-[10px] font-montserrat tracking-[0.2em] uppercase mb-1">WhatsApp</p>
-                      <p className="text-white/80 text-xs font-montserrat hover:text-gold transition-colors duration-200">Message on WhatsApp</p>
+                      <p className="text-white/80 text-xs font-montserrat hover:text-gold transition-colors duration-200">066 349 2811</p>
                     </div>
                   </a>
                   <div className="flex items-start gap-4">

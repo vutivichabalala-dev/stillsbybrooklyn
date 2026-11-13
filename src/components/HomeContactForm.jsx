@@ -66,7 +66,7 @@ export default function HomeContactForm() {
       setSubmitted(true);
     } catch (err) {
       console.error('Contact form failed:', err);
-      setSendError("Sorry, your message couldn't be sent. Please try again, or WhatsApp/call 067 786 0702.");
+      setSendError("Sorry, your message couldn't be sent. Please try again, or call 067 786 0702 or WhatsApp 066 349 2811.");
     } finally {
       setSubmitting(false);
     }

@@ -178,7 +178,7 @@ export const seoPages = [
       { q: 'Do you charge travel for Pretoria shoots?', a: 'Pretoria is part of our regular Gauteng coverage. Any travel cost is confirmed upfront in your quote.' },
       { q: 'Do you shoot graduations at UP and TUT?', a: 'Yes. We shoot campus sessions at UP, TUT and UNISA.' },
     ],
-    cta: { title: 'Book your Pretoria shoot', subtitle: 'Call or WhatsApp 067 786 0702, or send your date.' },
+    cta: { title: 'Book your Pretoria shoot', subtitle: 'Call 067 786 0702 or WhatsApp 066 349 2811, or send your date.' },
   },
   {
     path: '/photographer-centurion',
@@ -197,7 +197,7 @@ export const seoPages = [
       { h2: 'Nearby areas', body: ['We also cover [Pretoria](/photographer-pretoria) and [Midrand](/photographer-midrand).'] },
     ],
     faqs: [],
-    cta: { title: 'Book your Centurion shoot', subtitle: 'Call or WhatsApp 067 786 0702, or send your date.' },
+    cta: { title: 'Book your Centurion shoot', subtitle: 'Call 067 786 0702 or WhatsApp 066 349 2811, or send your date.' },
   },
   {
     path: '/photographer-sandton',
@@ -217,7 +217,7 @@ export const seoPages = [
       { h2: 'Nearby areas', body: ['We also cover [Midrand](/photographer-midrand) and the rest of Johannesburg.'] },
     ],
     faqs: [],
-    cta: { title: 'Request a corporate quote', subtitle: 'Call or WhatsApp 067 786 0702, or tell us about your team or event.' },
+    cta: { title: 'Request a corporate quote', subtitle: 'Call 067 786 0702 or WhatsApp 066 349 2811, or tell us about your team or event.' },
   },
   {
     path: '/photographer-midrand',
@@ -236,7 +236,7 @@ export const seoPages = [
       { h2: 'Nearby areas', body: ['We also cover [Sandton](/photographer-sandton), [Centurion](/photographer-centurion) and [Pretoria](/photographer-pretoria).'] },
     ],
     faqs: [],
-    cta: { title: 'Book your Midrand shoot', subtitle: 'Call or WhatsApp 067 786 0702, or send your date.' },
+    cta: { title: 'Book your Midrand shoot', subtitle: 'Call 067 786 0702 or WhatsApp 066 349 2811, or send your date.' },
   },
 
   // ───────────────────────── BLOG POSTS ─────────────────────────

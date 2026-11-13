@@ -48,7 +48,7 @@ export default function Footer() {
         <div className="mt-10 border-t border-[#332E30] pt-7 flex flex-wrap justify-between gap-5 font-lato text-[12px] tracking-[0.18em] uppercase text-[#B9B2AA]">
           <span>© {new Date().getFullYear()} Stills by Brooklyn · Midrand</span>
           <span className="flex flex-wrap gap-x-7 gap-y-3">
-            <a href="https://wa.me/27677860702" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp 067 786 0702</a>
+            <a href="https://wa.me/27663492811" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">WhatsApp 066 349 2811</a>
             <a href="https://www.instagram.com/stillsbybrooklyn/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram <span className="normal-case">@stillsbybrooklyn</span></a>
             <a href="mailto:info@stillsbybrooklyn.co.za" className="normal-case hover:text-white transition-colors">info@stillsbybrooklyn.co.za</a>
           </span>

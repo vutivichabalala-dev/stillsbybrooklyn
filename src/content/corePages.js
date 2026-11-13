@@ -100,7 +100,7 @@ export const corePages = {
   contact: {
     path: '/contact',
     title: 'Book a Photographer in Johannesburg | Stills by Brooklyn',
-    description: 'Check your date and book a photographer in Johannesburg, Pretoria or anywhere in SA. Call or WhatsApp 067 786 0702, or send an enquiry form.',
+    description: 'Check your date and book a photographer in Johannesburg, Pretoria or anywhere in SA. Call 067 786 0702, WhatsApp 066 349 2811, or send an enquiry form.',
     keywords: ['book a photographer johannesburg', 'hire a photographer near me', 'photographer contact johannesburg'],
     h1: 'Book Your Shoot',
   },

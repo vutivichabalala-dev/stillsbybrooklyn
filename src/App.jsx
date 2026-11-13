@@ -96,6 +96,7 @@ const AuthenticatedApp = () => {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/booking" element={<Booking />} />
                 <Route path="/reels" element={<Reels />} />
+                <Route path="*" element={<PageNotFound />} />
               </Route>
               {/* Client Portal (auth code loads only here) */}
               <Route element={<PortalGate />}>
@@ -118,7 +119,6 @@ const AuthenticatedApp = () => {
                 <Route path="/portal/admin/analytics" element={<SiteAnalytics />} />
               </Route>
               </Route>
-              <Route path="*" element={<PageNotFound />} />
             </Routes>
           </Suspense>
         </AnimatePresence>
