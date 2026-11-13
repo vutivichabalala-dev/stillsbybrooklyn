@@ -39,6 +39,8 @@ function intlPhone(raw) {
   if (digits.startsWith('0')) digits = `27${digits.slice(1)}`;
   return digits.length >= 9 ? digits : '';
 }
+// 'Weddings' → 'wedding session'
+const sessionWord = (service) => String(service || '').toLowerCase().replace(/s$/, '');
 const firstName = (name) => String(name || '').trim().split(/\s+/)[0] || 'there';
 
 /* ------------------------------------------------------------------ */
@@ -54,7 +56,6 @@ function shell({ title, preheader, body }) {
 <meta name="color-scheme" content="dark light">
 <meta name="supported-color-schemes" content="dark light">
 <title>${title}</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 <style>
   body { margin:0; padding:0; background:${C.ink}; }
   a { color:${C.orange}; }
@@ -72,7 +73,7 @@ function shell({ title, preheader, body }) {
 </style>
 </head>
 <body style="margin:0;padding:0;background:${C.ink};">
-<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:${C.ink};">${preheader}&#8199;&#65279;&#847;&#8199;&#65279;&#847;&#8199;&#65279;&#847;</div>
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;color:${C.ink};">${escapeHtml(preheader)}</div>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.ink};">
   <tr><td align="center" style="padding:28px 12px 40px;">
     <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;background:${C.ink};">
@@ -175,7 +176,7 @@ export function clientConfirmationEmail({ name, type, data }) {
     </h1>
     <p class="rise3" style="margin:24px 0 0;font-family:${SANS};font-size:16px;line-height:27px;color:${C.muted};">
       ${isBooking
-        ? `I'm so glad you chose Stills by Brooklyn for your ${service ? `<strong style="color:${C.ivory};font-weight:700;">${service.toLowerCase()}</strong> ` : ''}session. Your request has landed safely with me, and I'll personally confirm everything within <strong style="color:${C.ivory};">24–48 hours</strong>.`
+        ? `I'm so glad you chose Stills by Brooklyn for your ${service ? `<strong style="color:${C.ivory};font-weight:700;">${sessionWord(service)}</strong> ` : ''}session. Your request has landed safely with me, and I'll personally confirm everything within <strong style="color:${C.ivory};">24–48 hours</strong>.`
         : `Thank you for reaching out — it means a lot. I've received your message and I'll get back to you personally within <strong style="color:${C.ivory};">24–48 hours</strong>.`}
     </p>
   </td></tr>
@@ -268,7 +269,7 @@ export function adminNotificationEmail({ type, data }) {
     <div style="font-family:${SANS};font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#F8D9C3;">${escapeHtml(received)}</div>
     <h1 class="h1" style="margin:12px 0 0;font-family:${SERIF};font-weight:500;font-size:40px;line-height:44px;color:${C.ivory};">
       ${isBooking
-        ? `${safeName} would love a <span style="font-style:italic;">${service ? service.toLowerCase() : ''}</span> session.`
+        ? `${safeName} would love a <span style="font-style:italic;">${sessionWord(service)}</span> session.`
         : `${safeName} sent you a message${service ? ` about <span style="font-style:italic;">${service.toLowerCase()}</span>` : ''}.`}
     </h1>
     ${isBooking ? `<div style="margin-top:18px;font-family:${SANS};font-size:16px;line-height:24px;color:${C.ivory};"><strong>${escapeHtml(formatDate(data.date))}</strong> &nbsp;·&nbsp; ${escapeHtml(formatTime(data.time))}</div>` : ''}
@@ -307,6 +308,67 @@ export function adminNotificationEmail({ type, data }) {
     preheader: isBooking ? `${name} · ${data.service || ''} · ${shortDate(data.date)} ${formatTime(data.time)}` : `${name}: ${String(data.message || '').slice(0, 90)}`,
     body,
   });
+}
+
+
+/* ------------------------------------------------------------------ */
+/* Plain-text alternatives (multipart emails score far better)        */
+/* ------------------------------------------------------------------ */
+
+const line = (label, value) => (value ? `${label}: ${value}` : null);
+
+export function clientConfirmationText({ name, type, data }) {
+  const isBooking = type === 'booking';
+  const fname = firstName(name);
+  const details = isBooking
+    ? [line('Session', data.service), line('Date', formatDate(data.date)), line('Time', formatTime(data.time)), line('Venue', data.venue_name), line('Location', data.location_address), line('Your notes', data.notes)]
+    : [line('Interested in', data.service), line('Your message', data.message)];
+  return [
+    `Hi ${fname},`,
+    '',
+    isBooking
+      ? `Thank you for choosing Stills by Brooklyn for your ${data.service ? sessionWord(data.service) + ' ' : ''}session. Your booking request has reached me and I'll personally confirm your date and time within 24-48 hours.`
+      : `Thank you for reaching out. I've received your message and I'll reply personally within 24-48 hours.`,
+    '',
+    isBooking ? 'YOUR BOOKING' : 'YOUR ENQUIRY',
+    ...details.filter(Boolean),
+    '',
+    'WHAT HAPPENS NEXT',
+    ...(isBooking
+      ? ['1. I confirm your date and time.', '2. We plan the shoot together: location, outfits, light and the shots that matter most.', '3. Your edited, high-resolution images arrive in your own private online gallery.']
+      : ['1. I read every message myself.', '2. I reply within 24-48 hours with answers, ideas and available dates.', '3. Once we have a plan, you can book your session in a few clicks.']),
+    '',
+    `WhatsApp: ${PHONE_DISPLAY} (https://wa.me/${WHATSAPP_NUMBER})`,
+    `Portfolio: ${SITE}/portfolio`,
+    `Instagram: ${INSTAGRAM}`,
+    '',
+    "Can't wait to create with you.",
+    'Brooklyn',
+    'Stills by Brooklyn, Johannesburg',
+    '',
+    'You are receiving this because you submitted a form on stillsbybrooklyn.co.za.',
+  ].join('\n');
+}
+
+export function adminNotificationText({ type, data }) {
+  const isBooking = type === 'booking';
+  const name = isBooking ? data.full_name : data.name;
+  const phone = intlPhone(data.phone);
+  const details = isBooking
+    ? [line('Client', name), line('Email', data.email), line('Phone', data.phone), line('Session', data.service), line('Date', formatDate(data.date)), line('Time', formatTime(data.time)), line('Venue', data.venue_name), line('Location', data.location_address)]
+    : [line('Name', name), line('Email', data.email), line('Phone', data.phone), line('Interested in', data.service)];
+  const note = isBooking ? data.notes : data.message;
+  return [
+    isBooking ? `NEW BOOKING REQUEST from ${name}` : `NEW ENQUIRY from ${name}`,
+    '',
+    ...details.filter(Boolean),
+    ...(note ? ['', isBooking ? 'NOTES FROM THE CLIENT' : 'THEIR MESSAGE', note] : []),
+    '',
+    `Reply: ${data.email}`,
+    ...(phone ? [`WhatsApp: https://wa.me/${phone}`] : []),
+    '',
+    'Sent by the booking form on stillsbybrooklyn.co.za.',
+  ].join('\n');
 }
 
 export { shortDate, formatTime };

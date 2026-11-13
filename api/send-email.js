@@ -3,14 +3,19 @@
 //
 // Vercel environment variables:
 //   RESEND_API_KEY  (required)  your Resend API key
-//   RESEND_FROM     (optional)  defaults to "Stills by Brooklyn <info@stillsbybrooklyn.co.za>"
+//   RESEND_FROM     (optional)  client-facing sender, defaults to "Stills by Brooklyn <info@stillsbybrooklyn.co.za>"
+//   RESEND_FROM_ADMIN (optional) sender for Brooklyn's own notifications, defaults to
+//                   "Stills by Brooklyn Bookings <bookings@stillsbybrooklyn.co.za>" — deliberately
+//                   not info@, because a message from info@ to info@ that arrives from an outside
+//                   server looks exactly like spoofing to the mailbox's spam filter.
 //   ADMIN_EMAIL     (optional)  defaults to info@stillsbybrooklyn.co.za
 //   ADMIN_CC        (optional)  defaults to vutivichabalala@gmail.com
 
 import { sanitizeSubject, isValidEmail, clip } from './_lib/emailSafe.js';
-import { clientConfirmationEmail, adminNotificationEmail, shortDate, formatTime } from './_lib/templates.js';
+import { clientConfirmationEmail, adminNotificationEmail, clientConfirmationText, adminNotificationText, shortDate, formatTime } from './_lib/templates.js';
 
 const FROM_EMAIL = process.env.RESEND_FROM || 'Stills by Brooklyn <info@stillsbybrooklyn.co.za>';
+const FROM_ADMIN = process.env.RESEND_FROM_ADMIN || 'Stills by Brooklyn Bookings <bookings@stillsbybrooklyn.co.za>';
 // Resend's shared test sender. It only delivers to the Resend account owner's own
 // address, so it's used as a last resort for Brooklyn's copy while the domain
 // isn't verified yet.
@@ -39,9 +44,11 @@ async function resendSend(payload) {
 }
 
 // Never throws; reports what happened.
-async function sendMail({ to, cc = [], subject, html, allowFallback = false }) {
+async function sendMail({ from = FROM_EMAIL, to, cc = [], replyTo, subject, html, text, allowFallback = false }) {
+  // Every message goes out multipart (HTML + plain text) with an explicit Reply-To.
+  const base = { subject, html, text, ...(replyTo ? { reply_to: replyTo } : {}) };
   try {
-    await resendSend({ from: FROM_EMAIL, to, ...(cc.length ? { cc } : {}), subject, html });
+    await resendSend({ from, to, ...(cc.length ? { cc } : {}), ...base });
     return { ok: true };
   } catch (err) {
     console.error(`Send to ${to.join(', ')} failed:`, err.message);
@@ -49,7 +56,7 @@ async function sendMail({ to, cc = [], subject, html, allowFallback = false }) {
     if (allowFallback && (err.status === 403 || err.status === 422)) {
       for (const addr of [...to, ...cc]) {
         try {
-          await resendSend({ from: FALLBACK_FROM, to: [addr], subject, html });
+          await resendSend({ from: FALLBACK_FROM, to: [addr], ...base });
           return { ok: true, fallback: true };
         } catch (e) {
           console.error(`Fallback send to ${addr} failed:`, e.message);
@@ -125,17 +132,22 @@ export default async function handler(req, res) {
 
   // Brooklyn's copy first, so a bad visitor address never costs the lead.
   const admin = await sendMail({
+    from: FROM_ADMIN,
     to: [ADMIN_EMAIL],
     cc: ADMIN_CC && ADMIN_CC !== ADMIN_EMAIL ? [ADMIN_CC] : [],
+    replyTo: data.email, // hitting Reply answers the client directly
     subject: sanitizeSubject(adminSubject),
     html: adminNotificationEmail({ type, data }),
+    text: adminNotificationText({ type, data }),
     allowFallback: true,
   });
 
   const client = await sendMail({
     to: [data.email],
+    replyTo: ADMIN_EMAIL,
     subject: sanitizeSubject(clientSubject),
     html: clientConfirmationEmail({ name: clientName, type, data }),
+    text: clientConfirmationText({ name: clientName, type, data }),
   });
 
   if (!admin.ok) {
