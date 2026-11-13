@@ -11,6 +11,16 @@
   ],
   "redirects": [
     {
+      "source": "/Home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/home",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/services/weddings",
       "destination": "/wedding-photographer-johannesburg",
       "permanent": true
@@ -39,6 +49,27 @@
       "source": "/photographersinsandton",
       "destination": "/photographer-sandton",
       "permanent": true
+    }
+  ],
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/portal(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        }
+      ]
     }
   ]
 }

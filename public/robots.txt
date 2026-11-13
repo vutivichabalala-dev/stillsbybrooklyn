@@ -1,5 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /portal
 
 Sitemap: https://www.stillsbybrooklyn.co.za/sitemap.xml
