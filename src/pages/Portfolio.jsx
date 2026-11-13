@@ -167,6 +167,7 @@ export default function Portfolio() {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.38, delay: Math.min(i * 0.035, 0.3), ease: [0.25, 0.46, 0.45, 0.94] }}
                 onClick={() => item.url && openLightbox(i)}
+                data-cursor={item.url ? 'View' : undefined}
                 className="break-inside-avoid relative group cursor-pointer overflow-hidden bg-zinc-900 mb-1"
               >
                 {item.url ? (

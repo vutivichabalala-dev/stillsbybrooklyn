@@ -6,6 +6,8 @@ import Footer from './Footer';
 import MobileBookingBar from './MobileBookingBar';
 import ScrollProgress from './ScrollProgress';
 import { MiniLoader } from './BrandLoader';
+import RouteCurtain from './RouteCurtain';
+import CursorLabel from './CursorLabel';
 
 const PageSpinner = MiniLoader;
 
@@ -30,6 +32,8 @@ export default function Layout() {
         </main>
         <Footer />
         <MobileBookingBar />
+        <RouteCurtain />
+        <CursorLabel />
       </div>
     </MotionConfig>
   );

@@ -66,7 +66,7 @@ export default function ReelCard({ reel, isAdmin, onDelete, index = 0 }) {
       onMouseLeave={() => setHovered(false)}
     >
       {/* Video */}
-      <div className="relative w-full" style={{ aspectRatio: '9/16' }}>
+      <div className="relative w-full" style={{ aspectRatio: '9/16' }} data-cursor={muted ? 'Sound' : 'Mute'} onClick={toggleMute}>
         {reel.thumbnail_url && !hovered && (
           <img
             src={reel.thumbnail_url}

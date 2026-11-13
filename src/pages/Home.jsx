@@ -10,6 +10,7 @@ import SplitReveal from '../components/SplitReveal';
 import Magnetic from '../components/Magnetic';
 import Marquee from '../components/Marquee';
 import ServicesIndex from '../components/ServicesIndex';
+import FilmStrip from '../components/FilmStrip';
 
 const ease = [0.22, 0.61, 0.36, 1];
 const M = 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/';
@@ -89,6 +90,18 @@ const services = [
   { path: '/photography-studio-johannesburg', label: 'Studio & Portraits', tag: 'Portraits', blurb: 'Solo, couples, family and branding shoots under professional strobes.', ...px('c9a5b988d05edf52676ed4195442e3f9'), pos: '50% 30%' },
   { path: '/event-photographer-johannesburg', label: 'Events', tag: 'Coverage', blurb: 'Launches, conferences and celebrations: the decor, the speeches, the dance floor.', src: `${M}53fd1db74_DSC_4135.jpg`, pos: '50% 25%' },
   { path: '/videographer-johannesburg', label: 'Videography', tag: 'Film + reels', blurb: 'Cinematic films and social-ready reels, shot alongside your photographs.', ...w2('5be27fdc4bf37b0e4e76c80714385d2b'), pos: '50% 30%' },
+];
+
+// One real wedding, in the order the day unfolded (horizontal film strip)
+const weddingDay = [
+  { ...w1('ac6e9df0f74c8dbc38e4dbc4b8bc8bd9'), alt: 'Bride in her robe on the wedding morning', caption: 'The morning', pos: '50% 30%' },
+  { ...w1('11bc9e3fd04edffa0e480016316e2456'), alt: 'Bride putting on her earrings', caption: 'Final details', pos: '50% 24%' },
+  { ...w1('7595be4ca74f9ee38dd32ef7822ad8bd'), alt: 'Bride reading her letter on the wedding morning', caption: 'Her letter', pos: '50% 38%' },
+  { ...w1('cb9e044827d97b4540114584471caf95'), alt: 'Groom adjusting his bow tie', caption: 'His side of the morning', pos: '50% 25%' },
+  { ...w1('d416537229004fc4ae8c488a62b7f93a'), alt: 'Bride under her veil', caption: 'Under the veil', pos: '50% 25%' },
+  { ...w2('ef10b35cf9800c88aa5d8356d84a570f'), alt: 'Bride in her full wedding gown', caption: 'The gown', pos: '50% 20%' },
+  { ...w2('5be27fdc4bf37b0e4e76c80714385d2b'), alt: 'Bride and groom walking together', caption: 'Walking together', pos: '50% 30%' },
+  { ...w2('22e3962a0016a59371959df425b02d38'), alt: 'Bride and groom sharing a kiss at their wedding', caption: 'The kiss', pos: '50% 30%' },
 ];
 
 const places = ['Johannesburg', 'Pretoria', 'Sandton', 'Midrand', 'Centurion', 'Rosebank', 'Randburg', 'Nationwide'];
@@ -285,6 +298,15 @@ function useColumns() {
 
 // One photo, shown whole at its natural shape. It reveals with a lifting curtain,
 // tilts gently towards the mouse, and shows its category on hover.
+// Each work tile opens the service page for its category
+const catPath = {
+  Weddings: '/wedding-photographer-johannesburg',
+  'Matric Dance': '/matric-dance-photographer',
+  Corporate: '/corporate-headshots-johannesburg',
+  Graduations: '/graduation-photoshoot-johannesburg',
+  Portraits: '/photography-studio-johannesburg',
+};
+
 function Tile({ item, delay = 0, sizes }) {
   const rx = useMotionValue(0);
   const ry = useMotionValue(0);
@@ -305,6 +327,7 @@ function Tile({ item, delay = 0, sizes }) {
       viewport={{ once: true, margin: '-40px' }}
       className="group m-0 [perspective:1000px]"
     >
+      <Link to={catPath[item.cat] || '/portfolio'} data-cursor="View" className="block outline-none focus-visible:ring-1 focus-visible:ring-gold">
       <motion.div onPointerMove={onMove} onPointerLeave={reset} style={{ rotateX, rotateY }} className="relative">
         <motion.div
           variants={{ hidden: { clipPath: 'inset(100% 0% 0% 0%)' }, show: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.1, ease: [0.77, 0, 0.18, 1], delay } } }}
@@ -330,6 +353,7 @@ function Tile({ item, delay = 0, sizes }) {
           <span aria-hidden="true" className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-transparent transition-all duration-500 group-hover:ring-gold/70" />
         </motion.div>
       </motion.div>
+      </Link>
       <motion.figcaption
         variants={{ hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.6, ease, delay: delay + 0.5 } } }}
         className="mt-3 font-lato text-[11px] tracking-[0.24em] uppercase text-[#B9B2AA]"
@@ -508,6 +532,13 @@ export default function Home() {
       <Marquee items={places} />
       <SelectedWork />
       <ServicesIndex services={services} />
+      <FilmStrip
+        frames={weddingDay}
+        eyebrow="A wedding day"
+        title="Frame by frame"
+        intro="One wedding, from the quiet of the morning to the first kiss: the moments a full-day booking captures."
+        cta={{ to: '/wedding-photographer-johannesburg', eyebrow: 'Weddings', label: 'Plan your wedding coverage' }}
+      />
       <Statement />
       <LocalSeo />
     </div>

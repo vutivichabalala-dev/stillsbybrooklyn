@@ -117,6 +117,7 @@
 }
 
 /* Custom cursor states (unlayered on purpose so they win over utilities) */
+
 .cursor-hover {
   border-color: rgba(235, 127, 59, 0.55);
   background-color: rgba(235, 127, 59, 0.06);
@@ -222,3 +223,37 @@
 .sb-link-draw:hover, .sb-link-draw[aria-current="page"] { background-size: 100% 1px; }
 .sb-underline { background: linear-gradient(currentColor, currentColor) 0 100% / 0 2px no-repeat; transition: background-size .7s cubic-bezier(.22,.61,.36,1); }
 .group:hover .sb-underline, .group:focus-visible .sb-underline { background-size: 100% 2px; }
+
+/* Contextual cursor label ("View", "Sound"): only exists over [data-cursor] */
+.sb-cursor-label-on [data-cursor] { cursor: none; }
+.sb-cursor-pill {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 99998;
+  pointer-events: none;
+  will-change: transform;
+}
+.sb-cursor-pill-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 78px;
+  height: 78px;
+  margin: -39px 0 0 -39px;
+  border-radius: 9999px;
+  background: #EB7F3B;
+  color: #141213;
+  font-family: Lato, system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding-left: 0.22em;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.35);
+  transition: opacity 0.25s ease, transform 0.4s cubic-bezier(.22,.61,.36,1);
+}
+.sb-cursor-pill.is-on .sb-cursor-pill-inner { opacity: 1; transform: scale(1); }
+.sb-cursor-pill.is-down .sb-cursor-pill-inner { transform: scale(0.88); }
