@@ -7,6 +7,9 @@ import { locationNav } from '@/content/seoPages';
 import BackToTop from '../components/BackToTop';
 import WhatsAppButton from '../components/WhatsAppButton';
 import SplitReveal from '../components/SplitReveal';
+import Magnetic from '../components/Magnetic';
+import Marquee from '../components/Marquee';
+import ServicesIndex from '../components/ServicesIndex';
 
 const ease = [0.22, 0.61, 0.36, 1];
 const M = 'https://media.base44.com/images/public/69cfd090f016bb0f1b452639/';
@@ -74,6 +77,21 @@ const work = [
   { src: `${M}53fd1db74_DSC_4135.jpg`, alt: 'Corporate portrait with eagle sculpture', cat: 'Corporate' },
 ];
 const filters = ['All', 'Weddings', 'Portraits', 'Corporate', 'Graduations', 'Matric Dance'];
+
+// Services index: one photo per service for the cursor-following preview
+const services = [
+  { path: '/wedding-photographer-johannesburg', label: 'Weddings', tag: 'Photo + film', blurb: 'Full-day stills, drone aerials and a behind-the-scenes reel, in one consistent style.', ...w2('ef10b35cf9800c88aa5d8356d84a570f'), pos: '50% 20%' },
+  { path: '/traditional-wedding-photographer', label: 'Traditional & Lobola', tag: 'Ceremonies', blurb: 'Lobola, umembeso and umabo covered with respect for the protocol and the families.', ...w1('d416537229004fc4ae8c488a62b7f93a'), pos: '50% 25%' },
+  { path: '/matric-dance-photographer', label: 'Matric Dance', tag: 'Portraits', blurb: 'Prep, the red-carpet arrival and the golden-hour portraits you will keep forever.', ...local('matric-couple-black', [640, 1100, 1714]), pos: '50% 15%' },
+  { path: '/graduation-photoshoot-johannesburg', label: 'Graduations', tag: 'Campus + studio', blurb: 'Wits, UJ, UP and UNISA grads, on campus, in studio or in the golden hour.', src: `${M}922435be1_DSC_4228.jpg`, pos: '50% 20%' },
+  { path: '/birthday-photoshoot-johannesburg', label: 'Birthdays', tag: 'Studio', blurb: '21sts, 30ths, umemulo and every milestone, styled from classy to editorial.', ...px('fa1a43cc250efd88003bc5da98382de8'), pos: '50% 30%' },
+  { path: '/corporate-headshots-johannesburg', label: 'Headshots', tag: 'Corporate', blurb: 'Studio sessions or an on-site team shoot with studio lighting, ready for LinkedIn.', src: `${M}d0c463f82_DSC_4127.jpg`, pos: '50% 20%' },
+  { path: '/photography-studio-johannesburg', label: 'Studio & Portraits', tag: 'Portraits', blurb: 'Solo, couples, family and branding shoots under professional strobes.', ...px('c9a5b988d05edf52676ed4195442e3f9'), pos: '50% 30%' },
+  { path: '/event-photographer-johannesburg', label: 'Events', tag: 'Coverage', blurb: 'Launches, conferences and celebrations: the decor, the speeches, the dance floor.', src: `${M}53fd1db74_DSC_4135.jpg`, pos: '50% 25%' },
+  { path: '/videographer-johannesburg', label: 'Videography', tag: 'Film + reels', blurb: 'Cinematic films and social-ready reels, shot alongside your photographs.', ...w2('5be27fdc4bf37b0e4e76c80714385d2b'), pos: '50% 30%' },
+];
+
+const places = ['Johannesburg', 'Pretoria', 'Sandton', 'Midrand', 'Centurion', 'Rosebank', 'Randburg', 'Nationwide'];
 
 
 /* ------------------------------------------------------------------ */
@@ -391,10 +409,12 @@ function SelectedWork() {
       </AnimatePresence>
 
       <div className="mt-16 flex justify-center">
-        <Link to="/portfolio" className="group inline-flex items-center gap-3 font-lato text-[12px] tracking-[0.26em] uppercase text-white hover:text-gold transition-colors">
-          <span className="sb-link-draw pb-1">View the full portfolio</span>
-          <span className="text-gold transition-transform duration-500 group-hover:translate-x-2">→</span>
-        </Link>
+        <Magnetic strength={10}>
+          <Link to="/portfolio" className="group inline-flex items-center gap-3 px-6 py-4 font-lato text-[12px] tracking-[0.26em] uppercase text-white hover:text-gold transition-colors">
+            <span className="sb-link-draw pb-1">View the full portfolio</span>
+            <span className="text-gold transition-transform duration-500 group-hover:translate-x-2">→</span>
+          </Link>
+        </Magnetic>
       </div>
     </section>
   );
@@ -433,9 +453,11 @@ function Statement() {
             </motion.span>
           ))}
         </motion.p>
-        <Link to="/about" className="font-lato text-[12px] tracking-[0.26em] uppercase border-b border-white pb-1 hover:text-[#F8D9C3] hover:border-[#F8D9C3] transition-colors">
-          About Brooklyn
-        </Link>
+        <Magnetic strength={8}>
+          <Link to="/about" className="inline-block px-4 py-3 font-lato text-[12px] tracking-[0.26em] uppercase hover:text-[#F8D9C3] transition-colors">
+            <span className="border-b border-current pb-1">About Brooklyn</span>
+          </Link>
+        </Magnetic>
       </div>
     </motion.section>
   );
@@ -483,7 +505,9 @@ export default function Home() {
       <BackToTop />
       <WhatsAppButton />
       <Hero />
+      <Marquee items={places} />
       <SelectedWork />
+      <ServicesIndex services={services} />
       <Statement />
       <LocalSeo />
     </div>

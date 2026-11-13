@@ -4,11 +4,12 @@ const ease = [0.22, 0.61, 0.36, 1];
 
 // Text that rises into view letter by letter (or word by word) when scrolled to.
 // The full text stays in the DOM for screen readers and search engines.
-export default function SplitReveal({ text, as: Tag = 'span', by = 'char', className = '', stagger = 0.03, delay = 0 }) {
+export default function SplitReveal({ text, as: Tag = 'span', by = 'char', className = '', stagger = 0.03, delay = 0, ...rest }) {
   const MotionTag = motion[Tag] || motion.span;
   const parts = by === 'word' ? text.split(' ') : Array.from(text);
   return (
     <MotionTag
+      {...rest}
       className={className}
       aria-label={text}
       initial="hidden"
