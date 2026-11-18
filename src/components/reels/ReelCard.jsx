@@ -144,7 +144,7 @@ export default function ReelCard({ reel, isAdmin, onDelete, index = 0 }) {
         )}
 
         {/* Admin delete */}
-        {isAdmin && (
+        {isAdmin && !reel.isStatic && (
           <button
             onClick={(e) => { e.stopPropagation(); onDelete(reel.id); }}
             className="absolute top-3 right-3 w-7 h-7 rounded-sm bg-red-500/20 border border-red-500/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-500/40"
