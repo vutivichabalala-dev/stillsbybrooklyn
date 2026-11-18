@@ -7,6 +7,7 @@ import Logo from './Logo';
 
 const mainLinks = [
   { label: 'Portfolio', path: '/portfolio' },
+  { label: 'Reels', path: '/reels' },
   { label: 'Services', path: '/services', dropdown: true },
   { label: 'About', path: '/about' },
   { label: 'Contact', path: '/contact' },

@@ -6,6 +6,7 @@ import { Film, Plus, SlidersHorizontal, Clock } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import ReelCard from '../components/reels/ReelCard';
 import ReelUploadModal from '../components/reels/ReelUploadModal';
+import { staticReels } from '@/content/staticReels';
 
 const CATEGORIES = ['All', 'Corporate', 'Portraits', 'Weddings', 'Graduations', 'Behind the Scenes', 'Other'];
 
@@ -49,7 +50,7 @@ function Particles() {
 }
 
 export default function Reels() {
-  const [reels, setReels] = useState([]);
+  const [reels, setReels] = useState(staticReels);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('All');
   const [showUpload, setShowUpload] = useState(false);
@@ -73,7 +74,7 @@ export default function Reels() {
     setLoading(true);
     try {
       const data = await base44.entities.Reel.list('-created_date', 100);
-      const sorted = [...(Array.isArray(data) ? data : [])].sort((a, b) => {
+      const sorted = [...staticReels, ...(Array.isArray(data) ? data : [])].sort((a, b) => {
         if (a.is_featured && !b.is_featured) return -1;
         if (!a.is_featured && b.is_featured) return 1;
         return 0;
@@ -82,7 +83,7 @@ export default function Reels() {
     } catch (err) {
       // API down or blocked: show the "coming soon" state instead of an endless spinner
       console.warn('Could not load reels:', err?.message || err);
-      setReels([]);
+      setReels(staticReels);
     } finally {
       setLoading(false);
     }
