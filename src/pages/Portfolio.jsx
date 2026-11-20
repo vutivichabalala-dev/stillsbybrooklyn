@@ -96,9 +96,15 @@ const placeholderItems = [
   { id: 'h1', category: 'Matric Dance', size: 'large', url: '/images/home/matric-couple-black-1714.jpg', alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown' },
   { id: 'h2', category: 'Matric Dance', size: 'small', url: '/images/home/matric-black-gown-1100.jpg', alt: 'Matric dance portrait in a beaded black gown, seated' },
   // Lobola
-  { id: 'l1', category: 'Lobola', size: 'large', url: '/images/home/lobola-shweshwe-portrait-1365.jpg', alt: 'Lobola portrait in a green shweshwe dress, white lace shawl and matching headwrap' },
-  { id: 'l2', category: 'Lobola', size: 'large', url: '/images/home/lobola-shweshwe-standing-1365.jpg', alt: 'Lobola portrait in a green shweshwe dress among the trees' },
-  { id: 'l3', category: 'Lobola', size: 'large', url: '/images/home/lobola-couple-1365.jpg', alt: 'Couple at their lobola celebration, she in a green shweshwe dress' },
+  { id: 'l1', category: 'Lobola', size: 'large', url: '/images/home/lobola-portrait-hands-1600.jpg', srcSet: '/images/home/lobola-portrait-hands-640.jpg 640w, /images/home/lobola-portrait-hands-1024.jpg 1024w, /images/home/lobola-portrait-hands-1600.jpg 1600w', alt: 'Lobola portrait in a green shweshwe dress, white lace shawl and wooden bead cuffs' },
+  { id: 'l2', category: 'Lobola', size: 'large', url: '/images/home/lobola-couple-embrace-1465.jpg', srcSet: '/images/home/lobola-couple-embrace-640.jpg 640w, /images/home/lobola-couple-embrace-1024.jpg 1024w, /images/home/lobola-couple-embrace-1465.jpg 1465w', alt: 'Couple embracing under a bottlebrush tree at their lobola' },
+  { id: 'l3', category: 'Lobola', size: 'large', url: '/images/home/lobola-family-laughing-1661.jpg', srcSet: '/images/home/lobola-family-laughing-640.jpg 640w, /images/home/lobola-family-laughing-1024.jpg 1024w, /images/home/lobola-family-laughing-1661.jpg 1661w', alt: 'Laughing with family at the lobola, an elder in red and blue traditional dress' },
+  { id: 'l4', category: 'Lobola', size: 'large', url: '/images/home/lobola-full-length-1410.jpg', srcSet: '/images/home/lobola-full-length-640.jpg 640w, /images/home/lobola-full-length-1024.jpg 1024w, /images/home/lobola-full-length-1410.jpg 1410w', alt: 'Full-length lobola portrait in a green shweshwe dress and lace shawl' },
+  { id: 'l5', category: 'Lobola', size: 'large', url: '/images/home/lobola-couple-standing-1416.jpg', srcSet: '/images/home/lobola-couple-standing-640.jpg 640w, /images/home/lobola-couple-standing-1024.jpg 1024w, /images/home/lobola-couple-standing-1416.jpg 1416w', alt: 'Couple at their lobola celebration, she in a green shweshwe dress' },
+  { id: 'l6', category: 'Lobola', size: 'large', url: '/images/home/lobola-portrait-smile-1600.jpg', srcSet: '/images/home/lobola-portrait-smile-640.jpg 640w, /images/home/lobola-portrait-smile-1024.jpg 1024w, /images/home/lobola-portrait-smile-1600.jpg 1600w', alt: 'Close lobola portrait, hand on her shoulder, red bead cuffs' },
+  { id: 'l7', category: 'Lobola', size: 'large', url: '/images/home/lobola-couple-hands-1551.jpg', srcSet: '/images/home/lobola-couple-hands-640.jpg 640w, /images/home/lobola-couple-hands-1024.jpg 1024w, /images/home/lobola-couple-hands-1551.jpg 1551w', alt: 'Couple holding hands on the lawn at their lobola' },
+  { id: 'l8', category: 'Lobola', size: 'large', url: '/images/home/lobola-shweshwe-standing-1600.jpg', srcSet: '/images/home/lobola-shweshwe-standing-640.jpg 640w, /images/home/lobola-shweshwe-standing-1024.jpg 1024w, /images/home/lobola-shweshwe-standing-1600.jpg 1600w', alt: 'Lobola portrait in a green shweshwe dress among the trees' },
+  { id: 'l9', category: 'Lobola', size: 'large', url: '/images/home/lobola-couple-smiling-1549.jpg', srcSet: '/images/home/lobola-couple-smiling-640.jpg 640w, /images/home/lobola-couple-smiling-1024.jpg 1024w, /images/home/lobola-couple-smiling-1549.jpg 1549w', alt: 'Smiling couple at their lobola, his arm around her shoulders' },
   { id: 'h3', category: 'Portraits', size: 'large', url: '/images/home/portrait-sportscar-1400.jpg', alt: 'Portrait of a young man in a suit seated in a blue sports car' },
 ];
 
@@ -177,6 +183,8 @@ export default function Portfolio() {
                 {item.url ? (
                   <img
                     src={item.url}
+                    srcSet={item.srcSet}
+                    sizes={item.srcSet ? '(min-width: 768px) 33vw, 50vw' : undefined}
                     alt={item.alt || item.category}
                     className="w-full h-full object-cover block transition-transform duration-700 group-hover:scale-110"
                     style={{ aspectRatio: item.size === 'large' ? '2/3' : '3/4' }}
