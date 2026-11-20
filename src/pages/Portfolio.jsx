@@ -95,6 +95,10 @@ const placeholderItems = [
   { id: 'm9', category: 'Matric Dance', size: 'small', url: 'https://base44.app/api/apps/69cfd090f016bb0f1b452639/files/mp/public/69cfd090f016bb0f1b452639/115657473_m9.jpg', alt: 'Matric dance portrait — beaded gown with two bouquets of red roses' },
   { id: 'h1', category: 'Matric Dance', size: 'large', url: '/images/home/matric-couple-black-1714.jpg', alt: 'Matric dance couple at golden hour, she in a black off-shoulder gown' },
   { id: 'h2', category: 'Matric Dance', size: 'small', url: '/images/home/matric-black-gown-1100.jpg', alt: 'Matric dance portrait in a beaded black gown, seated' },
+  // Lobola
+  { id: 'l1', category: 'Lobola', size: 'large', url: '/images/home/lobola-shweshwe-portrait-1365.jpg', alt: 'Lobola portrait in a green shweshwe dress, white lace shawl and matching headwrap' },
+  { id: 'l2', category: 'Lobola', size: 'large', url: '/images/home/lobola-shweshwe-standing-1365.jpg', alt: 'Lobola portrait in a green shweshwe dress among the trees' },
+  { id: 'l3', category: 'Lobola', size: 'large', url: '/images/home/lobola-couple-1365.jpg', alt: 'Couple at their lobola celebration, she in a green shweshwe dress' },
   { id: 'h3', category: 'Portraits', size: 'large', url: '/images/home/portrait-sportscar-1400.jpg', alt: 'Portrait of a young man in a suit seated in a blue sports car' },
 ];
 
@@ -102,7 +106,7 @@ export default function Portfolio() {
   useSeo(corePages.portfolio);
 
    const urlParams = new URLSearchParams(window.location.search);
-   const CATEGORIES = ['All', 'Corporate', 'Portraits', 'Weddings', 'Graduations', 'Matric Dance'];
+   const CATEGORIES = ['All', 'Corporate', 'Portraits', 'Weddings', 'Lobola', 'Graduations', 'Matric Dance'];
    const initialCat = urlParams.get('category');
    const initial = initialCat
      ? CATEGORIES.find(c => c.toLowerCase() === initialCat.toLowerCase()) || 'All'
