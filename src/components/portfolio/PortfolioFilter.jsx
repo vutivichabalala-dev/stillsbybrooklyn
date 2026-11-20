@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-const CATEGORIES = ['All', 'Corporate', 'Portraits', 'Weddings', 'Graduations', 'Matric Dance'];
+const CATEGORIES = ['All', 'Corporate', 'Portraits', 'Weddings', 'Lobola', 'Graduations', 'Matric Dance'];
 
 export default function PortfolioFilter({ active, onChange }) {
   return (
