@@ -1,11 +1,12 @@
 import { useSeo } from '@/lib/seo';
 import { corePages } from '@/content/corePages';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Film, Plus, SlidersHorizontal, Clock } from 'lucide-react';
 import { base44 } from '@/api/base44Client';
 import ReelCard from '../components/reels/ReelCard';
 import ReelUploadModal from '../components/reels/ReelUploadModal';
+import ReelsHero from '../components/reels/ReelsHero';
 import { staticReels } from '@/content/staticReels';
 
 const CATEGORIES = ['All', 'Corporate', 'Portraits', 'Weddings', 'Graduations', 'Behind the Scenes', 'Other'];
@@ -55,6 +56,7 @@ export default function Reels() {
   const [filter, setFilter] = useState('All');
   const [showUpload, setShowUpload] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const gridRef = useRef(null);
 
   useSeo(corePages.reels);
 
@@ -104,7 +106,14 @@ export default function Reels() {
   return (
     <div className="min-h-screen bg-background relative overflow-x-hidden">
 
-      {/* Hero */}
+      {/* Hero: full-screen autoplaying reel, with the original hero as a fallback when there are no reels */}
+      {reels.some((r) => r.video_url) ? (
+        <ReelsHero
+          reels={reels}
+          h1={corePages.reels.h1}
+          onWatchAll={() => gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })}
+        />
+      ) : (
       <div className="relative pt-32 pb-16 px-6 overflow-hidden">
         <Particles />
         <ScanLine />
@@ -162,10 +171,24 @@ export default function Reels() {
           )}
         </div>
       </div>
+      )}
+
+      {/* Admin upload button — only visible to admins */}
+      {isAdmin && reels.some((r) => r.video_url) && (
+        <div className="max-w-7xl mx-auto px-4 pt-8 text-center">
+          <button
+            onClick={() => setShowUpload(true)}
+            className="inline-flex items-center gap-2 px-6 py-3 border border-gold/60 bg-gold/10 text-gold text-xs font-montserrat font-bold tracking-[0.2em] uppercase rounded-sm hover:bg-gold hover:text-black transition-all duration-300"
+          >
+            <Plus size={13} />
+            Post New Reel
+          </button>
+        </div>
+      )}
 
       {/* Filter bar — only visible to admins when there are reels */}
       {(isAdmin || hasReels) && (
-        <div className="sticky top-16 z-30 bg-background/80 backdrop-blur-xl border-b border-white/6">
+        <div ref={gridRef} className="sticky top-16 z-30 scroll-mt-16 bg-background/80 backdrop-blur-xl border-b border-white/6">
           <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 overflow-x-auto scrollbar-none">
             <SlidersHorizontal size={13} className="text-white/25 flex-shrink-0 mr-1" />
             {CATEGORIES.map(cat => (
