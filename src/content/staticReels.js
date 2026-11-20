@@ -9,6 +9,8 @@ export const staticReels = [
     category: 'Weddings',
     is_featured: true,
     video_url: '/reels/sphe-lobola-luncheon.mp4',
+    // lighter 720p copy for the full-screen autoplaying hero on /reels
+    hero_url: '/reels/sphe-lobola-luncheon-720.mp4',
     thumbnail_url: '/reels/sphe-lobola-luncheon.jpg',
     isStatic: true,
   },
