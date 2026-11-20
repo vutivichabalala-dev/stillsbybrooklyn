@@ -87,6 +87,16 @@ export const corePages = {
     description: 'Wedding, lobola, graduation, matric dance, birthday, headshot, event and video services in Johannesburg, Pretoria and across Gauteng. Find your shoot.',
     keywords: ['photography services johannesburg', 'photographer johannesburg', 'photographer and videographer johannesburg'],
     h1: 'Photography & Video Services in Johannesburg',
+    intro: 'Stills by Brooklyn is a Johannesburg photographer and videographer, shooting since 2018 across Gauteng and the rest of South Africa. Pick the shoot you need below, or [request a quote](/contact) and we\'ll tailor a package to your day.',
+    sections: [
+      { h2: 'Corporate photography', body: ['Professional photography for businesses, brands and organisations. Half-day and full-day rates available.', { ul: ['Executive and team headshots', 'Corporate events and conferences', 'Brand and product photography', 'Office environment shoots', 'Annual report imagery'] }, 'See [corporate headshots in Johannesburg](/corporate-headshots-johannesburg) and [event photography](/event-photographer-johannesburg).'] },
+      { h2: 'Portraits and studio sessions', body: ['Intimate portrait sessions that reveal character and tell personal stories, in studio or on location.', { ul: ['Individual portraits', 'Family portraits', 'Maternity sessions', 'Lifestyle and creative shoots', 'Professional headshots'] }, 'See [our photography studio in Johannesburg](/photography-studio-johannesburg) and [birthday photoshoots](/birthday-photoshoot-johannesburg).'] },
+      { h2: 'Weddings and traditional ceremonies', body: ['Full wedding day coverage, engagement sessions and bridal portraits, plus lobola, umembeso and other traditional ceremonies. Drone aerials and behind-the-scenes reels can be added.', 'See [wedding photography](/wedding-photographer-johannesburg) and [traditional wedding photography](/traditional-wedding-photographer).'] },
+      { h2: 'Graduations', body: ['Individual graduation portraits, ceremony coverage, academic regalia portraits and group and family photos, on location or in studio. See [graduation photoshoots](/graduation-photoshoot-johannesburg).'] },
+      { h2: 'Matric dances', body: ['Couple and group portraits, golden-hour location shoots and full-length formal portraits for the big night. Book early — matric season fills up fast. See [matric dance photography](/matric-dance-photographer).'] },
+      { h2: 'Videography and reels', body: ['Highlight films and short vertical reels for weddings, ceremonies and events, ready for Instagram and TikTok. See [videography in Johannesburg](/videographer-johannesburg) and watch our [reels](/reels).'] },
+      { h2: 'How it works', body: [{ ol: ['**Consultation** — we discuss your vision, goals and requirements.', '**Planning** — location scouting, mood boards and logistics.', '**The session** — a directed, creative shoot with attention to detail.', '**Delivery** — carefully edited, high-resolution images within the agreed timeframe.'] }] },
+    ],
   },
 
   about: {
@@ -126,6 +136,15 @@ export const corePages = {
     title: 'Wedding & Event Video Reels | Stills by Brooklyn',
     description: 'Watch wedding, traditional ceremony and event reels filmed by Stills by Brooklyn, a Johannesburg photographer and videographer.',
     keywords: ['videographer johannesburg', 'wedding video reels', 'event video johannesburg'],
+    eyebrow: 'Motion portfolio',
+    h1: 'Reels & Video',
+    intro: 'Cinematic moments captured in motion — behind the scenes, live sessions, and the stories between the frames. These reels are filmed and edited by Stills by Brooklyn, a Johannesburg photographer and videographer.',
+    sections: [
+      { h2: 'Latest reels', body: [{ ul: ["**S'phe's Lobola Luncheon** — a garden lobola luncheon in Johannesburg: décor, family and the couple."] }] },
+      { h2: 'Wedding and ceremony reels', body: ['Short, vertical, social-ready reels of weddings, lobola and umembeso celebrations, made for Instagram and TikTok and often shared before the full gallery is delivered. See [wedding photography](/wedding-photographer-johannesburg) and [traditional wedding photography](/traditional-wedding-photographer).'] },
+      { h2: 'Event highlight videos', body: ['60 to 90 second highlight reels for corporate functions, launches, birthdays and matric dances. See [event photography](/event-photographer-johannesburg).'] },
+      { h2: 'Book video coverage', body: ['Video can be booked on its own or alongside stills. Learn more about [videography in Johannesburg](/videographer-johannesburg) or [request a quote](/contact).'] },
+    ],
   },
 };
 
