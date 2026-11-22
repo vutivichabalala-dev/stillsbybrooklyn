@@ -1,7 +1,8 @@
 import { format } from 'date-fns';
-import { Briefcase, User, Heart, Calendar, Clock, MapPin } from 'lucide-react';
+import { Briefcase, User, Heart, GraduationCap, Sparkles, Calendar, Clock } from 'lucide-react';
 
-const serviceIcons = { Corporate: Briefcase, Portraits: User, Weddings: Heart };
+const serviceIcons = { Corporate: Briefcase, Portraits: User, Weddings: Heart, Graduations: GraduationCap, Custom: Sparkles };
+const serviceLabels = { Custom: 'Custom Shoot' };
 
 function formatTime(t) {
   if (!t) return '';
@@ -22,7 +23,7 @@ export default function BookingStep4Details({ booking, onChange, errors }) {
       {/* Summary */}
       <div className="bg-gold/10 border border-gold/30 p-5 mb-8 flex flex-wrap gap-4">
         <div className="flex items-center gap-2 text-gold text-sm font-montserrat">
-          <Icon size={15} /> <span className="font-semibold">{booking.service}</span>
+          <Icon size={15} /> <span className="font-semibold">{serviceLabels[booking.service] || booking.service}</span>
         </div>
         <div className="flex items-center gap-2 text-white/70 text-sm font-montserrat">
           <Calendar size={15} /> <span>{booking.date ? format(new Date(booking.date), 'EEE, MMM d yyyy') : '—'}</span>
@@ -33,6 +34,34 @@ export default function BookingStep4Details({ booking, onChange, errors }) {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {/* CUSTOM: describe the shoot */}
+        {booking.service === 'Custom' && (
+          <>
+            <div className="md:col-span-2 flex flex-col gap-1.5">
+              <label htmlFor="custom_shoot" className="text-white/60 text-xs font-montserrat uppercase tracking-wider">What kind of shoot do you want? *</label>
+              <textarea
+                id="custom_shoot"
+                rows={4}
+                value={booking.custom_shoot || ''}
+                onChange={e => onChange('custom_shoot', e.target.value)}
+                placeholder="e.g. Lobola ceremony for about 80 guests, family portraits and a short reel..."
+                className={`bg-white/5 border ${errors.custom_shoot ? 'border-red-500' : 'border-white/15'} text-white font-montserrat text-sm px-4 py-3 focus:outline-none focus:border-gold transition-colors placeholder:text-white/25 resize-y`}
+              />
+              {errors.custom_shoot && <span className="text-red-400 text-xs font-montserrat">{errors.custom_shoot}</span>}
+            </div>
+            <div className="md:col-span-2 flex flex-col gap-1.5">
+              <label htmlFor="custom_location" className="text-white/60 text-xs font-montserrat uppercase tracking-wider">Location (Optional)</label>
+              <input
+                id="custom_location"
+                type="text"
+                value={booking.location_address || ''}
+                onChange={e => onChange('location_address', e.target.value)}
+                placeholder="Venue, area or 'studio'"
+                className="bg-white/5 border border-white/15 text-white font-montserrat text-sm px-4 py-3 focus:outline-none focus:border-gold transition-colors placeholder:text-white/25"
+              />
+            </div>
+          </>
+        )}
         {/* Full Name */}
         <div className="flex flex-col gap-1.5">
           <label className="text-white/60 text-xs font-montserrat uppercase tracking-wider">Full Name *</label>

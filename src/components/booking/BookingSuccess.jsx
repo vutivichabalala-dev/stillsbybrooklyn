@@ -24,7 +24,8 @@ export default function BookingSuccess({ booking }) {
       </p>
 
       <div className="bg-white/5 border border-white/10 p-6 max-w-sm mx-auto text-left space-y-3 mb-8">
-        <SummaryRow label="Service" value={booking.service} />
+        <SummaryRow label="Service" value={booking.service === 'Custom' ? 'Custom Shoot' : booking.service} />
+        {booking.service === 'Custom' && booking.custom_shoot && <SummaryRow label="Your shoot" value={booking.custom_shoot} />}
         <SummaryRow label="Date" value={booking.date ? format(new Date(booking.date), 'EEE, MMMM d yyyy') : '—'} />
         <SummaryRow label="Time" value={formatTime(booking.time)} />
         <SummaryRow label="Email" value={booking.email} />

@@ -1,6 +1,6 @@
 import { useSeo } from '@/lib/seo';
 import { corePages } from '@/content/corePages';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { sendEmail } from '@/lib/sendEmail';
 
 import { motion } from 'framer-motion';
@@ -16,7 +16,7 @@ const STEPS = ['Service', 'Date', 'Time', 'Details'];
 
 const emptyBooking = {
   service: '', date: '', time: '',
-  full_name: '', email: '', phone: '', notes: '',
+  full_name: '', email: '', phone: '', notes: '', custom_shoot: '',
   location_type: '', location_address: '', venue_name: '',
 };
 
@@ -29,6 +29,9 @@ function validateStep4(booking) {
   if (booking.service === 'Portraits') {
     if (!booking.location_address.trim())
       errors.location_address = 'Location address is required.';
+  }
+  if (booking.service === 'Custom') {
+    if (!booking.custom_shoot.trim()) errors.custom_shoot = 'Please tell me what kind of shoot you want.';
   }
   if (booking.service === 'Weddings') {
     if (!booking.venue_name.trim()) errors.venue_name = 'Venue name is required.';
@@ -46,6 +49,18 @@ export default function Booking() {
    const [submitted, setSubmitted] = useState(false);
    const [submitting, setSubmitting] = useState(false);
    const [submitError, setSubmitError] = useState('');
+   const topRef = useRef(null);
+   const firstRender = useRef(true);
+
+  // Bring the top of the form back into view whenever the step changes,
+  // so visitors see the new options instead of a greyed-out Continue button.
+  useEffect(() => {
+    if (firstRender.current) { firstRender.current = false; return; }
+    const el = topRef.current;
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - 100;
+    window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+  }, [step, submitted]);
 
   const updateField = (field, value) => {
     setBooking(prev => ({ ...prev, [field]: value }));
@@ -108,7 +123,7 @@ export default function Booking() {
         {!submitted ? (
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }}>
             {/* Progress indicator */}
-            <div className="flex items-center justify-center mb-12">
+            <div ref={topRef} className="flex items-center justify-center mb-12">
               {STEPS.map((label, i) => (
                 <div key={label} className="flex items-center">
                   <div className="flex flex-col items-center gap-1.5">
@@ -158,7 +173,7 @@ export default function Booking() {
             {submitError && <p role="alert" className="text-red-400 text-xs font-montserrat text-right mt-4">{submitError}</p>}
           </motion.div>
         ) : (
-          <BookingSuccess booking={booking} />
+          <div ref={topRef}><BookingSuccess booking={booking} /></div>
         )}
       </div>
     </div>

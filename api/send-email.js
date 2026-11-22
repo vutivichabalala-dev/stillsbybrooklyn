@@ -23,7 +23,7 @@ const FALLBACK_FROM = 'Stills by Brooklyn <onboarding@resend.dev>';
 const ADMIN_EMAIL = process.env.ADMIN_EMAIL || 'info@stillsbybrooklyn.co.za';
 const ADMIN_CC = process.env.ADMIN_CC || 'vutivichabalala@gmail.com';
 
-const SERVICES = ['Corporate', 'Portraits', 'Weddings', 'Graduations'];
+const SERVICES = ['Corporate', 'Portraits', 'Weddings', 'Graduations', 'Custom'];
 
 async function resendSend(payload) {
   const key = process.env.RESEND_API_KEY;
@@ -101,10 +101,16 @@ export default async function handler(req, res) {
       location_address: clip(input.location_address, 200),
       venue_name: clip(input.venue_name, 120),
       notes: clip(input.notes, 1000),
+      custom_shoot: clip(input.custom_shoot, 1000).trim(),
     };
     if (!data.full_name || !data.phone || !SERVICES.includes(data.service) || !data.date || !data.time) {
       return res.status(400).json({ error: 'Missing booking details' });
     }
+    if (data.service === 'Custom' && !data.custom_shoot) {
+      return res.status(400).json({ error: 'Please describe the shoot you want' });
+    }
+    // Shown as "Custom Shoot" everywhere the session name appears.
+    if (data.service === 'Custom') data.service = 'Custom Shoot';
     adminSubject = `New booking · ${data.service} · ${shortDate(data.date)} ${formatTime(data.time)} — ${data.full_name}`;
     clientSubject = 'Your booking request is in — Stills by Brooklyn';
     clientName = data.full_name;
