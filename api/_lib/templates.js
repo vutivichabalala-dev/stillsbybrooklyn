@@ -141,6 +141,7 @@ export function clientConfirmationEmail({ name, type, data }) {
   const summary = isBooking
     ? rows([
         ['Session', service],
+        ['Shoot', escapeHtml(data.custom_shoot)],
         ['Date', escapeHtml(formatDate(data.date))],
         ['Time', escapeHtml(formatTime(data.time))],
         ['Venue', escapeHtml(data.venue_name)],
@@ -241,6 +242,7 @@ export function adminNotificationEmail({ type, data }) {
         ['Email', `<a href="mailto:${escapeHtml(email)}" style="color:${C.ivory};">${escapeHtml(email)}</a>`],
         ['Phone', escapeHtml(data.phone)],
         ['Session', service],
+        ['Shoot', escapeHtml(data.custom_shoot)],
         ['Date', escapeHtml(formatDate(data.date))],
         ['Time', escapeHtml(formatTime(data.time))],
         ['Venue', escapeHtml(data.venue_name)],
@@ -321,7 +323,7 @@ export function clientConfirmationText({ name, type, data }) {
   const isBooking = type === 'booking';
   const fname = firstName(name);
   const details = isBooking
-    ? [line('Session', data.service), line('Date', formatDate(data.date)), line('Time', formatTime(data.time)), line('Venue', data.venue_name), line('Location', data.location_address), line('Your notes', data.notes)]
+    ? [line('Session', data.service), line('Shoot', data.custom_shoot), line('Date', formatDate(data.date)), line('Time', formatTime(data.time)), line('Venue', data.venue_name), line('Location', data.location_address), line('Your notes', data.notes)]
     : [line('Interested in', data.service), line('Your message', data.message)];
   return [
     `Hi ${fname},`,
@@ -355,7 +357,7 @@ export function adminNotificationText({ type, data }) {
   const name = isBooking ? data.full_name : data.name;
   const phone = intlPhone(data.phone);
   const details = isBooking
-    ? [line('Client', name), line('Email', data.email), line('Phone', data.phone), line('Session', data.service), line('Date', formatDate(data.date)), line('Time', formatTime(data.time)), line('Venue', data.venue_name), line('Location', data.location_address)]
+    ? [line('Client', name), line('Email', data.email), line('Phone', data.phone), line('Session', data.service), line('Shoot', data.custom_shoot), line('Date', formatDate(data.date)), line('Time', formatTime(data.time)), line('Venue', data.venue_name), line('Location', data.location_address)]
     : [line('Name', name), line('Email', data.email), line('Phone', data.phone), line('Interested in', data.service)];
   const note = isBooking ? data.notes : data.message;
   return [

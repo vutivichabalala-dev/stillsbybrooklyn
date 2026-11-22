@@ -1,4 +1,4 @@
-import { Briefcase, User, Heart, GraduationCap } from 'lucide-react';
+import { Briefcase, User, Heart, GraduationCap, Sparkles } from 'lucide-react';
 
 const services = [
   {
@@ -25,6 +25,14 @@ const services = [
     duration: '45 min',
     description: 'Celebrate your achievement with stunning graduation portraits and ceremony coverage.',
   },
+  {
+    id: 'Custom',
+    label: 'Custom Shoot',
+    icon: Sparkles,
+    duration: 'You decide',
+    description: 'Lobola, matric dance, birthday, umemulo, events or anything else. Tell me what you have in mind.',
+    wide: true,
+  },
 ];
 
 export default function BookingStep1Service({ selected, onSelect }) {
@@ -40,7 +48,8 @@ export default function BookingStep1Service({ selected, onSelect }) {
             <button
               key={s.id}
               onClick={() => onSelect(s.id)}
-              className={`text-left p-8 border transition-all duration-300 flex flex-col gap-5 rounded-sm ${
+              type="button"
+              className={`${s.wide ? 'md:col-span-2 ' : ''}text-left p-8 border transition-all duration-300 flex flex-col gap-5 rounded-sm ${
                 isSelected
                   ? 'border-gold bg-gold/10'
                   : 'border-white/10 bg-white/5 hover:border-gold/40 hover:bg-white/8'
@@ -51,7 +60,7 @@ export default function BookingStep1Service({ selected, onSelect }) {
               </div>
               <div>
                 <div className="flex items-center justify-between gap-3 mb-2">
-                  <h3 className={`font-montserrat font-bold text-xl ${isSelected ? 'text-gold' : 'text-white'}`}>{s.id}</h3>
+                  <h3 className={`font-montserrat font-bold text-xl ${isSelected ? 'text-gold' : 'text-white'}`}>{s.label || s.id}</h3>
                   <span className="text-xs font-montserrat text-white/40 border border-white/10 px-3 py-1 whitespace-nowrap">{s.duration}</span>
                 </div>
                 <p className="text-white/50 text-sm font-montserrat leading-relaxed">{s.description}</p>
